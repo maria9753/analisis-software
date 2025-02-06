@@ -10,24 +10,24 @@ public class CarteleraCine {
     this.peliculas.add(p);
   }
 
-  public List<Pelicula> peliculasPorGenero(String genero) {
+  public String peliculasPorGenero(String genero) {
     List<Pelicula> peliculasporgenero = new ArrayList<>();
     for (Pelicula p: peliculas) {
       if (p.getGenero() == genero) {
         peliculasporgenero.add(p);
       }
     }
-    return peliculasporgenero;
+    return genero+": "+peliculasporgenero;
   }
 
-  public List<Pelicula> peliculasPosterioresA(int anyo) {
+  public String peliculasPosterioresA(int anyo) {
     List<Pelicula> peliculasposterioresa = new ArrayList<>();
     for (Pelicula p: peliculas) {
       if (p.getAnyo() >= anyo) {
         peliculasposterioresa.add(p);
       }
     }
-    return peliculasposterioresa;
+    return "Recientes:"+peliculasposterioresa;
   }
   
   @Override
@@ -41,7 +41,7 @@ public class CarteleraCine {
                              new Pelicula("Jumanji", "Aventura", 1995, "Joe Johnston") };
     CarteleraCine cinesTelmo = new CarteleraCine("Telmo", peliculas);
     System.out.println(cinesTelmo);
-    System.out.println("Dramas: "+cinesTelmo.peliculasPorGenero("Drama"));
-    System.out.println("Receintes: "+cinesTelmo.peliculasPosterioresA(2020));
+    System.out.println(cinesTelmo.peliculasPorGenero("Drama"));
+    System.out.println(cinesTelmo.peliculasPosterioresA(2020));
   }
 }
