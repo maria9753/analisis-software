@@ -1,0 +1,25 @@
+PRÁCTICA 1: INTRODUCCIÓN A JAVA
+
+- Apartado 3: Uso de librerías básicas
+  Contesta a las siguientes preguntas:
+  1. ¿Qué sucede si creas dos objetos Película con los mismos parámetros?
+  No causa ningún error, ambos se añaden y se tratan como dos objetos distintos, es decir, no hay diferencia en cuanto a cómo se gestionan dos objetos con los mismos parámetros 
+  y dos objetos con parámetros distintos.
+
+  2. ¿Puedes crear una Pelicula sin género? ¿Y con varios?
+  No se puede añadir una Película sin género poque la clase está definida con ese atributo. Por tanto, todos los objetos de la clase Película tienen que tener los mismos tres 
+  atributos. En cambio, sí se puede añadir una Película con varios géneros porque el atributo género es una cadena así que, mientras el segundo género se escriba dentro de las 
+  mismas comillas, es decir, como la misma cadena, es posible.
+ 
+  3. ¿Qué sucede si le pasas al objeto CarteleraCine un array vacío? ¿Y null? ¿Cómo puedes mejorar el código para que ese problema no suceda?
+  Si el objeto CarteleraCine está vacío, el programa lo imprime vacío; pero si es nulo dará error. Para que no se ejecute con un objeto nulo, se debería implementar una mejora 
+  en el código de manera que se compruebe que el objeto no es nulo. Esta comprobación se debería hacer después de esta línea: “CarteleraCine cinesTelmo = new CarteleraCine("Telmo", 
+  peliculas);”. 
+
+- Apartado 4: Tu primer programa Java
+  Contesta a la siguiente pregunta:
+  1. Si se quisieran obtener películas por otros criterios, habría que añadir más métodos a la clase CarteleraCine. ¿Se te ocurre alguna manera de generalizar el diseño para que no 
+  haya que añadir un método por cada posible criterio de interés?
+  No sería necesario añadir más métodos a la clase CarteleraCine, se podría generalizar el diseño para buscar películas que tengan un determinado título, género o director porque los 
+  tres atributos son cadenas de texto, por lo que el argumento que se le pasaría al método es el mismo, y la comparación también. 
+	
