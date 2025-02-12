@@ -14,12 +14,12 @@ public class InStoreOrder extends Order{
 
     @Override
     public double totalPrice() {
-        if (this.store.equal(BookStore.BROOKLYN)){
-            return this.basePrice - 1;
+        if (this.store == BookStore.BROOKLYN){
+            return super.totalPrice() - 1;
         }
-        else if (this.store.equal(BookStore.NEWARK)){
-            return this.basePrice - 2;
+        else if (this.store == BookStore.NEWARK){
+            return super.totalPrice() - 2;
         }
-        return this.basePrice;
+        return super.totalPrice();
     }
 }

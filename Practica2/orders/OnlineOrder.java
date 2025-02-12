@@ -1,5 +1,6 @@
 package orders;
 public class OnlineOrder extends Order {
+    private String email;
     
     public OnlineOrder(String item, double price, String customer, String email){
         super(item, price, customer);
@@ -13,6 +14,6 @@ public class OnlineOrder extends Order {
 
     @Override
     public double totalPrice() {
-        return this.basePrice + 5;
+        return super.totalPrice() + 5;
     }
 }
