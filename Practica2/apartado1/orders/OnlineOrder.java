@@ -7,6 +7,8 @@ package orders;
 public class OnlineOrder extends Order {
     /**Email del cliente que ha realizado el pedido online*/
     private String email;
+    /**Recargo adicional de los pedidos online*/
+    private static final double FEE = 5.0;
     
     /**
 	 * Constructor de la clase OnlineOrder.
@@ -39,6 +41,6 @@ public class OnlineOrder extends Order {
 	 */
     @Override
     public double totalPrice() {
-        return super.totalPrice() + 5;
+        return super.totalPrice() + FEE;
     }
 }
