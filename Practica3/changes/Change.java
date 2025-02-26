@@ -1,5 +1,4 @@
 package changes;
-import java.utils.*;
 
 /**
  * La clase Change representa los cambios. 
@@ -18,7 +17,7 @@ public abstract class Change {
 	 * @param path 		Ruta del fichero.
 	 * @param startLine 	Número de línea incial.
 	 */
-    public Change(String path, int startLine) {
+    public Change(int startLine, String path) {
         this.path = path;
         this.startLine = startLine;
     }
@@ -29,6 +28,6 @@ public abstract class Change {
 	 * @return Una cadena que contiene los detalles del cambio.
 	 */
     public String toString() {
-        return "start line="+this.startLine+",\nfile path="+this.path+",\n";
+        return "start line="+this.startLine+",\nfile path='"+this.path+"',\n";
     }
 }

@@ -6,7 +6,7 @@ package changes;
  */
 public class RemoveChange extends Change {
     /**Línea en la que finaliza el cambio que se va a realizar*/
-    private String endLine;
+    private int endLine;
     
     /**
 	 * Constructor de la clase RemoveChange.
@@ -15,8 +15,8 @@ public class RemoveChange extends Change {
 	 * @param startLine 	    Línea de inicio del cambio.
      * @param endLine 	        Línea de final del cambio.
 	 */
-    public RemoveChange(String path, int startLine, String endLine){
-        super(path, startLine);
+    public RemoveChange(int startLine, int endLine, String path){
+        super(startLine, path);
             this.endLine = endLine;
     }
 
@@ -27,6 +27,6 @@ public class RemoveChange extends Change {
 	 */
     @Override
     public String toString() {
-        return "{\ntype=-,\n"+super.toString()+"end line="+this.endLine+"}\n";
+        return "{\ntype=-,\n"+super.toString()+"end line="+this.endLine+"\n}\n";
     }
 }

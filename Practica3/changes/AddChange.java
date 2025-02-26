@@ -15,8 +15,8 @@ public class AddChange extends Change {
 	 * @param startLine 	    Línea de inicio del cambio.
      * @param content 	        Contenido del cambio.
 	 */
-    public AddChange(String path, int startLine, String content){
-        super(path, startLine);
+    public AddChange( int startLine, String path, String content){
+        super(startLine, path);
             this.content = content;
     }
 
@@ -25,8 +25,8 @@ public class AddChange extends Change {
 	 * 
   	 * @return 	El número de líneas del nuevo contenido.
 	 */
-    public getNumberOfLines() {	    
-	    this.content.split("\n").length;
+    public int getNumberOfLines() {	    
+	    return this.content.split("\n").length;
     }
 
     /**
@@ -36,6 +36,6 @@ public class AddChange extends Change {
 	 */
     @Override
     public String toString() {
-        return "{\ntype=+,\n"+super.toString()+"content="+this.content+",\nnumber of lines="+getNumberOfLines()+"}\n";
+        return "{\ntype=+,\n"+super.toString()+"content='"+this.content+"',\nnumber of lines="+getNumberOfLines()+"\n}\n";
     }
 }

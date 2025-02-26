@@ -18,8 +18,8 @@ public class ModifyChange extends Change {
      * @param content 	        Contenido del cambio.
      * @param endLine 	        Línea de final del cambio.
 	 */
-    public ModifyChange(String path, int startLine, String content, int endLine){
-        super(path, startLine);
+    public ModifyChange( int startLine, int endLine, String path, String content){
+        super(startLine, path);
             this.content = content;
             this.endLine = endLine;
     }
@@ -29,8 +29,8 @@ public class ModifyChange extends Change {
 	 * 
   	 * @return 	El número de líneas del nuevo contenido.
 	 */
-    public getNumberOfLines() {	    
-	    this.content.split("\n").length;
+    public int getNumberOfLines() {	    
+	    return this.content.split("\n").length;
     }
 
     /**
@@ -40,6 +40,6 @@ public class ModifyChange extends Change {
 	 */
     @Override
     public String toString() {
-        return "{\ntype=/,\n"+super.toString()+"content="+this.content+getNumberOfLines()+"end line="+this.endLine+"}\n";
+        return "{\ntype=/,\n"+super.toString()+"content='"+this.content+"'\nnumber of lines="+getNumberOfLines()+"end line="+this.endLine+"\n}\n";
     }
 }
