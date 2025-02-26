@@ -1,4 +1,6 @@
 package changes;
+import java.utils.*;
+
 /**
  * La clase Change representa los cambios. 
  * 

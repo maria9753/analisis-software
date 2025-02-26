@@ -25,12 +25,21 @@ public class ModifyChange extends Change {
     }
 
     /**
+         * Método para calcular el número de líneas del nuevo contenido.
+	 * 
+  	 * @return 	El número de líneas del nuevo contenido.
+	 */
+    public getNumberOfLines() {	    
+	    this.content.split("\n").length;
+    }
+
+    /**
 	 * Método para generar cambios de modificación de línea.
 	 * 
 	 * @return Una cadena que contiene los detalles de los cambios de modificación de línea.
 	 */
     @Override
     public String toString() {
-        return "{\ntype=/,\n"+super.toString()+"content="+this.content+"end line="+this.endLine+"}\n";
+        return "{\ntype=/,\n"+super.toString()+"content="+this.content+getNumberOfLines()+"end line="+this.endLine+"}\n";
     }
 }
