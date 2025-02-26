@@ -1,4 +1,3 @@
-
 package changes;
 /**
  * La clase Change representa los cambios. 
