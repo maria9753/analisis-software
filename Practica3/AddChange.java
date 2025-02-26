@@ -1,4 +1,7 @@
 package changes;
+import java.io.*;
+import java.utils.*;
+
 /**
  * La clase AddChange representa un tipo de cambio en el que se añade una línea.
  * 
@@ -11,22 +14,31 @@ public class AddChange extends Change {
     /**
 	 * Constructor de la clase AddChange.
 	 * 
-	 * @param path 			    Ruta del fichero de datos.
+	 * @param path 		    Ruta del fichero de datos.
 	 * @param startLine 	    Línea de inicio del cambio.
-     * @param content 	        Contenido del cambio.
+         * @param content 	    Contenido del cambio.
 	 */
-    public AddChange(String path, int startLine, String content){
+    public AddChange(String path, int startLine, String content) {
         super(path, startLine);
             this.content = content;
     }
 
     /**
+         * Método para calcular el número de líneas del nuevo contenido.
+	 * 
+  	 * @return 	El número de líneas del nuevo contenido.
+	 */
+    public getNumberOfLines() {	    
+	    this.content.split("\n").length;
+    }
+
+    /**
 	 * Método para generar cambios de agregación de línea.
 	 * 
-	 * @return Una cadena que contiene los detalles de los cambios de agregación de línea.
+	 * @return 	Una cadena que contiene los detalles de los cambios de agregación de línea.
 	 */
     @Override
     public String toString() {
-        return "{\ntype=+,\n"+super.toString()+"content="+this.content+",\nnumber of lines="+this.numberLines+"}\n";
+        return "{\ntype=+,\n"+super.toString()+"content="+this.content+",\nnumber of lines="+getNumberOfLines()+"}\n";
     }
 }
