@@ -10,14 +10,12 @@ public abstract class Change {
     private String path;
     /** Número de línea inicial*/
     private int startLine;
-    /** Tipo de cambio*/
-    private enum 
 
     /**
 	 * Constructor de la clase Change.
 	 * 
-	 * @param path 			Ruta del fichero.
-	 * @param price 	  Número de línea incial.
+	 * @param path 		Ruta del fichero.
+	 * @param startLine 	Número de línea incial.
 	 */
     public Change(String path, int startLine) {
         this.path = path;
@@ -30,6 +28,6 @@ public abstract class Change {
 	 * @return Una cadena que contiene los detalles del cambio.
 	 */
     public String toString() {
-        return "Order of '"+this.item+"' for "+this.customer+" ("+this.totalPrice()+"$)";
+        return "start line="+this.startLine+"\nfile path="+this.path+"\n";
     }
 }
