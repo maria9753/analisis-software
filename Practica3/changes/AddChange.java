@@ -21,12 +21,21 @@ public class AddChange extends Change {
     }
 
     /**
+         * Método para calcular el número de líneas del nuevo contenido.
+	 * 
+  	 * @return 	El número de líneas del nuevo contenido.
+	 */
+    public getNumberOfLines() {	    
+	    this.content.split("\n").length;
+    }
+
+    /**
 	 * Método para generar cambios de agregación de línea.
 	 * 
 	 * @return Una cadena que contiene los detalles de los cambios de agregación de línea.
 	 */
     @Override
     public String toString() {
-        return "{\ntype=+,\n"+super.toString()+"content="+this.content+",\nnumber of lines="+this.numberLines+"}\n";
+        return "{\ntype=+,\n"+super.toString()+"content="+this.content+",\nnumber of lines="+getNumberOfLines()+"}\n";
     }
 }
