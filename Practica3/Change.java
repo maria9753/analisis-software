@@ -28,6 +28,6 @@ public abstract class Change {
 	 * @return Una cadena que contiene los detalles del cambio.
 	 */
     public String toString() {
-        return "start line="+this.startLine+"\nfile path="+this.path+"\n";
+        return "start line="+this.startLine+",\nfile path="+this.path+",\n";
     }
 }
