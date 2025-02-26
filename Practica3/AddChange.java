@@ -27,6 +27,6 @@ public class AddChange extends Change {
 	 */
     @Override
     public String toString() {
-        return super.toString()+"\nEmail: "+this.email;
+        return "{\ntype=+,\n"+super.toString()+"content="+this.content+",\nnumber of lines="+this.numberLines+"}\n";
     }
 }
