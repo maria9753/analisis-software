@@ -7,7 +7,7 @@ package changes;
 public class ModifyChange extends Change {
     /**Contenido del cambio que se va a realizar*/
     private String content;
-    /**Línea en la que empieza el cambio que se va a realizar*/
+    /**Línea en la que finaliza el cambio que se va a realizar*/
     private int endLine;
     
     /**
@@ -31,6 +31,6 @@ public class ModifyChange extends Change {
 	 */
     @Override
     public String toString() {
-        return super.toString()+"\nEmail: "+this.email;
+        return "{\ntype=/,\n"+super.toString()+"content="+this.content+"end line="+this.endLine+"}\n";
     }
 }
