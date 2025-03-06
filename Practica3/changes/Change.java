@@ -21,6 +21,15 @@ public abstract class Change {
         this.path = path;
         this.startLine = startLine;
     }
+
+    /**
+	 * Método para calcular el número de líneas modificadas.
+	 * 
+	 * @return El número de líneas modificadas.
+	 */
+    public int getChangedLines() {
+        return changedLines;
+    }
     
     /**
 	 * Método para generar cambios.
