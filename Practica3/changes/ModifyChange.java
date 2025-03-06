@@ -18,7 +18,7 @@ public class ModifyChange extends Change {
      * @param content 	        Contenido del cambio.
      * @param endLine 	        Línea de final del cambio.
 	 */
-    public ModifyChange( int startLine, int endLine, String path, String content){
+    public ModifyChange(int startLine, int endLine, String path, String content){
         super(startLine, path);
             this.content = content;
             this.endLine = endLine;
@@ -31,6 +31,11 @@ public class ModifyChange extends Change {
 	 */
     public int getNumberOfLines() {	    
 	    return this.content.split("\n").length;
+    }
+
+    @Override
+    public String getType(){
+        return "/";
     }
 
     /**

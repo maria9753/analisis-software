@@ -7,9 +7,9 @@ package changes;
  */
 public abstract class Change {
     /** Ruta del fichero*/
-    private String path;
+    protected String path;
     /** Número de línea inicial*/
-    private int startLine;
+    protected int startLine;
 
     /**
 	 * Constructor de la clase Change.
@@ -27,8 +27,12 @@ public abstract class Change {
 	 * 
 	 * @return El número de líneas modificadas.
 	 */
-    public int getChangedLines() {
-        return changedLines;
+    public abstract int getNumberOfLines();
+
+    public abstract String getType();
+
+    public String getPath(){
+        return this.path;
     }
     
     /**

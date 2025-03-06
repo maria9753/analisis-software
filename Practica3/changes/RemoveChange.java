@@ -20,6 +20,16 @@ public class RemoveChange extends Change {
             this.endLine = endLine;
     }
 
+    @Override
+    public int getNumberOfLines() {
+        return -(this.endLine - super.startLine);
+    }
+
+    @Override
+    public String getType(){
+        return "-";
+    }
+
     /**
 	 * Método para generar cambios de eliminación de línea.
 	 * 

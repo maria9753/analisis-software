@@ -22,9 +22,6 @@ public class ChangeCommit extends Commit {
     public ChangeCommit(String author, String description, List<Change> changes) {
         super(author, description);
         this.changes = new ArrayList<>();
-        for (Change change : changes) { 
-            this.changes.add(change); 
-        }
     }
 
     /**
@@ -43,8 +40,23 @@ public class ChangeCommit extends Commit {
      */
     @Override
     public List<Change> obtainTotalChanges() {
-        return changes;
+        return this.changes;
     }
 
+    @Override
+    public String toString() {
+        String string= "\ncommit "+super.id+"\nAuthor: "+super.author+"\nDate: "+this.date+"\nDescription: "+super.description+"\n";
+        int modifiedLines;
 
+        for (Change c: this.changes) {
+            if(c.getType()=="/"){
+                modifiedLines=0;
+            }
+            else{
+                modifiedLines=c.getNumberOfLines();
+            }
+            string += c.getType()+" : "+ c.getPath()+" ("+modifiedLines+")\n";
+        }
+        return string;
+    }
 }

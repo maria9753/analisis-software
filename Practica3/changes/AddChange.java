@@ -25,8 +25,14 @@ public class AddChange extends Change {
 	 * 
   	 * @return 	El número de líneas del nuevo contenido.
 	 */
+    @Override
     public int getNumberOfLines() {	    
 	    return this.content.split("\n").length;
+    }
+
+    @Override
+    public String getType(){
+        return "+";
     }
 
     /**

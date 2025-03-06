@@ -19,13 +19,13 @@ public abstract class Commit {
     private static int counter = 1;
   
     /** Identificador del commit*/
-    private String id;
+    protected String id;
     /** Autor del commit*/
-    private String author;
+    protected String author;
     /** Fecha del commit*/
-    private LocalDate date;
+    protected LocalDate date;
     /** Descripción del commit*/
-    private String description;
+    protected String description;
     
     /**
      * Constructor de la clase Commit.
@@ -36,13 +36,13 @@ public abstract class Commit {
     public Commit(String author, String description) {
         this.id= generateId();
 
-        if (author != null) {
+        if (author == null) {
           this.author = defectAuthor;
         } else {
           this.author = author;
         }
 
-        if (description != null) {
+        if (description == null) {
           this.description = defectDescription;
         } else {
           this.description = description;
@@ -50,6 +50,7 @@ public abstract class Commit {
 
         this.date = LocalDate.now();
     }
+
 
     /** Setter de defectDescription.
      *
@@ -80,16 +81,9 @@ public abstract class Commit {
         return id;
     }
 
-    public LocalDate getFecha() {
+    public LocalDate getDate() {
         return date;
     }
-
-    /**
-     * Método para obtener el total de líneas modificadas.
-     * 
-     * @return El número de líneas.
-     */
-    public abstract int obtainTotalModifiedLines();
 
     /**
      * Método para obtener todos los cambios del commit.
@@ -98,12 +92,12 @@ public abstract class Commit {
      */
     public abstract List<Change> obtainTotalChanges();
 
-   /**
+    /**
      * Método para generar commits.
      * 
      * @return Una cadena que contiene los detalles del commit.
      */
     public String toString() {
-        return "\ncommit "+this.id+"\nAuthor: "+this.author+"\nDate: "+this.description+"\n";
+        return "\ncommit "+this.id+"\nAuthor: "+this.author+"\nDate: "+this.date+"\nDescription: "+this.description+"\n";
     }
 }

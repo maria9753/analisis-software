@@ -3,40 +3,46 @@ import java.util.*;
 
 public class CommitTester{
 
-    public static void main (String[] args) {
-        System.out.println(commit1);
-        System.out.println(commit2);
+    public static void main(String[] args) {
+        List<Change> changes1 = createChanges1(); 
+        List<Change> changes2 = createChanges2(); 
+
+        List<ChangeCommit> changeCommits = createChangeCommits(changes1, changes2); 
+
+        MergeCommit mergeCommit = createMergeCommit(changeCommits); 
+
+        System.out.println(changeCommits.get(0));
+        System.out.println(changeCommits.get(1));
         System.out.println(mergeCommit);
-
     }
 
-    public static List<Change> createChanges () {
+    public static List<Change> createChanges1 () {
         List<Change> changes1 = new ArrayList<>();
-        changes1.add(new Change("+", "/src/main/NuevaClase.java", 2));
-        changes1.add(new Change("/", "/src/main/ClaseExistente.java", 0));
-        changes1.add(new Change("-", "/src/main/ClaseObsoleta.java", -2));
+        changes1.add(new AddChange(0, "/src/main/NuevaClase.java", "Hola\nMundo\n"));
+        changes1.add(new ModifyChange(0,0,"/src/main/ClaseExistente.java", "H"));
+        changes1.add(new RemoveChange(0, 4,"/src/main/ClaseObsoleta.java"));
 
-        List<Change> changes2 = new ArrayList<>();
-        changes2.add(new Change("+", "/src/pkg1/Decorator.java", 3));
-        changes2.add(new Change("+", "/src/pkg1/Decorator.java", 1));
-        changes2.add(new Change("/", "/src/pkg1/Decorator.java", 0));
-
-        return List.of(changes1, changes2);
+        return changes1;
     }
 
-    public static List<ChangeCommit> createChangeCommits () {
-        ChangeCommit changeCommit1 = new ChangeCommit("John Doe", "no comment", changes1);
+     public static List<Change> createChanges2 () {
+        List<Change> changes2 = new ArrayList<>();
+        changes2.add(new AddChange(0, "/src/main/NuevaClase.java", "Buenos\ndias\nmundo\n"));
+        changes2.add(new AddChange(0,"/src/main/ClaseExistente.java", "Java\n"));
+        changes2.add(new ModifyChange(0, 0, "/src/main/ClaseObsoleta.java", "H"));
+
+        return changes2;
+    }
+
+    public static List<ChangeCommit> createChangeCommits (List<Change> changes1, List<Change> changes2) {
+        ChangeCommit changeCommit1 = new ChangeCommit("John Doe", "No comment", changes1);
         ChangeCommit changeCommit2 = new ChangeCommit("John Doe", "Decorator interface", changes2);
 
         return List.of(changeCommit1, changeCommit2);
     }
 
-    public static MergeCommit createMergeCommit () {
-        List<ChangeCommit> changeCommits = new ArrayList<>();
-        changeCommits.add(changeCommit1);
-        changeCommits.add(changeCommit2);
-        MergeCommit mergeCommit = new MergeCommit("John Doe", changeCommits);
-
+    public static MergeCommit createMergeCommit (List<ChangeCommit> changeCommits) {
+        MergeCommit mergeCommit = new MergeCommit("John Doe","No comment", changeCommits);
         return mergeCommit;
     }
 }
