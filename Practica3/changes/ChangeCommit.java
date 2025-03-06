@@ -18,8 +18,8 @@ public class ChangeCommit extends Commit {
      * @param author       Autor del ChangeCommit
      * @param description  Descripción del ChangeCommit
      */
-    public ChangeCommit(String autor, String description, List<Change> changes) {
-        super(autor, description);
+    public ChangeCommit(String author, String description, List<Change> changes) {
+        super(author, description);
         this.changes = new ArrayList<>();
         for (Change change : changes) { 
             this.changes.add(change); 
