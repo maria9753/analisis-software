@@ -15,8 +15,9 @@ public class ChangeCommit extends Commit {
     /**
      * Constructor de la clase ChangeCommit.
      * 
-     * @param author       Autor del ChangeCommit
-     * @param description  Descripción del ChangeCommit
+     * @param author       Autor del ChangeCommit.
+     * @param description  Descripción del ChangeCommit.
+     * @param changes      Cambios del ChangeCommit.
      */
     public ChangeCommit(String author, String description, List<Change> changes) {
         super(author, description);
