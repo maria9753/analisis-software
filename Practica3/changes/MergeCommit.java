@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class MergeCommit extends Commit {
     /** Lista de ChangeCommits que contiene un MergeCommit */
-    private List<ChangeCommit> changeCommits;
+    private List<Commit> commits;
 
     /**
      * Constructor de la clase MergeCommit.

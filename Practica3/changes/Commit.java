@@ -57,7 +57,7 @@ public abstract class Commit {
      * @param description  Nueva descripción por defecto
      */
       public static void setDefectDescription(String description) {
-        defectDescription = description;
+          defectDescription = description;
       }
 
     /** Setter de defectAuthor.
@@ -65,7 +65,7 @@ public abstract class Commit {
      * @param author  Nueva autor por defecto
      */
       public static void setDefectAuthor(String author) {
-        defectAuthor = author;
+          defectAuthor = author;
       }
 
     /**
@@ -74,7 +74,7 @@ public abstract class Commit {
      * @return Una String con el nuevo id del commit.
      */
     private static String generateId() {
-      return String.format("%05d", counter++) + UUID.randomUUID().toString().replace("-", "").substring(0, 15);
+        return String.format("%05d", counter++) + UUID.randomUUID().toString().replace("-", "").substring(0, 15);
     }
 
     public String getId() {
@@ -83,6 +83,10 @@ public abstract class Commit {
 
     public LocalDate getDate() {
         return date;
+    }
+
+    public String getAuthor() {
+        return this.author;
     }
 
     /**
