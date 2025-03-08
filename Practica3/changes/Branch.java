@@ -13,6 +13,8 @@ public class Branch {
     private List<Commit> branchCommits;
     /** Nombre de la Branch */
     private String name;
+    /** Branch de la que ha sido creada */
+    private Branch originBranch;
 
     /**
      * Constructor de la clase Branch.
@@ -20,7 +22,7 @@ public class Branch {
      * @param name          Nombre de la Branch.
      * @param commits       Commits de la Branch.
      */
-    public ChangeCommit(String name, List<Commit> commits) {
+    public Branch(String name, List<Commit> commits) {
         this.name=name;
         this.branchCommits = new ArrayList<>();
         for (Commit commit : commits) { 
@@ -34,10 +36,10 @@ public class Branch {
      * @param name          Nombre de la Branch.
      * @param commits       Commits de la Branch.
      */
-    public ChangeCommit(String name, Branch originBranch) {
+    public Branch(String name, Branch originBranch) {
         this.name=name;
-
-        this.branchCommits = new ArrayList<>(originBranch.getCommits())
+        this.originBranch=originBranch;
+        this.branchCommits = new ArrayList<>(originBranch.getCommits());
     }
 
     /**
@@ -77,16 +79,22 @@ public class Branch {
      * @return Una cadena que contiene los detalles de una branch.
      */
     public String toString() {
-        String string = "\nBranch: "+this.name+numberOfCommits()" commits\n";
-        for (List<Commit> c: commits) {
-            string += "\n "+b.getName();
-            if (b.getName().equals(this.mainBranch.getName())) {
-                string += " (active)";
-            }
+        String string = "\nBranch: "+this.name;
+        if(this.originBranch!=null){
+            string += " (from "+this.originBranch.name+")";
         }
+        string += "\n"+numberOfCommits()+" commits\n";
 
-        string += this.mainBranch.toString();
-
+        for (Commit c: this.branchCommits) {
+            string += c.getId().substring(0, 5)+" - ";
+            if(c.getDescription().length()>30){
+                string += c.getDescription().substring(0,30);
+            }
+            else{
+                string += c.getDescription();
+            }
+            string +=" at "+c.getDate()+"\n";
+        }
         return string;
     }
 }

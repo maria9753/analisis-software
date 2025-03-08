@@ -91,15 +91,19 @@ public abstract class Commit {
     }
 
     public String getId() {
-        return id;
+        return this.id;
     }
 
     public LocalDate getDate() {
-        return date;
+        return this.date;
     }
 
     public String getAuthor() {
         return this.author;
+    }
+
+    public String getDescription() {
+        return this.description;
     }
 
     /**
