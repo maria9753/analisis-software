@@ -22,6 +22,42 @@ public class ChangeCommit extends Commit {
     public ChangeCommit(String author, String description, List<Change> changes) {
         super(author, description);
         this.changes = new ArrayList<>();
+        if(changes!=null){
+            for(Change c: changes){
+                addChange(c);
+            }
+        }
+    }
+
+    /**
+     * Constructor de la clase ChangeCommit.
+     * 
+     * @param author       Autor del ChangeCommit.
+     * @param changes      Cambios del ChangeCommit.
+     */
+    public ChangeCommit(String author, List<Change> changes) {
+        super(author);
+        this.changes = new ArrayList<>();
+        if(changes!=null){
+            for(Change c: changes){
+                addChange(c);
+            }
+        }
+    }
+
+    /**
+     * Constructor de la clase ChangeCommit.
+     * 
+     * @param changes      Cambios del ChangeCommit.
+     */
+    public ChangeCommit(List<Change> changes) {
+        super();
+        this.changes = new ArrayList<>();
+        if(changes!=null){
+            for(Change c: changes){
+                addChange(c);
+            }
+        }
     }
 
     /**
@@ -45,18 +81,14 @@ public class ChangeCommit extends Commit {
 
     @Override
     public String toString() {
-        String string= "\ncommit "+super.id+"\nAuthor: "+super.author+"\nDate: "+this.date+"\nDescription: "+super.description+"\n";
-        int modifiedLines;
 
-        for (Change c: this.changes) {
-            if(c.getType()=="/"){
-                modifiedLines=0;
-            }
-            else{
-                modifiedLines=c.getNumberOfLines();
-            }
-            string += c.getType()+" : "+ c.getPath()+" ("+modifiedLines+")\n";
+    String string = "\ncommit " + this.id + "\nAuthor: " + this.author + "\nDate: " + this.date + "\nDescription: " + this.description + "\n";
+
+    if (this.changes != null && !this.changes.isEmpty()) {
+        for (Change c : this.changes) {
+            string += c.getType()+" : "+c.getPath()+" ("+c.getNumberOfModifiedLines()+")\n";
         }
-        return string;
+    }
+    return string;
     }
 }

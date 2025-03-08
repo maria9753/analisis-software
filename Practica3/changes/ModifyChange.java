@@ -34,6 +34,11 @@ public class ModifyChange extends Change {
     }
 
     @Override
+    public int getNumberOfModifiedLines() {
+        return 0;
+    }
+
+    @Override
     public String getType(){
         return "/";
     }

@@ -21,7 +21,7 @@ public class RemoveChange extends Change {
     }
 
     @Override
-    public int getNumberOfLines() {
+    public int getNumberOfModifiedLines() {
         return -(this.endLine - super.startLine);
     }
 

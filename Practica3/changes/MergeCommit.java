@@ -17,19 +17,58 @@ public class MergeCommit extends Commit {
      * 
      * @param author       Autor del MergeCommit
      * @param description  Descripción del MergeCommit
+     * @param changes      Cambios del MergeCommit.
      */
-    public MergeCommit(String autor, String description, List<ChangeCommit> changeCommits) {
+    public MergeCommit(String autor, String description, List<Commit> commits) {
         super(autor, description);
-        this.changeCommits = new ArrayList<>();
+        this.commits = new ArrayList<>();
+        if(commits!=null){
+            for(Commit c: commits){
+                addCommit(c);
+            }
+        }
     }
 
-     /**
-     * Método para añadir un cambio a un ChangeCommit.
+    /**
+     * Constructor de la clase MergeCommit.
      * 
-     * @param change        Cambio.
+     * @param author       Autor del MergeCommit
+     * @param changes      Cambios del MergeCommit.
      */
-    public void addChangeCommit(ChangeCommit changeCommit) {
-        changeCommits.add(changeCommit);
+    public MergeCommit(String autor, List<Commit> commits) {
+        super(autor);
+        this.commits = new ArrayList<>();
+        if(commits!=null){
+            for(Commit c: commits){
+                addCommit(c);
+            }
+        }
+    }
+
+    /**
+     * Constructor de la clase MergeCommit.
+     * 
+     * @param changes      Cambios del MergeCommit.
+     */
+    public MergeCommit( List<Commit> commits) {
+        super();
+        this.commits = new ArrayList<>();
+        if(commits!=null){
+            for(Commit c: commits){
+                addCommit(c);
+            }
+        }
+    }
+    
+
+
+     /**
+     * Método para añadir un commit a un MergeCommit.
+     * 
+     * @param commit        Commit.
+     */
+    public void addCommit(Commit commit) {
+        commits.add(commit);
     }
 
     /**
@@ -40,8 +79,8 @@ public class MergeCommit extends Commit {
     @Override
     public List<Change> obtainTotalChanges() {
         List<Change> totalChanges = new ArrayList<>();
-        for (ChangeCommit changeCommit : changeCommits) {
-            totalChanges.addAll(changeCommit.obtainTotalChanges());
+        for (Commit c : commits) {
+            totalChanges.addAll(c.obtainTotalChanges());
         }
         return totalChanges;
     }
@@ -50,8 +89,8 @@ public class MergeCommit extends Commit {
     public String toString() {
         String string= "\ncommit "+super.id+"\nAuthor: "+super.author+"\nDate: "+this.date+"\nDescription: "+super.description+"\nMerged commits:\n";
 
-        for (ChangeCommit c: changeCommits) {
-            string += c.getId()+" on "+c.getDate()+")\n";
+        for (Commit c: commits) {
+            string += c.getId()+" on "+c.getDate()+"\n";
         }
         return string;
     }

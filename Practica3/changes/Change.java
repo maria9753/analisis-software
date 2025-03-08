@@ -25,9 +25,9 @@ public abstract class Change {
     /**
 	 * Método para calcular el número de líneas modificadas.
 	 * 
-	 * @return El número de líneas modificadas.
+	 * @return El número de líneas en el modificadas.
 	 */
-    public abstract int getNumberOfLines();
+    public abstract int getNumberOfModifiedLines();
 
     public abstract String getType();
 

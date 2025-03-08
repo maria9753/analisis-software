@@ -35,21 +35,34 @@ public abstract class Commit {
      */
     public Commit(String author, String description) {
         this.id= generateId();
-
-        if (author == null) {
-          this.author = defectAuthor;
-        } else {
-          this.author = author;
-        }
-
-        if (description == null) {
-          this.description = defectDescription;
-        } else {
-          this.description = description;
-        }
-
+        this.author = author;
+        this.description = description;
         this.date = LocalDate.now();
     }
+
+    /**
+     * Constructor de la clase Commit.
+     * 
+     * @param author       Autor del commit
+     */
+    public Commit(String author) {
+        this.id= generateId();
+        this.author = author;
+        this.description = defectDescription;
+        this.date = LocalDate.now();
+    }
+
+    /**
+     * Constructor de la clase Commit.
+     * 
+     */
+    public Commit() {
+        this.id= generateId();
+        this.author = defectAuthor;
+        this.description = defectDescription;
+        this.date = LocalDate.now();
+    }
+
 
 
     /** Setter de defectDescription.
