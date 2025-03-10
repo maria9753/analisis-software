@@ -8,6 +8,7 @@ public class RepositoryTester {
         Branch mainBranch = testCreateMainBranch();
         Repository repository = testCreateRepository(mainBranch);
         testCreateBranchFromAnotherBranch(repository, mainBranch);
+        testAddUserToRepository(repository);
         testAddCommitToRepository(repository);
         System.out.println(repository);
         
@@ -45,8 +46,11 @@ public class RepositoryTester {
         repository.createNewBranchFromAnother("Solving issue #1", mainBranch);
     }
 
-    public static void testAddCommitToRepository(Repository repository) {
+    public static void testAddUserToRepository(Repository repository) {
         repository.addUser("John Doe");
+    }
+
+    public static void testAddCommitToRepository(Repository repository) {
         Commit commit3 = new MergeCommit("John Doe", "Merging previous commits", repository.getMainBranch().getCommits());
         repository.addCommitMainBranch(commit3);
     }
