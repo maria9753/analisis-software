@@ -1,6 +1,7 @@
 package changes;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * La clase Repository representa 
@@ -21,12 +22,21 @@ public class Repository {
      * 
      * @param name          Nombre del repositorio.
      */
-    public Repository(String name) {
+    public Repository(String name, Branch mainBranch) {
         this.name = name;
         this.branches = new ArrayList<Branch>();
         this.users = new ArrayList<String>();
-        this.mainBranch = new Branch("main", ); /** cambair esto para que cree un main branch, faltan los commit: ¿poder hacer un branch sin meterle commits?*/
+        this.mainBranch = mainBranch;
         this.branches.add(mainBranch);
+    }
+
+    /**
+     * Método para obtener la rama activa del repositorio.
+     * 
+     * @return La rama activa del repositorio.
+     */
+    public Branch getMainBranch(){
+        return this.mainBranch;
     }
 
     /** Método para añadir usuarios con permiso al repositorio.
@@ -44,7 +54,7 @@ public class Repository {
      * @param name  Nombre de la nueva rama.
      * @param branch Rama a partir de la cual se crea una nueva.
     */
-   public void createNewBranch(String name, Branch originBranch) {
+   public void createNewBranchFromAnother(String name, Branch originBranch) {
         Branch newBranch = new Branch(name, originBranch);
         if (newBranch != null) {
             this.branches.add(newBranch);
@@ -73,6 +83,23 @@ public class Repository {
         }
     }
 
+    /** 
+     * Método para obtener una rama del repositorio por su nombre.
+     * 
+     * @param name  Nombre de la rama.
+     * 
+     * @return La rama con nombre name.
+     */
+    public Branch getBranchByName(String name) {
+        for (Branch b: this.branches) {
+            if (name == b.getName()) {
+                return b;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * Método para generar un repositorio.
      * @return Una cadena que contiene los detalles del repositorio.
@@ -80,8 +107,8 @@ public class Repository {
     @Override
     public String toString() {
         String string = "\nRepository: "+this.name+"\nBranches:";
-        for (List<Branch> b: branches) {
-            string += "\n "+b.getName();
+        for (Branch b: this.branches) {
+            string += "\n- "+b.getName();
             if (b == this.mainBranch) {
                 string += " (active)";
             }

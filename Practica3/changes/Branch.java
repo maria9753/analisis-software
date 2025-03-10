@@ -83,7 +83,7 @@ public class Branch {
         if(this.originBranch!=null){
             string += " (from "+this.originBranch.name+")";
         }
-        string += "\n"+numberOfCommits()+" commits\n";
+        string += "\n"+numberOfCommits()+" commits:\n";
 
         for (Commit c: this.branchCommits) {
             string += c.getId().substring(0, 5)+" - ";
