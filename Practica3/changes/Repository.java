@@ -102,6 +102,7 @@ public class Repository {
 
     /**
      * Método para generar un repositorio.
+     * 
      * @return Una cadena que contiene los detalles del repositorio.
      */
     @Override
