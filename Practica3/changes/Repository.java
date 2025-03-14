@@ -100,6 +100,29 @@ public class Repository {
         return null;
     }
 
+    public void mergeBranchs(String originName, String destinyName) {
+        Branch originBranch = getBranchByName(originName);
+        if (originBranch == null) {
+            return;
+        }
+
+        List<Commit> originCommits = originBranch.getCommits();
+
+        Branch destinyBranch = getBranchByName(destinyName);
+        if (destinyBranch == null) {
+            return;
+        }
+
+        List<Commit> destinyCommits = destinyBranch.getCommits();
+
+        int indexLastCommit = 0;
+        while (originCommits[indexLastCommit] == destinyCommits[indexLastCommit]) {
+            indexLastCommit += 1;
+        }
+
+        
+    }
+
     /**
      * Método para generar un repositorio.
      * 
