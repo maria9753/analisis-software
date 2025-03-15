@@ -171,7 +171,7 @@ public class Repository {
                     if (resolvedCommit == null) {
                         return;
                     }
-                    else if(resolvedCommit==originCommit){
+                    else if(resolvedCommit!=destinyCommit){
                         commitsToRemove.add(destinyCommit);
                     }
                     mergedCommits.add(resolvedCommit);
