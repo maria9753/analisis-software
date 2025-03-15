@@ -79,16 +79,20 @@ public class ChangeCommit extends Commit {
         return this.changes;
     }
 
+    /**
+     * Método para generar commits.
+     * 
+     * @return Una cadena que contiene los detalles del commit.
+     */
     @Override
     public String toString() {
+        String string = "\ncommit " + this.id + "\nAuthor: " + this.author + "\nDate: " + this.date + "\nDescription: " + this.description + "\n";
 
-    String string = "\ncommit " + this.id + "\nAuthor: " + this.author + "\nDate: " + this.date + "\nDescription: " + this.description + "\n";
-
-    if (this.changes != null && !this.changes.isEmpty()) {
-        for (Change c : this.changes) {
-            string += c.getType()+" : "+c.getPath()+" ("+c.getNumberOfModifiedLines()+")\n";
+        if (this.changes != null && !this.changes.isEmpty()) {
+            for (Change c : this.changes) {
+                string += c.getType()+" : "+c.getPath()+" ("+c.getNumberOfModifiedLines()+")\n";
+            }
         }
-    }
-    return string;
+        return string;
     }
 }

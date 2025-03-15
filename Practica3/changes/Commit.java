@@ -63,8 +63,6 @@ public abstract class Commit {
         this.date = LocalDate.now();
     }
 
-
-
     /** Setter de defectDescription.
      *
      * @param description  Nueva descripción por defecto
@@ -90,22 +88,49 @@ public abstract class Commit {
         return String.format("%05d", counter++) + UUID.randomUUID().toString().replace("-", "").substring(0, 15);
     }
 
+    /**
+	 * Método para obtener el id del commit.
+	 * 
+	 * @return El id del commit.
+	 */
     public String getId() {
         return this.id;
     }
 
+    /**
+	 * Método para obtener la fecha del commit.
+	 * 
+	 * @return La fecha del commit.
+	 */
     public LocalDate getDate() {
         return this.date;
     }
 
+    /**
+	 * Método para obtener el autor del commit.
+	 * 
+	 * @return El autor del commit.
+	 */
     public String getAuthor() {
         return this.author;
     }
 
+    /**
+	 * Método para obtener la descripción del commit.
+	 * 
+	 * @return La descripción del commit.
+	 */
     public String getDescription() {
         return this.description;
     }
 
+    /**
+	 * Método para obtener el path en el que dos commits que están siendo
+     * fusionados tienen un conflicto.
+	 * 
+     * @param destinyCommit     commit de destino.
+	 * @return El path en el que hay conflicto.
+	 */
     public String getModifiedConflictFile(Commit destinyCommit){
         for (Change originChange : obtainTotalChanges()) {
             for (Change destinyChange : destinyCommit.obtainTotalChanges()) {
@@ -117,6 +142,13 @@ public abstract class Commit {
         return null;
     }
 
+    /**
+	 * Método para obtener si hay un conflicto entre dos commits que están 
+     * siendo fusionados.
+	 * 
+     * @param destinyCommit     commit de destino.
+	 * @return True si hay conflicto, false si no.
+	 */
     public boolean detectConflicts(Commit destinyCommit) {
         for (Change originChange : obtainTotalChanges()) {
             for (Change destinyChange : destinyCommit.obtainTotalChanges()) {
@@ -140,6 +172,7 @@ public abstract class Commit {
      * 
      * @return Una cadena que contiene los detalles del commit.
      */
+    @Override
     public String toString() {
         return "\ncommit "+this.id+"\nAuthor: "+this.author+"\nDate: "+this.date+"\nDescription: "+this.description+"\n";
     }

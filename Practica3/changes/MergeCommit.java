@@ -60,9 +60,7 @@ public class MergeCommit extends Commit {
         }
     }
     
-
-
-     /**
+    /**
      * Método para añadir un commit a un MergeCommit.
      * 
      * @param commit        Commit.
@@ -85,6 +83,11 @@ public class MergeCommit extends Commit {
         return totalChanges;
     }
 
+    /**
+     * Método para generar commits.
+     * 
+     * @return Una cadena que contiene los detalles del commit.
+     */
     @Override
     public String toString() {
         String string= "\ncommit "+super.id+"\nAuthor: "+super.author+"\nDate: "+this.date+"\nDescription: "+super.description+"\nMerged commits:\n";
