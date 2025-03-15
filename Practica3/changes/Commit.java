@@ -106,6 +106,28 @@ public abstract class Commit {
         return this.description;
     }
 
+    public String getModifiedConflictFile(Commit destinyCommit){
+        for (Change originChange : obtainTotalChanges()) {
+            for (Change destinyChange : destinyCommit.obtainTotalChanges()) {
+                if (originChange.getPath().equals(destinyChange.getPath())) {
+                    return originChange.getPath();
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean detectConflicts(Commit destinyCommit) {
+        for (Change originChange : obtainTotalChanges()) {
+            for (Change destinyChange : destinyCommit.obtainTotalChanges()) {
+                if (originChange.getPath().equals(destinyChange.getPath())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     /**
      * Método para obtener todos los cambios del commit.
      * 

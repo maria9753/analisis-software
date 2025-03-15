@@ -17,6 +17,8 @@ public class Repository {
     /** Usuarios con permiso*/
     private List<String> users;
 
+    private ConflictStrategy strategy;
+
     /**
      * Constructor de la clase Repository.
      * 
@@ -28,6 +30,25 @@ public class Repository {
         this.users = new ArrayList<String>();
         this.mainBranch = mainBranch;
         this.branches.add(mainBranch);
+        this.strategy= new OriginStrategy();
+    }
+
+    /**
+     * Constructor de la clase Repository.
+     * 
+     * @param name          Nombre del repositorio.
+     */
+    public Repository(String name, Branch mainBranch, ConflictStrategy strategy) {
+        this.name = name;
+        this.branches = new ArrayList<Branch>();
+        this.users = new ArrayList<String>();
+        this.mainBranch = mainBranch;
+        this.branches.add(mainBranch);
+        this.strategy= strategy;
+    }
+
+    public void setConflictStrategy(ConflictStrategy strategy) {
+        this.strategy = strategy;
     }
 
     /**
@@ -100,28 +121,71 @@ public class Repository {
         return null;
     }
 
-    public void mergeBranchs(String originName, String destinyName) {
+    public void mergeBranches(String originName, String destinyName) {
         Branch originBranch = getBranchByName(originName);
-        if (originBranch == null) {
-            return;
-        }
-
-        List<Commit> originCommits = originBranch.getCommits();
-
         Branch destinyBranch = getBranchByName(destinyName);
-        if (destinyBranch == null) {
+        
+        if (originBranch == null || destinyBranch == null) {
             return;
         }
-
+        
+        List<Commit> originCommits = originBranch.getCommits();
         List<Commit> destinyCommits = destinyBranch.getCommits();
 
-        int indexLastCommit = 0;
-        while (originCommits[indexLastCommit] == destinyCommits[indexLastCommit]) {
-            indexLastCommit += 1;
+        int indexLastCommit = -1;
+        for (int i = 0; i < originCommits.size() && i < destinyCommits.size(); i++) {
+            if (originCommits.get(i).equals(destinyCommits.get(i))) {
+                indexLastCommit = i; 
+            } else {
+                break;
+            }
         }
 
+        if(indexLastCommit == -1){
+            return;
+        }
+
+        List<Commit> originNewCommits = originCommits.subList(indexLastCommit, originCommits.size());
+        List<Commit> destinyNewCommits = destinyCommits.subList(indexLastCommit, destinyCommits.size());
+
+        List<Commit> mergedCommits = new ArrayList<>();
+        List<String> conflicts = new ArrayList<>();
+        List<Commit> commitsToRemove= new ArrayList<>();
         
-    }
+        for(Commit originCommit : originNewCommits) {
+            boolean hasConflict=false;
+            for (Commit destinyCommit : destinyNewCommits) {
+                if (originCommit.detectConflicts(destinyCommit)==true){
+                    hasConflict=true;
+                    conflicts.add("Conflict on '" +originCommit.getModifiedConflictFile(destinyCommit)+ "'");
+                    Commit resolvedCommit = this.strategy.resolveConflict(originCommit, destinyCommit);
+                    if (resolvedCommit == null) {
+                        return;
+                    }
+                    else if(resolvedCommit==originCommit){
+                        commitsToRemove.add(destinyCommit);
+                    }
+                    mergedCommits.add(resolvedCommit);
+                    break;
+                }  
+            }
+            if(hasConflict==false){
+                mergedCommits.add(originCommit);  
+            }
+        }
+
+        for (Commit commitToRemove : commitsToRemove) {
+            destinyBranch.removeCommit(commitToRemove);
+        }
+
+        if (conflicts.isEmpty()==false) {
+            System.out.println(conflicts);
+            return;
+        }
+
+        MergeCommit mergeCommit = new MergeCommit("Merge branches " + originName + " into " + destinyName, mergedCommits);
+        destinyBranch.commit(mergeCommit);
+    }   
 
     /**
      * Método para generar un repositorio.

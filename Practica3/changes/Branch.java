@@ -60,6 +60,10 @@ public class Branch {
         return this.branchCommits;
     }
 
+    public void removeCommit(Commit commit) {
+        this.branchCommits.remove(commit);
+    }
+    
     /**
      * Método que obtiene el nombre de una Branch.
      * 
