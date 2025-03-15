@@ -29,11 +29,21 @@ public class AddChange extends Change {
 	    return this.content.split("\n").length;
     }
 
+     /**
+	 * Método para calcular el número de líneas modificadas.
+	 * 
+	 * @return El número de líneas en el modificadas.
+	 */
     @Override
     public int getNumberOfModifiedLines() {	    
 	    return getNumberOfLines();
     }
 
+    /**
+	 * Método para obtener el tipo de cambio.
+	 * 
+	 * @return El tipo del cambio.
+	 */
     @Override
     public String getType(){
         return "+";

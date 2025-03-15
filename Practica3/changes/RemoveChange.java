@@ -20,11 +20,21 @@ public class RemoveChange extends Change {
             this.endLine = endLine;
     }
 
+     /**
+	 * Método para calcular el número de líneas modificadas.
+	 * 
+	 * @return El número de líneas en el modificadas.
+	 */
     @Override
     public int getNumberOfModifiedLines() {
         return -(this.endLine - super.startLine);
     }
 
+    /**
+	 * Método para obtener el tipo de cambio.
+	 * 
+	 * @return El tipo del cambio.
+	 */
     @Override
     public String getType(){
         return "-";

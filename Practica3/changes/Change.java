@@ -23,14 +23,24 @@ public abstract class Change {
     }
 
     /**
-	 * Método para calcular el número de líneas modificadas.
+	 * Método abstracto para calcular el número de líneas modificadas.
 	 * 
 	 * @return El número de líneas en el modificadas.
 	 */
     public abstract int getNumberOfModifiedLines();
 
+    /**
+	 * Método abstracto para obtener el tipo de cambio.
+	 * 
+	 * @return El tipo del cambio.
+	 */
     public abstract String getType();
 
+    /**
+	 * Método para obtener el path del fichero modificado por el cambio.
+	 * 
+	 * @return El path del fichero modificado por el cambio.
+	 */
     public String getPath(){
         return this.path;
     }
