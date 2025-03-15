@@ -60,6 +60,11 @@ public class Branch {
         return this.branchCommits;
     }
 
+    /**
+     * Método que elimina un commit de una Branch.
+     * 
+     * @param commit    commit a eliminar.
+     */
     public void removeCommit(Commit commit) {
         this.branchCommits.remove(commit);
     }
@@ -67,12 +72,17 @@ public class Branch {
     /**
      * Método que obtiene el nombre de una Branch.
      * 
-     * @return Name of the Branch .
+     * @return Nombre de la Branch .
      */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Método que obtiene el número de commits de una Branch.
+     * 
+     * @return Número de commits de la Branch.
+     */
     public int numberOfCommits(){
         return this.branchCommits.size();
     }
@@ -82,6 +92,7 @@ public class Branch {
      * 
      * @return Una cadena que contiene los detalles de una branch.
      */
+    @Override
     public String toString() {
         String string = "\nBranch: "+this.name;
         if(this.originBranch!=null){

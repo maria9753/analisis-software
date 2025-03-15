@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * La clase Repository representa 
+ * La clase Repository representa un repositorio que contiene una rama principal
+ * y opcionalmente más ramas.
+ * 
  * @author Carmen Gómez, María Pozo.
  */
 public class Repository {
@@ -16,7 +18,7 @@ public class Repository {
     private List<Branch> branches;
     /** Usuarios con permiso*/
     private List<String> users;
-
+    /** Estrategia para resolver conflictos*/
     private ConflictStrategy strategy;
 
     /**
@@ -45,10 +47,6 @@ public class Repository {
         this.mainBranch = mainBranch;
         this.branches.add(mainBranch);
         this.strategy= strategy;
-    }
-
-    public void setConflictStrategy(ConflictStrategy strategy) {
-        this.strategy = strategy;
     }
 
     /**
@@ -121,6 +119,13 @@ public class Repository {
         return null;
     }
 
+    /**
+     * Método que fusiona dos ramas, siempre y cuando no haya conflictos, o los
+     * conflictos se resuelvan.
+     * 
+     * @param originName           Nombre de la rama origen.
+     * @param destinyName          Nombre de la rama destino.
+     */
     public void mergeBranches(String originName, String destinyName) {
         Branch originBranch = getBranchByName(originName);
         Branch destinyBranch = getBranchByName(destinyName);
@@ -132,6 +137,7 @@ public class Repository {
         List<Commit> originCommits = originBranch.getCommits();
         List<Commit> destinyCommits = destinyBranch.getCommits();
 
+        /** Se obtiene el índice en el que está el último commit común */
         int indexLastCommit = -1;
         for (int i = 0; i < originCommits.size() && i < destinyCommits.size(); i++) {
             if (originCommits.get(i).equals(destinyCommits.get(i))) {
@@ -141,10 +147,12 @@ public class Repository {
             }
         }
 
+        /** Si no hay commits en común, la fusión no se puede realizar */
         if(indexLastCommit == -1){
             return;
         }
 
+        /** Se crean listas con los commits que no tienen en común, para fusionarlos */
         List<Commit> originNewCommits = originCommits.subList(indexLastCommit, originCommits.size());
         List<Commit> destinyNewCommits = destinyCommits.subList(indexLastCommit, destinyCommits.size());
 
@@ -152,6 +160,7 @@ public class Repository {
         List<String> conflicts = new ArrayList<>();
         List<Commit> commitsToRemove= new ArrayList<>();
         
+        /** Se buscan conflictos */
         for(Commit originCommit : originNewCommits) {
             boolean hasConflict=false;
             for (Commit destinyCommit : destinyNewCommits) {
@@ -178,11 +187,13 @@ public class Repository {
             destinyBranch.removeCommit(commitToRemove);
         }
 
+        /** Si hay conflictos sin solucionar, estos se imprimen y la fusión no se realiza*/
         if (conflicts.isEmpty()==false) {
             System.out.println(conflicts);
             return;
         }
 
+        /** Se crea un MergeCommit con los commits fusionados en la rama destino*/
         MergeCommit mergeCommit = new MergeCommit("Merge branches " + originName + " into " + destinyName, mergedCommits);
         destinyBranch.commit(mergeCommit);
     }   
@@ -203,7 +214,6 @@ public class Repository {
         }
 
         string += this.mainBranch.toString();
-
         return string;
     }
 }
