@@ -79,7 +79,7 @@ public class MergeCommit extends Commit {
      */
     @Override
     public String toString() {
-        String string= "\ncommit "+super.id+"\nAuthor: "+super.author+"\nDate: "+this.date+"\nDescription: "+super.description+"\nMerged commits:\n";
+        String string= super.toString()+"\nMerged commits:\n";
 
         for (Commit c: commits) {
             string += c.getId()+" on "+c.getDate()+"\n";

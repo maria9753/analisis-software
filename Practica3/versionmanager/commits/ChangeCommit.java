@@ -75,7 +75,7 @@ public class ChangeCommit extends Commit {
      */
     @Override
     public String toString() {
-        String string = "\ncommit " + this.id + "\nAuthor: " + this.author + "\nDate: " + this.date + "\nDescription: " + this.description + "\n";
+        String string = super.toString();
 
         if (this.changes != null && !this.changes.isEmpty()) {
             for (Change c : this.changes) {
