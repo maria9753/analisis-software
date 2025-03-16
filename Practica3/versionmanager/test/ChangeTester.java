@@ -1,5 +1,5 @@
-package test;
-import changes.*;
+package versionmanager.test;
+import versionmanager.changes.*;
 import java.util.*;
 /**
  * La clase ChangeTester representa las pruebas a los cambios. 

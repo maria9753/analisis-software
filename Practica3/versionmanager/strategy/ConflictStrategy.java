@@ -1,4 +1,5 @@
-package changes;
+package versionmanager.strategy;
+import versionmanager.commits.*;
 
 /**
  * La interfaz ConflictStrategy representa cómo se van a solucionar los conflictos

@@ -1,4 +1,6 @@
-package changes;
+package versionmanager;
+import versionmanager.changes.*;
+import versionmanager.commits.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +27,7 @@ public class Branch {
     public Branch(String name, List<Commit> commits) {
         this.name=name;
         this.branchCommits = new ArrayList<>();
-        for (Commit commit : commits) { 
-            this.branchCommits.add(commit); 
-        }
+        this.branchCommits.addAll(commits); 
     }
 
     /**

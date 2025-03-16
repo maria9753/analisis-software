@@ -1,11 +1,13 @@
-package changes;
+package versionmanager.strategy;
+import versionmanager.commits.*;
+
 /**
- * La clase DestinyStrategy implementa una solución de conflictos que consiste 
- * en añadir el commit de la rama de destino.
+ * La clase OriginStrategy implementa una solución de conflictos que consiste 
+ * en añadir el commit de la rama de origen.
  * 
  * @author Carmen Gómez, María Pozo.
  */
-public class DestinyStrategy implements ConflictStrategy {
+public class OriginStrategy implements ConflictStrategy {
 
     /**
      * Método que resuelve un conflicto entre dos commits.
@@ -13,10 +15,10 @@ public class DestinyStrategy implements ConflictStrategy {
      * @param originCommit           commit de origen.
      * @param destinyCommit          commit de destino.
      * 
-     * @return El commit de la rama destino.
+     * @return El commit de la rama origen.
      */
     @Override
     public Commit resolveConflict(Commit originCommit, Commit destinyCommit) {
-        return destinyCommit; 
+        return originCommit; 
     }
 }

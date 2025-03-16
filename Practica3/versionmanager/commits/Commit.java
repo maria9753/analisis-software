@@ -1,4 +1,5 @@
-package changes;
+package versionmanager.commits;
+import versionmanager.changes.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

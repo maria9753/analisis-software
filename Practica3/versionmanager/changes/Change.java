@@ -1,4 +1,4 @@
-package changes;
+package versionmanager.changes;
 
 /**
  * La clase Change representa los cambios. 

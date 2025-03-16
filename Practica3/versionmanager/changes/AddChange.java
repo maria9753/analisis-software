@@ -1,4 +1,4 @@
-package changes;
+package versionmanager.changes;
 /**
  * La clase AddChange representa un tipo de cambio en el que se añade una línea.
  * 

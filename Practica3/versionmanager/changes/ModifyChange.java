@@ -1,4 +1,4 @@
-package changes;
+package versionmanager.changes;
 /**
  * La clase ModifyChange representa un tipo de cambio en el que se modifica una línea.
  * 

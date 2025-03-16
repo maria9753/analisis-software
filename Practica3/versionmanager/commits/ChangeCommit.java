@@ -1,4 +1,5 @@
-package changes;
+package versionmanager.commits;
+import versionmanager.changes.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +23,7 @@ public class ChangeCommit extends Commit {
     public ChangeCommit(String author, String description, List<Change> changes) {
         super(author, description);
         this.changes = new ArrayList<>();
-        if(changes!=null){
-            for(Change c: changes){
-                addChange(c);
-            }
-        }
+        this.changes.addAll(changes);
     }
 
     /**
@@ -38,11 +35,7 @@ public class ChangeCommit extends Commit {
     public ChangeCommit(String author, List<Change> changes) {
         super(author);
         this.changes = new ArrayList<>();
-        if(changes!=null){
-            for(Change c: changes){
-                addChange(c);
-            }
-        }
+        this.changes.addAll(changes);
     }
 
     /**
@@ -53,11 +46,7 @@ public class ChangeCommit extends Commit {
     public ChangeCommit(List<Change> changes) {
         super();
         this.changes = new ArrayList<>();
-        if(changes!=null){
-            for(Change c: changes){
-                addChange(c);
-            }
-        }
+        this.changes.addAll(changes);
     }
 
     /**

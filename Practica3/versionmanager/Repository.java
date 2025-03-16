@@ -1,4 +1,7 @@
-package changes;
+package versionmanager;
+import versionmanager.changes.*;
+import versionmanager.commits.*;
+import versionmanager.strategy.*;
 
 import java.util.ArrayList;
 import java.util.List;

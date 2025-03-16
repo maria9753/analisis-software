@@ -1,4 +1,5 @@
-package changes;
+package versionmanager.commits;
+import versionmanager.changes.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +23,7 @@ public class MergeCommit extends Commit {
     public MergeCommit(String autor, String description, List<Commit> commits) {
         super(autor, description);
         this.commits = new ArrayList<>();
-        if(commits!=null){
-            for(Commit c: commits){
-                addCommit(c);
-            }
-        }
+        this.commits.addAll(commits);
     }
 
     /**
@@ -38,11 +35,7 @@ public class MergeCommit extends Commit {
     public MergeCommit(String autor, List<Commit> commits) {
         super(autor);
         this.commits = new ArrayList<>();
-        if(commits!=null){
-            for(Commit c: commits){
-                addCommit(c);
-            }
-        }
+        this.commits.addAll(commits);
     }
 
     /**
@@ -53,11 +46,7 @@ public class MergeCommit extends Commit {
     public MergeCommit( List<Commit> commits) {
         super();
         this.commits = new ArrayList<>();
-        if(commits!=null){
-            for(Commit c: commits){
-                addCommit(c);
-            }
-        }
+        this.commits.addAll(commits);
     }
     
     /**

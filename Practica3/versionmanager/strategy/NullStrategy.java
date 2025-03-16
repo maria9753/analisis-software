@@ -1,4 +1,5 @@
-package changes;
+package versionmanager.strategy;
+import versionmanager.commits.*;
 
 /**
  * La clase NullStrategy implementa una solución de conflictos que consiste 

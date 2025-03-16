@@ -1,27 +1,20 @@
-package test;
-import changes.*;
+package versionmanager.test;
+import versionmanager.*;
+import versionmanager.changes.*;
+import versionmanager.commits.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MergeBranchesTester {
-    
+public class RepositoryTester {
+
     public static void main(String[] args) {
         Branch mainBranch = testCreateMainBranch();
         Repository repository = testCreateRepository(mainBranch);
         testCreateBranchFromAnotherBranch(repository, mainBranch);
         testAddUserToRepository(repository);
         testAddCommitToRepository(repository);
-        
-        // Imprimir el estado del repositorio antes de la fusión
-        System.out.println("Estado del Repositorio antes de la fusión:");
         System.out.println(repository);
         
-        // Realizar la fusión de ramas
-        repository.mergeBranches("main", "Solving issue #1");
-
-        // Imprimir el estado después de la fusión
-        System.out.println("\nEstado del Repositorio después de la fusión:");
-        System.out.println(repository);
     }
 
     public static Branch testCreateMainBranch() {
@@ -35,8 +28,8 @@ public class MergeBranchesTester {
         changes2.add(new AddChange(0,"/src/main/ClaseExistente.java", "Java\n"));
         changes2.add(new ModifyChange(0, 0, "/src/main/ClaseObsoleta.java", "H"));
 
-        Commit commit1 = new ChangeCommit("John Doe", changes1);
-        Commit commit2 = new ChangeCommit("John Doe", "Decorator interface", changes2);
+        Commit commit1 = new ChangeCommit( "John Doe", changes1);
+        Commit commit2 = new ChangeCommit( "John Doe", "Decorator interface", changes2);
 
         List<Commit> mainCommits = new ArrayList<>();
         mainCommits.add(commit1);
@@ -48,6 +41,7 @@ public class MergeBranchesTester {
 
     public static Repository testCreateRepository(Branch mainBranch) {
         Repository repository = new Repository("ADSOF p3", mainBranch);
+
         return repository;
     }
 
@@ -60,8 +54,7 @@ public class MergeBranchesTester {
     }
 
     public static void testAddCommitToRepository(Repository repository) {
-        // Crear un commit de fusión
-        Commit mergeCommit = new MergeCommit("John Doe", "Merging previous commits", repository.getMainBranch().getCommits());
-        repository.addCommitMainBranch(mergeCommit);
+        Commit commit3 = new MergeCommit("John Doe", "Merging previous commits", repository.getMainBranch().getCommits());
+        repository.addCommitMainBranch(commit3);
     }
 }

@@ -1,4 +1,4 @@
-package changes;
+package versionmanager.changes;
 /**
  * La clase RemoveChange representa un tipo de cambio en el que se elimina una línea.
  * 

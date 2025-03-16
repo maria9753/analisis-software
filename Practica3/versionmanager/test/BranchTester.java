@@ -1,5 +1,7 @@
-package test;
-import changes.*;
+package versionmanager.test;
+import versionmanager.*;
+import versionmanager.changes.*;
+import versionmanager.commits.*;
 import java.util.*;
 
 public class BranchTester {
