@@ -1,4 +1,5 @@
-package changes;
+package test;
+import changes.*;
 import java.util.*;
 /**
  * La clase ChangeTester representa las pruebas a los cambios. 

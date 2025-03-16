@@ -1,4 +1,5 @@
-package changes;
+package test;
+import changes.*;
 import java.util.*;
 
 public class CommitTester{
