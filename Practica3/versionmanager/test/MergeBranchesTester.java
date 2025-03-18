@@ -24,6 +24,12 @@ public class MergeBranchesTester {
         // Imprimir el estado después de la fusión
         System.out.println("\nEstado del Repositorio después de la fusión:");
         System.out.println(repository);
+
+        /** Test con los argumentos para fusionar dos ramas null*/
+        repository.mergeBranches("main", null);
+        System.out.println(repository);
+        repository.mergeBranches(null, "Soliving issue #1");
+        System.out.println(repository);
     }
 
     public static Branch testCreateMainBranch() {

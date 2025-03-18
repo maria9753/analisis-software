@@ -66,6 +66,9 @@ public class Repository {
      * @param user  Usuario nuevo.
      */
     public void addUser(String user) {
+        if (user == null) {
+            return;
+        }
         if (!this.users.contains(user)){
             this.users.add(user);
         }
@@ -77,6 +80,9 @@ public class Repository {
      * @param branch Rama a partir de la cual se crea una nueva.
     */
    public void createNewBranchFromAnother(String name, Branch originBranch) {
+        if (name == null || originBranch == null) {
+            return;
+        }
         Branch newBranch = new Branch(name, originBranch);
         if (newBranch != null) {
             this.branches.add(newBranch);
@@ -89,7 +95,10 @@ public class Repository {
      * @param newMainBranch  Nueva rama activa del repositorio.
     */
     public void changeMainBranch(Branch newMainBranch) {
-        if (newMainBranch != null && this.branches.contains(newMainBranch)) {
+        if (newMainBranch == null) {
+            return;
+        }
+        if (this.branches.contains(newMainBranch)) {
             this.mainBranch = newMainBranch;
         }
     }
@@ -100,6 +109,9 @@ public class Repository {
      * @param commit   Commit a añadir a la rama activa del repositorio.
      */
     public void addCommitMainBranch(Commit commit) {
+        if (commit == null) {
+            return;
+        }
         if (this.users.contains(commit.getAuthor())) {
             this.mainBranch.commit(commit);
         }
@@ -113,12 +125,15 @@ public class Repository {
      * @return La rama con nombre name.
      */
     public Branch getBranchByName(String name) {
+        if (name == null) {
+            return null;
+        }
         for (Branch b: this.branches) {
             if (name == b.getName()) {
                 return b;
             }
         }
-
+        
         return null;
     }
 

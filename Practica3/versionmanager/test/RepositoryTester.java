@@ -11,10 +11,33 @@ public class RepositoryTester {
         Branch mainBranch = testCreateMainBranch();
         Repository repository = testCreateRepository(mainBranch);
         testCreateBranchFromAnotherBranch(repository, mainBranch);
-        testAddUserToRepository(repository);
-        testAddCommitToRepository(repository);
+        testAddUserToRepository(repository, "John Doe");
+        testAddCommitToRepository1(repository);
         System.out.println(repository);
         
+        /** Test con los argumentos para crear un repositorio null*/
+        Repository repositoryNull = testCreateRepository(null);
+        System.out.println(repositoryNull);
+
+        /** Test con los argumentos para crear una rama a partir de otra null*/
+        testCreateBranchFromAnotherBranch(repository, null);
+        System.out.println(repository);
+
+        /** Test con los argumentos para añadir un usuario al repositorio null*/
+        testAddUserToRepository(repository, null);
+        System.out.println(repository);
+
+        /** Test con los argumentos para añadir un commit a un repositorio null*/
+        testAddCommitToRepository2(repository, null);
+        System.out.println(repository);
+
+        /** Test para añadir un commit a un repositorio de un usuario no autorizado*/
+        List<Change> changes4 = new ArrayList<>();
+        change4.add(new AddChange(0, "/src/main/NuevaClase.java", "Hola\nMundo\n"));
+        Commit commit4 = ChangeCommit( "Doe John", changes4);
+        testAddCommitToRepository2(repository, commit4);
+        System.out.println(repository);
+
     }
 
     public static Branch testCreateMainBranch() {
@@ -49,12 +72,16 @@ public class RepositoryTester {
         repository.createNewBranchFromAnother("Solving issue #1", mainBranch);
     }
 
-    public static void testAddUserToRepository(Repository repository) {
-        repository.addUser("John Doe");
+    public static void testAddUserToRepository(Repository repository, String name) {
+        repository.addUser(name);
     }
 
-    public static void testAddCommitToRepository(Repository repository) {
+    public static void testAddCommitToRepository1(Repository repository) {
         Commit commit3 = new MergeCommit("John Doe", "Merging previous commits", repository.getMainBranch().getCommits());
         repository.addCommitMainBranch(commit3);
+    }
+
+    public static void testAddCommitToRepository2(Repository repository, Commit commit) {
+        repository.addCommitMainBranch(commit);
     }
 }
