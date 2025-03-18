@@ -94,7 +94,7 @@ public class Branch {
      */
     @Override
     public String toString() {
-        String string = "Branch: "+this.name;
+        String string = "\nBranch: "+this.name;
         if(this.originBranch!=null){
             string += " (from "+this.originBranch.name+")";
         }
@@ -108,7 +108,7 @@ public class Branch {
             else{
                 string += c.getDescription();
             }
-            string +=" at "+c.getDate()+"\n";
+            string +=" at "+c.getDate();
         }
         return string;
     }
