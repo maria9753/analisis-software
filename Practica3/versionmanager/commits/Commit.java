@@ -162,6 +162,13 @@ public abstract class Commit {
     }
 
     /**
+     * Método para obtener el número de líneas modificadas del commit.
+     * 
+     * @return El número de líneas modificadas.
+     */
+    public abstract int getNumberOfModifiedLinesCommit();
+
+    /**
      * Método para obtener todos los cambios del commit.
      * 
      * @return Un array de cambios.

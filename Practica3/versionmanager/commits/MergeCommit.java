@@ -73,6 +73,29 @@ public class MergeCommit extends Commit {
     }
 
     /**
+     * Método para obtener el número de líneas modificadas del commit.
+     * 
+     * @return El número de líneas modificadas.
+     */
+    @Override
+    public int getNumberOfModifiedLinesCommit() {
+        int total = 0;
+        for (Commit c: this.commits) {
+            total += c.getNumberOfModifiedLinesCommit();
+        }
+        return total;
+    }
+
+    /**
+     * Método para obtener los commits del merge commit.
+     * 
+     * @return Una lista con los commits del merge commit.
+     */
+    public List<Commit> obtainTotalCommits() {
+        return this.commits;
+    }
+
+    /**
      * Método para generar commits.
      * 
      * @return Una cadena que contiene los detalles del commit.

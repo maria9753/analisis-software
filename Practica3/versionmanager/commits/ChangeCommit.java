@@ -69,6 +69,20 @@ public class ChangeCommit extends Commit {
     }
 
     /**
+     * Método para obtener el número de líneas modificadas del commit.
+     * 
+     * @return El número de líneas modificadas.
+     */
+    @Override
+    public int getNumberOfModifiedLinesCommit() {
+        int total = 0;
+        for (Change c: this.changes) {
+            total += c.getNumberOfModifiedLines();
+        }
+        return total;
+    }
+
+    /**
      * Método para generar commits.
      * 
      * @return Una cadena que contiene los detalles del commit.
