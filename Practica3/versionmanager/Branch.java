@@ -108,7 +108,7 @@ public class Branch {
             else{
                 string += c.getDescription();
             }
-            string +=" at "+c.getDate();
+            string +=" at "+c.getDate()+"\n";
         }
         return string;
     }
