@@ -33,8 +33,8 @@ public class RepositoryTester {
 
         /** Test para añadir un commit a un repositorio de un usuario no autorizado*/
         List<Change> changes4 = new ArrayList<>();
-        change4.add(new AddChange(0, "/src/main/NuevaClase.java", "Hola\nMundo\n"));
-        Commit commit4 = ChangeCommit( "Doe John", changes4);
+        changes4.add(new AddChange(0, "/src/main/NuevaClase.java", "Hola\nMundo\n"));
+        Commit commit4 = new ChangeCommit( "Doe John", changes4);
         testAddCommitToRepository2(repository, commit4);
         System.out.println(repository);
 

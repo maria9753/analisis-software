@@ -93,7 +93,11 @@ public class ChangeCommit extends Commit {
 
         if (this.changes != null && !this.changes.isEmpty()) {
             for (Change c : this.changes) {
-                string += c.getType()+" : "+c.getPath()+" ("+c.getNumberOfModifiedLines()+")\n";
+                string += c.getType()+" : "+c.getPath()+" (";
+                if(c.getType()=="+"){
+                    string +="+";
+                }
+                string +=c.getNumberOfModifiedLines()+")\n";
             }
         }
         return string;

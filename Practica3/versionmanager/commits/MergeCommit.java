@@ -25,29 +25,6 @@ public class MergeCommit extends Commit {
         this.commits = new ArrayList<>();
         this.commits.addAll(commits);
     }
-
-    /**
-     * Constructor de la clase MergeCommit.
-     * 
-     * @param author       Autor del MergeCommit
-     * @param changes      Cambios del MergeCommit.
-     */
-    public MergeCommit(String autor, List<Commit> commits) {
-        super(autor);
-        this.commits = new ArrayList<>();
-        this.commits.addAll(commits);
-    }
-
-    /**
-     * Constructor de la clase MergeCommit.
-     * 
-     * @param changes      Cambios del MergeCommit.
-     */
-    public MergeCommit( List<Commit> commits) {
-        super();
-        this.commits = new ArrayList<>();
-        this.commits.addAll(commits);
-    }
     
     /**
      * Método para añadir un commit a un MergeCommit.

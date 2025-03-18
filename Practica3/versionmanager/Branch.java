@@ -94,7 +94,7 @@ public class Branch {
      */
     @Override
     public String toString() {
-        String string = "\nBranch: "+this.name;
+        String string = "Branch: "+this.name;
         if(this.originBranch!=null){
             string += " (from "+this.originBranch.name+")";
         }

@@ -212,7 +212,7 @@ public class Repository {
         }
 
         /** Se crea un MergeCommit con los commits fusionados en la rama destino*/
-        MergeCommit mergeCommit = new MergeCommit("Merge branches " + originName + " into " + destinyName, mergedCommits);
+        MergeCommit mergeCommit = new MergeCommit("Respository","Merge branches " + originName + " into " + destinyName, mergedCommits);
         destinyBranch.commit(mergeCommit);
     }   
 
