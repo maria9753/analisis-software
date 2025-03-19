@@ -29,24 +29,11 @@ public class Repository {
      * 
      * @param name          Nombre del repositorio.
      */
-    public Repository(String name, Branch mainBranch) {
-        this.name = name;
-        this.branches = new ArrayList<Branch>();
-        this.users = new ArrayList<String>();
-        this.mainBranch = mainBranch;
-        this.branches.add(mainBranch);
-        this.strategy= new OriginStrategy();
-    }
-
-    /**
-     * Constructor de la clase Repository.
-     * 
-     * @param name          Nombre del repositorio.
-     */
     public Repository(String name, Branch mainBranch, ConflictStrategy strategy) {
         this.name = name;
         this.branches = new ArrayList<Branch>();
         this.users = new ArrayList<String>();
+        this.users.add("Repository");
         this.mainBranch = mainBranch;
         this.branches.add(mainBranch);
         this.strategy= strategy;
@@ -144,7 +131,7 @@ public class Repository {
      * @param originName           Nombre de la rama origen.
      * @param destinyName          Nombre de la rama destino.
      */
-    public void mergeBranches(String originName, String destinyName) {
+    public void mergeBranches(String originName, String destinyName, ConflictStrategy strategy) {
         Branch originBranch = getBranchByName(originName);
         Branch destinyBranch = getBranchByName(destinyName);
         
@@ -171,12 +158,16 @@ public class Repository {
         }
 
         /** Se crean listas con los commits que no tienen en común, para fusionarlos */
-        List<Commit> originNewCommits = originCommits.subList(indexLastCommit, originCommits.size());
-        List<Commit> destinyNewCommits = destinyCommits.subList(indexLastCommit, destinyCommits.size());
+        List<Commit> originNewCommits = originCommits.subList(indexLastCommit + 1, originCommits.size());
+        List<Commit> destinyNewCommits = destinyCommits.subList(indexLastCommit + 1, destinyCommits.size());
 
         List<Commit> mergedCommits = new ArrayList<>();
         List<String> conflicts = new ArrayList<>();
         List<Commit> commitsToRemove= new ArrayList<>();
+
+        if (strategy == null) {
+            strategy = this.strategy;
+        }
         
         /** Se buscan conflictos */
         for(Commit originCommit : originNewCommits) {
@@ -212,7 +203,7 @@ public class Repository {
         }
 
         /** Se crea un MergeCommit con los commits fusionados en la rama destino*/
-        MergeCommit mergeCommit = new MergeCommit("Respository","Merge branches " + originName + " into " + destinyName, mergedCommits);
+        MergeCommit mergeCommit = new MergeCommit("Respository","Merge branches " + originName + " and " + destinyName, mergedCommits);
         destinyBranch.commit(mergeCommit);
     }   
 

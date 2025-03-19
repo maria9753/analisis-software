@@ -25,7 +25,7 @@ public class MergeStrategy implements ConflictStrategy {
             List<Commit> mergeCommits =new ArrayList<>();
             mergeCommits.add(originCommit);
             mergeCommits.add(destinyCommit);
-            MergeCommit mergeCommit = new MergeCommit("Merge add only changes", mergeCommits);
+            MergeCommit mergeCommit = new MergeCommit("Repository", "Merge add only changes", mergeCommits);
             return mergeCommit;
         }
         return null;
