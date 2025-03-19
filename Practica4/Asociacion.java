@@ -1,6 +1,14 @@
+/**
+ * La clase Asociacion representa una asociación de la aplicación.
+ * 
+ * @author Carmen Gómez, María Pozo.
+ */
 public class Asociacion extends Usuario {
+    /** Ciudadanos inscritos en la asociación*/
     private Set<Ciudadano> ciudadanos;
+    /** Asociaciones que contiene la asociación*/
     private Set<Asociacion> asociaciones;
+    /**  */
     private Ciudadano representante;
     
     public Asociacion(String nombre, String contrasena, Ciudadano representante, ) {
