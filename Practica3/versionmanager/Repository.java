@@ -163,10 +163,7 @@ public class Repository {
         /** Se crean listas con los commits que no tienen en común, para fusionarlos */
         List<Commit> originNewCommits = new ArrayList<>(originCommits.subList(indexLastCommit + 1, originCommits.size()));
         List<Commit> destinyNewCommits = new ArrayList<>(destinyCommits.subList(indexLastCommit + 1, destinyCommits.size()));
-
-        System.out.println(originNewCommits);
-        System.out.println(destinyNewCommits);
-
+        
         if (originNewCommits.isEmpty() && destinyNewCommits.isEmpty()) {
             return;
         }
@@ -186,8 +183,6 @@ public class Repository {
                 if (originCommit.detectConflicts(destinyCommit)==true){
                     hasConflict=true;
                     Commit resolvedCommit = strategy.resolveConflict(originCommit, destinyCommit);
-                    System.out.println("resolvedCommit: ");
-                    System.out.println(resolvedCommit);
                     if (resolvedCommit == null) {
                         conflicts.add("Conflict on '"+originCommit.getModifiedConflictFile(destinyCommit)+"'");
                         continue;
@@ -217,8 +212,6 @@ public class Repository {
         /** Se crea un MergeCommit con los commits fusionados en la rama destino*/
         MergeCommit mergeCommit = new MergeCommit("Respository","Merge branches " + originName + " and " + destinyName, mergedCommits);
         destinyBranch.commit(mergeCommit);
-        System.out.println("mergeCommit: ");
-        System.out.println(mergeCommit);
     }   
 
     /**
