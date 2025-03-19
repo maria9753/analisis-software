@@ -12,6 +12,13 @@ import java.util.List;
  */
 public class MergeStrategy implements ConflictStrategy {
     /**
+     * Constructor por defecto de la clase.
+     */
+    public MergeStrategy(){
+        /**Constructor vacío */
+    }
+
+    /**
      * Método que resuelve un conflicto entre dos commits.
      * 
      * @param originCommit           commit de origen.

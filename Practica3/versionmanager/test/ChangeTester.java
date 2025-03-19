@@ -7,6 +7,19 @@ import java.util.*;
  * @author Carmen Gómez, María Pozo.
  */
 public class ChangeTester {
+
+    /**
+     * Constructor por defecto de la clase.
+     */
+    public ChangeTester(){
+        /**Constructor vacío */
+    }
+
+     /**
+     * Método main que ejecuta las pruebas.
+     * 
+     * @param args      Argumentos recibidos.
+     */
     public static void main (String[] args) {
         System.out.println("Test 1: (Standar code execution)");
         for (Change change : createChanges())

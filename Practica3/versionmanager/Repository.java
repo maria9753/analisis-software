@@ -28,6 +28,8 @@ public class Repository {
      * Constructor de la clase Repository.
      * 
      * @param name          Nombre del repositorio.
+     * @param mainBranch    Rama principal
+     * @param strategy      Estrategia
      */
     public Repository(String name, Branch mainBranch, ConflictStrategy strategy) {
         this.name = name;
@@ -63,8 +65,8 @@ public class Repository {
 
     /** Método para crear una rama nueva a partir de otra.
      * 
-     * @param name  Nombre de la nueva rama.
-     * @param branch Rama a partir de la cual se crea una nueva.
+     * @param name              Nombre de la nueva rama.
+     * @param originBranch      Rama a partir de la cual se crea una nueva.
     */
    public void createNewBranchFromAnother(String name, Branch originBranch) {
         if (name == null || originBranch == null) {
@@ -130,6 +132,7 @@ public class Repository {
      * 
      * @param originName           Nombre de la rama origen.
      * @param destinyName          Nombre de la rama destino.
+     * @param strategy             Estrategia de resolución de conflictos.
      */
     public void mergeBranches(String originName, String destinyName, ConflictStrategy strategy) {
         Branch originBranch = getBranchByName(originName);

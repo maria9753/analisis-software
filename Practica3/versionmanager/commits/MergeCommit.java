@@ -16,9 +16,9 @@ public class MergeCommit extends Commit {
     /**
      * Constructor de la clase MergeCommit.
      * 
-     * @param author       Autor del MergeCommit
+     * @param autor       Autor del MergeCommit
      * @param description  Descripción del MergeCommit
-     * @param changes      Cambios del MergeCommit.
+     * @param commits      Cambios del MergeCommit.
      */
     public MergeCommit(String autor, String description, List<Commit> commits) {
         super(autor, description);

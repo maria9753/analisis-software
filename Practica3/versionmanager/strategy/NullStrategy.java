@@ -9,6 +9,13 @@ import versionmanager.commits.*;
  */
 public class NullStrategy implements ConflictStrategy {
     /**
+     * Constructor por defecto de la clase.
+     */
+    public NullStrategy(){
+        /**Constructor vacío */
+    }
+
+    /**
      * Método que resuelve un conflicto entre dos commits.
      * 
      * @param originCommit           commit de origen.

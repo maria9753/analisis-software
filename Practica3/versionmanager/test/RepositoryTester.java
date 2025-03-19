@@ -13,6 +13,13 @@ import java.util.List;
  */
 public class RepositoryTester {
 
+    /**
+     * Constructor por defecto de la clase.
+     */
+    public RepositoryTester(){
+        /**Constructor vacío */
+    }
+
     /** 
      * Método main que ejecuta las pruebas.
      * 

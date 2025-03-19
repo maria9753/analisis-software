@@ -7,6 +7,12 @@ import versionmanager.commits.*;
  * @author Carmen Gómez, María Pozo.
  */
 public class DestinyStrategy implements ConflictStrategy {
+    /**
+     * Constructor por defecto de la clase.
+     */
+    public DestinyStrategy(){
+        /**Constructor vacío */
+    }
 
     /**
      * Método que resuelve un conflicto entre dos commits.

@@ -33,8 +33,8 @@ public class Branch {
     /**
      * Constructor de la clase Branch.
      * 
-     * @param name          Nombre de la Branch.
-     * @param commits       Commits de la Branch.
+     * @param name               Nombre de la Branch.
+     * @param originBranch       Original Branch.
      */
     public Branch(String name, Branch originBranch) {
         this.name=name;

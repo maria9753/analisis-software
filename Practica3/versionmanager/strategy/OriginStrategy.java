@@ -8,6 +8,12 @@ import versionmanager.commits.*;
  * @author Carmen Gómez, María Pozo.
  */
 public class OriginStrategy implements ConflictStrategy {
+    /**
+     * Constructor por defecto de la clase.
+     */
+    public OriginStrategy(){
+        /**Constructor vacío */
+    }
 
     /**
      * Método que resuelve un conflicto entre dos commits.

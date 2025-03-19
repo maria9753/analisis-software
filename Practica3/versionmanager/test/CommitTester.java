@@ -11,6 +11,13 @@ import java.util.*;
 public class CommitTester{
 
     /**
+     * Constructor por defecto de la clase.
+     */
+    public CommitTester(){
+        /**Constructor vacío */
+    }
+
+    /**
      * Método main que ejecuta las pruebas.
      * 
      * @param args      Argumentos recibidos.
@@ -67,6 +74,8 @@ public class CommitTester{
     /**
      * Método que crea commits.
      * 
+     * @param changes1      Lista de cambios.
+     * @param changes2      Lista de cambios.
      * @return Lista de commits.
      */
     public static List<Commit> createCommits (List<Change> changes1, List<Change> changes2) {

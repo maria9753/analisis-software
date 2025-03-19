@@ -13,6 +13,13 @@ import java.util.List;
  */
 public class MergeBranchesTester {
     
+    /**
+     * Constructor por defecto de la clase.
+     */
+    public MergeBranchesTester(){
+        /**Constructor vacío */
+    }
+
     /** 
      * Método main que ejecuta las pruebas.
      * 
@@ -231,7 +238,6 @@ public class MergeBranchesTester {
      * Método que crea añade un usuario autorizado a un repositorio.
      * 
      * @param repository    El repositorio.
-     * @param name          Nombre del usuario.
      */
     public static void testAddUserToRepository(Repository repository) {
         repository.addUser("John Doe");

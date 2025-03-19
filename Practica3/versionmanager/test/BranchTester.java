@@ -10,6 +10,12 @@ import java.util.*;
  * @author Carmen Gómez, María Pozo.
  */
 public class BranchTester {
+    /**
+     * Constructor por defecto de la clase.
+     */
+    public BranchTester(){
+        /**Constructor vacío */
+    }
 
     /**
      * Método main que ejecuta las pruebas.
