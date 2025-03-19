@@ -27,7 +27,7 @@ public class MergeBranchesTester {
      */
     public static void main(String[] args) {
         /** Test 1.*/
-        System.out.println("Test 1: (Standar code execution with repository's defect strategy (OriginStrategy))");
+        System.out.println("----------Test 1: (Standar code execution with DestinyStrategy)");
         Branch mainBranch1 = testCreateMainBranch();
         Repository repository1 = testCreateRepository(mainBranch1);
         testAddUserToRepository(repository1);
@@ -44,22 +44,20 @@ public class MergeBranchesTester {
 
         System.out.println(repository1);
 
-        repository1.mergeBranches("Solving issue #1", "main", null);
+        ConflictStrategy strategy1 = new DestinyStrategy();
+        repository1.mergeBranches("main", "Solving issue #1", strategy1);
         repository1.changeMainBranch(mainBranch1);
 
         System.out.println(repository1);
 
         /** Test 2.*/
-        System.out.println("Test 2: (Standar code execution with DestinyStrategy)");
+        System.out.println("----------Test 2: (Standar code execution with repository's defect strategy (OriginStrategy))");
         Branch mainBranch2 = testCreateMainBranch();
         Repository repository2 = testCreateRepository(mainBranch2);
         testAddUserToRepository(repository2);
         testAddCommitToRepository(repository2);
 
-        System.out.println(repository2);
-
         testCreateBranchFromAnotherBranch(repository2, mainBranch2);
-        testChangeMainBranch(repository2);
         List<Change> solvingChanges2 = new ArrayList<>();
         solvingChanges2.add(new ModifyChange(0, 0, "/src/main/NuevaClase.java", "H"));
         Commit solvingCommit2 = new ChangeCommit("John Doe", "Solving the issue", solvingChanges2);
@@ -67,8 +65,15 @@ public class MergeBranchesTester {
 
         System.out.println(repository2);
 
-        ConflictStrategy strategy2 = new DestinyStrategy();
-        repository2.mergeBranches("main", "Solving issue #1", strategy2);
+        testChangeMainBranch(repository2);
+        List<Change> solvingChanges22 = new ArrayList<>();
+        solvingChanges22.add(new ModifyChange(0, 0, "/src/main/NuevaClase.java", "H2"));
+        Commit solvingCommit22 = new ChangeCommit("John Doe", "Solving the issue 2", solvingChanges22);
+        repository2.addCommitMainBranch(solvingCommit22);
+
+        System.out.println(repository2);
+
+        repository2.mergeBranches("main", "Solving issue #1", null);
         System.out.println("Main branch: Solving issue #1");
         System.out.println(repository2);
         repository2.changeMainBranch(mainBranch2);
@@ -76,20 +81,25 @@ public class MergeBranchesTester {
         System.out.println(repository2);
 
         /** Test 3.*/
-        System.out.println("Test 3: (Standar code execution with NullStrategy)");
+        System.out.println("----------Test 3: (Standar code execution with NullStrategy)");
         Branch mainBranch3 = testCreateMainBranch();
         Repository repository3 = testCreateRepository(mainBranch3);
         testAddUserToRepository(repository3);
         testAddCommitToRepository(repository3);
 
-        System.out.println(repository3);
-
         testCreateBranchFromAnotherBranch(repository3, mainBranch3);
-        testChangeMainBranch(repository3);
         List<Change> solvingChanges3 = new ArrayList<>();
         solvingChanges3.add(new ModifyChange(0, 0, "/src/main/NuevaClase.java", "H"));
         Commit solvingCommit3 = new ChangeCommit("John Doe", "Solving the issue", solvingChanges3);
         repository3.addCommitMainBranch(solvingCommit3);
+
+        System.out.println(repository3);
+
+        testChangeMainBranch(repository3);
+        List<Change> solvingChanges32 = new ArrayList<>();
+        solvingChanges32.add(new ModifyChange(0, 0, "/src/main/NuevaClase.java", "H2"));
+        Commit solvingCommit32 = new ChangeCommit("John Doe", "Solving the issue 2", solvingChanges32);
+        repository3.addCommitMainBranch(solvingCommit32);
 
         System.out.println(repository3);
 
@@ -103,20 +113,25 @@ public class MergeBranchesTester {
         System.out.println(repository3);
 
         /** Test 4.*/
-        System.out.println("Test 4: (Standar code execution with MergeStrategy with conflicting commit not add change)");
+        System.out.println("----------Test 4: (Standar code execution with MergeStrategy with conflicting commit not add change)");
         Branch mainBranch4 = testCreateMainBranch();
         Repository repository4 = testCreateRepository(mainBranch4);
         testAddUserToRepository(repository4);
         testAddCommitToRepository(repository4);
 
-        System.out.println(repository4);
-
         testCreateBranchFromAnotherBranch(repository4, mainBranch4);
-        testChangeMainBranch(repository4);
         List<Change> solvingChanges4 = new ArrayList<>();
         solvingChanges4.add(new ModifyChange(0, 0, "/src/main/NuevaClase.java", "H"));
         Commit solvingCommit4 = new ChangeCommit("John Doe", "Solving the issue", solvingChanges4);
         repository4.addCommitMainBranch(solvingCommit4);
+
+        System.out.println(repository4);
+
+        testChangeMainBranch(repository4);
+        List<Change> solvingChanges42 = new ArrayList<>();
+        solvingChanges42.add(new ModifyChange(0, 0, "/src/main/NuevaClase.java", "H2"));
+        Commit solvingCommit42 = new ChangeCommit("John Doe", "Solving the issue 2", solvingChanges42);
+        repository4.addCommitMainBranch(solvingCommit42);
 
         System.out.println(repository4);
 
@@ -130,20 +145,26 @@ public class MergeBranchesTester {
         System.out.println(repository4);
 
         /** Test 5.*/
-        System.out.println("Test 5: (Standar code execution with MergeStrategy with conflicting commit add change)");
+        System.out.println("----------Test 5: (Standar code execution with MergeStrategy with conflicting commit add change)");
         Branch mainBranch5 = testCreateMainBranch();
         Repository repository5 = testCreateRepository(mainBranch5);
         testAddUserToRepository(repository5);
         testAddCommitToRepository(repository5);
 
-        System.out.println(repository5);
 
         testCreateBranchFromAnotherBranch(repository5, mainBranch5);
-        testChangeMainBranch(repository5);
         List<Change> solvingChanges5 = new ArrayList<>();
         solvingChanges5.add(new AddChange(0, "/src/main/NuevaClase.java", "H"));
         Commit solvingCommit5 = new ChangeCommit("John Doe", "Solving the issue", solvingChanges5);
         repository5.addCommitMainBranch(solvingCommit5);
+
+        System.out.println(repository5);
+
+        testChangeMainBranch(repository5);
+        List<Change> solvingChanges52 = new ArrayList<>();
+        solvingChanges52.add(new AddChange(0, "/src/main/NuevaClase.java", "H2"));
+        Commit solvingCommit52 = new ChangeCommit("John Doe", "Solving the issue 2", solvingChanges52);
+        repository5.addCommitMainBranch(solvingCommit52);      
 
         System.out.println(repository5);
 
@@ -157,7 +178,7 @@ public class MergeBranchesTester {
         System.out.println(repository5);
 
         /** Test 6.*/
-        System.out.println("Test 6: (Standar code execution with no conflicting commit)");
+        System.out.println("----------Test 6: (Standar code execution with no conflicting commit)");
         Branch mainBranch6 = testCreateMainBranch();
         Repository repository6 = testCreateRepository(mainBranch6);
         testAddUserToRepository(repository6);
@@ -182,6 +203,27 @@ public class MergeBranchesTester {
         System.out.println("Main branch: main");
         repository6.changeMainBranch(mainBranch6);
         System.out.println(repository6);
+
+        /** Test 7.*/
+        System.out.println("----------Test 7: (Standar code execution with the same commits)");
+        Branch mainBranch7 = testCreateMainBranch();
+        Repository repository7 = testCreateRepository(mainBranch7);
+        testAddUserToRepository(repository7);
+        testAddCommitToRepository(repository7);
+
+        System.out.println(repository7);
+
+        testCreateBranchFromAnotherBranch(repository7, mainBranch7);
+
+        System.out.println(repository7);
+
+        repository7.mergeBranches("main", "Solving issue #1", null);
+        System.out.println("Main branch: Solving issue #1");
+        System.out.println(repository7);
+
+        System.out.println("Main branch: main");
+        repository7.changeMainBranch(mainBranch7);
+        System.out.println(repository7);
     }
 
     /**
