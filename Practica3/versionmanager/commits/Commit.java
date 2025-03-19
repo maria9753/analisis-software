@@ -151,7 +151,7 @@ public abstract class Commit {
 	 * @return True si hay conflicto, false si no.
 	 */
     public boolean detectConflicts(Commit destinyCommit) {
-        for (Change originChange : obtainTotalChanges()) {
+        for (Change originChange : this.obtainTotalChanges()) {
             for (Change destinyChange : destinyCommit.obtainTotalChanges()) {
                 if (originChange.getPath().equals(destinyChange.getPath())) {
                     return true;

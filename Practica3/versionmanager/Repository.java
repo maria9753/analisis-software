@@ -160,9 +160,19 @@ public class Repository {
             return;
         }
 
+        System.out.println(originCommits);
+        System.out.println(destinyCommits);
+
         /** Se crean listas con los commits que no tienen en común, para fusionarlos */
-        List<Commit> originNewCommits = originCommits.subList(indexLastCommit + 1, originCommits.size());
-        List<Commit> destinyNewCommits = destinyCommits.subList(indexLastCommit + 1, destinyCommits.size());
+        List<Commit> originNewCommits = new ArrayList<>(originCommits.subList(indexLastCommit + 1, originCommits.size()));
+        List<Commit> destinyNewCommits = new ArrayList<>(destinyCommits.subList(indexLastCommit + 1, destinyCommits.size()));
+
+        System.out.println(originNewCommits);
+        System.out.println(destinyNewCommits);
+
+        if (originNewCommits.isEmpty() && destinyNewCommits.isEmpty()) {
+            return;
+        }
 
         List<Commit> mergedCommits = new ArrayList<>();
         List<String> conflicts = new ArrayList<>();
@@ -178,10 +188,10 @@ public class Repository {
             for (Commit destinyCommit : destinyNewCommits) {
                 if (originCommit.detectConflicts(destinyCommit)==true){
                     hasConflict=true;
-                    conflicts.add("Conflict on '" +originCommit.getModifiedConflictFile(destinyCommit)+ "'");
-                    Commit resolvedCommit = this.strategy.resolveConflict(originCommit, destinyCommit);
+                    Commit resolvedCommit = strategy.resolveConflict(originCommit, destinyCommit);
                     if (resolvedCommit == null) {
-                        return;
+                        conflicts.add("Conflict on '"+originCommit.getModifiedConflictFile(destinyCommit)+"'");
+                        continue;
                     }
                     else if(resolvedCommit!=destinyCommit){
                         commitsToRemove.add(destinyCommit);
@@ -200,8 +210,8 @@ public class Repository {
         }
 
         /** Si hay conflictos sin solucionar, estos se imprimen y la fusión no se realiza*/
-        if (conflicts.isEmpty()==false) {
-            System.out.println(conflicts);
+        if (!conflicts.isEmpty()) {
+            System.out.println(String.join("\n", conflicts));
             return;
         }
 
