@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"versionmanager"},{"l":"versionmanager.changes"},{"l":"versionmanager.commits"},{"l":"versionmanager.strategy"},{"l":"versionmanager.test"}];updateSearchResults();
