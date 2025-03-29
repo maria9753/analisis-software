@@ -30,6 +30,11 @@ public class Fundacion extends Usuario {
         return cif;
     }
 
+    /**
+     * Representación en forma de cadena de la fundación.
+     * 
+     * @return Una cadena que representa la fundación, incluyendo su nombre y CIF.
+     */
     @Override
     public String toString() {
         return nombre + " (" + cif + ") <fundacion>";

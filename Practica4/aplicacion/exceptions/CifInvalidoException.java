@@ -1,7 +1,7 @@
 package aplicacion.exceptions;
 
 /**
- * Excepción para cuando un nif no es válido.
+ * Excepción para cuando un cif no es válido.
  * 
  * @author Carmen Gómez, María Pozo.
  */

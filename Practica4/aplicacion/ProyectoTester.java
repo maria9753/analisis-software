@@ -5,12 +5,24 @@ import aplicacion.proyectos.Proyecto;
 import aplicacion.proyectos.ProyectoFundacion;
 import aplicacion.usuarios.*;
 
+/**
+ * La clase ProyectoTester representa el test de la clase proyecto.
+ * 
+ * @author Carmen Gómez, María Pozo.
+ */
 public class ProyectoTester {
 
     public ProyectoTester() {
         /** Constructor vacio. */
     }
 
+    /**
+     * Método main que ejecuta la prueba.
+     * 
+     * @param args Argumentos recibidos.
+     * @throws RepresentanteInvalidoException Si se asigna a una asociación un
+     *                                        representante inválido.
+     */
     public static void main(String[] args) throws RepresentanteInvalidoException {
         Aplicacion aplicacion = new Aplicacion();
         Ciudadano ciudadano1 = new Ciudadano("Juan Bravo", "dmcikd4", "01234567K");

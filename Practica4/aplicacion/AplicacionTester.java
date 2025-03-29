@@ -3,12 +3,26 @@ package aplicacion;
 import aplicacion.exceptions.RepresentanteInvalidoException;
 import aplicacion.usuarios.*;
 
+/**
+ * La clase AplicacionTester representa el test de la aplicación.
+ * 
+ * @author Carmen Gómez, María Pozo.
+ */
 public class AplicacionTester {
-
+    /**
+     * Contructor de la clase AplicacionTester.
+     */
     public AplicacionTester() {
         /** Constructor vacio. */
     }
 
+    /**
+     * Método main que ejecuta la prueba.
+     * 
+     * @param args Argumentos recibidos.
+     * @throws RepresentanteInvalidoException Si se asigna a una asociación un
+     *                                        representante inválido.
+     */
     public static void main(String[] args) throws RepresentanteInvalidoException {
         Aplicacion aplicacion = new Aplicacion();
         Ciudadano ciudadano1 = new Ciudadano("Juan Bravo", "dmcikd4", "01234567K");

@@ -7,16 +7,38 @@ import aplicacion.proyectos.Proyecto;
 import aplicacion.exceptions.CifInvalidoException;
 import aplicacion.exceptions.NifInvalidoException;
 
+/**
+ * La clase Aplicacion representa la aplicación.
+ * 
+ * @author Carmen Gómez, María Pozo.
+ */
 public class Aplicacion {
+    /** Mapa de ciudadanos y nif */
     private Map<String, Ciudadano> ciudadanos;
+    /** Lista de asociaciones de la aplicación */
     private List<Asociacion> asociaciones;
+    /** Mapa de fundaciones y cif */
     private Map<String, Fundacion> fundaciones;
+    /** Lista de proyectos propuestos */
     private List<Proyecto> proyectos;
 
+    /**
+     * Constructor de la clase Aplicacion.
+     * Inicializa las estructuras de datos necesarias.
+     */
     public Aplicacion() {
-        /** Constructor vacío */
+        this.ciudadanos = new HashMap<>();
+        this.asociaciones = new ArrayList<>();
+        this.fundaciones = new HashMap<>();
+        this.proyectos = new ArrayList<>();
     }
 
+    /**
+     * Registra un ciudadano en la aplicación.
+     * 
+     * @param ciudadano El ciudadano a registrar.
+     * @throws IllegalArgumentException Si el NIF ya está registrado.
+     */
     public void registrarCiudadano(Ciudadano ciudadano) {
         if (ciudadanos.containsKey(ciudadano.getNif())) {
             throw new IllegalArgumentException("NIF ya registrado");
@@ -24,6 +46,12 @@ public class Aplicacion {
         ciudadanos.put(ciudadano.getNif(), ciudadano);
     }
 
+    /**
+     * Registra una fundación en la aplicación.
+     * 
+     * @param fundacion La fundación a registrar.
+     * @throws IllegalArgumentException Si el CIF ya está registrado.
+     */
     public void registrarFundacion(Fundacion fundacion) {
         if (fundaciones.containsKey(fundacion.getCif())) {
             throw new IllegalArgumentException("CIF ya registrado");
@@ -31,6 +59,14 @@ public class Aplicacion {
         fundaciones.put(fundacion.getCif(), fundacion);
     }
 
+    /**
+     * Verifica que todas las asociaciones dentro de una asociación tengan el mismo
+     * representante.
+     * 
+     * @param asociacion La asociación a verificar.
+     * @throws RepresentanteInvalidoException Si alguna asociación tiene un
+     *                                        representante diferente.
+     */
     public void verificarRepresentante(Asociacion asociacion) throws RepresentanteInvalidoException {
         for (Asociacion a : asociacion.getAsociaciones()) {
             if (!a.getRepresentante().equals(asociacion.getRepresentante())) {
@@ -39,6 +75,12 @@ public class Aplicacion {
         }
     }
 
+    /**
+     * Valida que un NIF tenga el formato correcto.
+     * 
+     * @param nif El NIF a validar.
+     * @throws NifInvalidoException Si el NIF no cumple con el formato requerido.
+     */
     public void validarNif(String nif) throws NifInvalidoException {
         if (nif.length() != 8) {
             throw new NifInvalidoException("La longitud del nif debería ser de 8 caracteres.");
@@ -53,6 +95,12 @@ public class Aplicacion {
         }
     }
 
+    /**
+     * Valida que un CIF tenga el formato correcto.
+     * 
+     * @param cif El CIF a validar.
+     * @throws CifInvalidoException Si el CIF no cumple con el formato requerido.
+     */
     public void validarCif(String cif) throws CifInvalidoException {
         if (cif.length() != 8) {
             throw new CifInvalidoException("La longitud del nif debería ser de 8 caracteres.");
@@ -72,6 +120,12 @@ public class Aplicacion {
         }
     }
 
+    /**
+     * Obtiene un ciudadano por su nombre.
+     * 
+     * @param nombre El nombre del ciudadano.
+     * @return El ciudadano encontrado o null si no existe.
+     */
     public Ciudadano obtenerCiudadanoPorNombre(String nombre) {
         for (Ciudadano ciudadano : ciudadanos.values()) {
             if (ciudadano.getNombre().equals(nombre)) {
@@ -81,10 +135,21 @@ public class Aplicacion {
         return null;
     }
 
+    /**
+     * Obtiene todos los ciudadanos registrados en la aplicación.
+     * 
+     * @return Una lista con todos los ciudadanos registrados.
+     */
     public List<Ciudadano> obtenerTodosLosCiudadanos() {
         return new ArrayList<>(ciudadanos.values());
     }
 
+    /**
+     * Obtiene un proyecto por su nombre.
+     * 
+     * @param nombre El nombre del proyecto.
+     * @return El proyecto encontrado o null si no existe.
+     */
     public Proyecto obtenerProyectoPorNombre(String nombre) {
         for (Proyecto proyecto : proyectos) {
             if (proyecto.getNombre().equals(nombre)) {
@@ -94,6 +159,12 @@ public class Aplicacion {
         return null;
     }
 
+    /**
+     * Obtiene un proyecto por su código único.
+     * 
+     * @param codigo El código del proyecto.
+     * @return El proyecto encontrado o null si no existe.
+     */
     public Proyecto obtenerProyectoPorCodigo(int codigo) {
         for (Proyecto proyecto : proyectos) {
             if (proyecto.getCodigo() == codigo) {
@@ -103,6 +174,11 @@ public class Aplicacion {
         return null;
     }
 
+    /**
+     * Obtiene todos los proyectos registrados en la aplicación.
+     * 
+     * @return Una lista con todos los proyectos registrados.
+     */
     public List<Proyecto> obtenerTodosLosProyectos() {
         return new ArrayList<>(proyectos);
     }

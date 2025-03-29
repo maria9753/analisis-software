@@ -14,9 +14,16 @@ public class Asociacion extends Usuario {
     private Set<Ciudadano> ciudadanos;
     /** Asociaciones que contiene la asociación */
     private Set<Asociacion> asociaciones;
-    /**  */
+    /** Representante de la asocicacion */
     private Ciudadano representante;
 
+    /**
+     * Constructor de la clase Asociacion.
+     * 
+     * @param nombre        Nombre de la asociación.
+     * @param contrasena    Contraseña de la asociación.
+     * @param representante Representante de la asociación.
+     */
     public Asociacion(String nombre, String contrasena, Ciudadano representante) {
         super(nombre, contrasena);
         this.representante = representante;
@@ -25,14 +32,30 @@ public class Asociacion extends Usuario {
         this.asociaciones = new HashSet<Asociacion>();
     }
 
+    /**
+     * Obtiene el representante de la asociación.
+     * 
+     * @return El representante de la asociación.
+     */
     public Ciudadano getRepresentante() {
         return representante;
     }
 
+    /**
+     * Obtiene los ciudadanos directos de la asociación.
+     * 
+     * @return Un conjunto de ciudadanos directos en la asociación.
+     */
     public Set<Ciudadano> getCiudadanosDirectos() {
         return this.ciudadanos;
     }
 
+    /**
+     * Obtiene todos los ciudadanos, tanto directos como los de las asociaciones
+     * relacionadas.
+     * 
+     * @return Un conjunto de todos los ciudadanos de la asociación.
+     */
     public Set<Ciudadano> getCiudadanos() {
         Set<Ciudadano> todosLosCiudadanos = new HashSet<>(this.ciudadanos);
         for (Asociacion a : asociaciones) {
@@ -42,10 +65,22 @@ public class Asociacion extends Usuario {
         return todosLosCiudadanos;
     }
 
+    /**
+     * Obtiene las asociaciones relacionadas con esta asociación.
+     * 
+     * @return Un conjunto de asociaciones relacionadas.
+     */
     public Set<Asociacion> getAsociaciones() {
         return asociaciones;
     }
 
+    /**
+     * Comprobar si un ciudadano está inscrito en la asociación o en sus
+     * asociaciones relacionadas.
+     * 
+     * @param ciudadano El ciudadano que se va a comprobar.
+     * @return true si el ciudadano está inscrito, false si no lo está.
+     */
     public boolean comprobarCiudadano(Ciudadano ciudadano) {
         if (ciudadanos.contains(ciudadano)) {
             return true;
@@ -60,6 +95,11 @@ public class Asociacion extends Usuario {
         return false;
     }
 
+    /**
+     * Inscribe un nuevo ciudadano en la asociación si no está ya inscrito.
+     * 
+     * @param ciudadano El ciudadano a inscribir.
+     */
     public void inscribirCiudadano(Ciudadano ciudadano) {
         if (comprobarCiudadano(ciudadano) == true) {
             return;
@@ -68,10 +108,23 @@ public class Asociacion extends Usuario {
         ciudadanos.add(ciudadano);
     }
 
+    /**
+     * Da de baja a un ciudadano de la asociación.
+     * 
+     * @param ciudadano El ciudadano a dar de baja.
+     */
     public void darDeBajaCiudadano(Ciudadano ciudadano) {
         ciudadanos.remove(ciudadano);
     }
 
+    /**
+     * Añade una nueva asociación relacionada, asegurándose de que el representante
+     * sea el mismo.
+     * 
+     * @param asociacion La asociación a añadir.
+     * @throws RepresentanteInvalidoException Si el representante de la nueva
+     *                                        asociación no es el mismo.
+     */
     public void anadirAsociacion(Asociacion asociacion) throws RepresentanteInvalidoException {
         if (asociacion.getRepresentante() != representante) {
             throw new RepresentanteInvalidoException("El representante de la nueva asociación debe ser el mismo.");
@@ -80,6 +133,12 @@ public class Asociacion extends Usuario {
         asociaciones.add(asociacion);
     }
 
+    /**
+     * Representación en forma de cadena de la asociación, mostrando su nombre y
+     * la cantidad de ciudadanos.
+     * 
+     * @return Una cadena con el nombre de la asociación y el número de ciudadanos.
+     */
     @Override
     public String toString() {
         return nombre + " <asociacion con " + getCiudadanos().size() + " ciudadanos>";

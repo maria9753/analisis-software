@@ -2,10 +2,27 @@ package aplicacion.proyectos;
 
 import aplicacion.usuarios.*;
 
+/**
+ * La clase ProyectoFundacion representa los proyectos que proponen las
+ * fundaciones.
+ * 
+ * @author Carmen Gómez, María Pozo.
+ */
 public class ProyectoFundacion extends Proyecto {
+    /** Presupuesto del proyecto */
     private double presupuesto;
+    /** Porcentaje de contribución */
     private double porcentaje;
 
+    /**
+     * Constructor de la clase ProyectoFundacion.
+     * 
+     * @param titulo      Título del proyecto.
+     * @param descripcion Descripción del proyecto.
+     * @param proponente  Usuario que propone el proyecto.
+     * @param presupuesto El presupuesto asignado al proyecto.
+     * @param porcentaje  El porcentaje de contribución del proyecto.
+     */
     public ProyectoFundacion(String titulo, String descripcion, Usuario proponente, double presupuesto,
             double porcentaje) {
         super(titulo, descripcion, proponente);
@@ -19,6 +36,13 @@ public class ProyectoFundacion extends Proyecto {
         this.presupuesto = presupuesto;
     }
 
+    /**
+     * Sobrescribe el método toString para representar el ProyectoFundacion como
+     * una cadena.
+     * 
+     * @return Una representación del proyecto de fundación con su presupuesto
+     *         y porcentaje.
+     */
     @Override
     public String toString() {
         return super.toString() + ". Presupuesto " + presupuesto + " . Porcentaje: " + porcentaje
