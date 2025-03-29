@@ -3,6 +3,7 @@ package aplicacion;
 import java.util.*;
 import aplicacion.usuarios.*;
 import aplicacion.exceptions.RepresentanteInvalidoException;
+import aplicacion.proyectos.Proyecto;
 import aplicacion.exceptions.CifInvalidoException;
 import aplicacion.exceptions.NifInvalidoException;
 
@@ -10,6 +11,7 @@ public class Aplicacion {
     private Map<String, Ciudadano> ciudadanos;
     private List<Asociacion> asociaciones;
     private Map<String, Fundacion> fundaciones;
+    private List<Proyecto> proyectos;
 
     public Aplicacion() {
         /** Constructor vacío */
@@ -81,6 +83,28 @@ public class Aplicacion {
 
     public List<Ciudadano> obtenerTodosLosCiudadanos() {
         return new ArrayList<>(ciudadanos.values());
+    }
+
+    public Proyecto obtenerProyectoPorNombre(String nombre) {
+        for (Proyecto proyecto : proyectos) {
+            if (proyecto.getNombre().equals(nombre)) {
+                return proyecto;
+            }
+        }
+        return null;
+    }
+
+    public Proyecto obtenerProyectoPorCodigo(int codigo) {
+        for (Proyecto proyecto : proyectos) {
+            if (proyecto.getCodigo() == codigo) {
+                return proyecto;
+            }
+        }
+        return null;
+    }
+
+    public List<Proyecto> obtenerTodosLosProyectos() {
+        return new ArrayList<>(proyectos);
     }
 
 }
