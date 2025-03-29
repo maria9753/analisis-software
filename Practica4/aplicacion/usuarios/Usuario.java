@@ -1,23 +1,26 @@
+package aplicacion.usuarios;
+
 /**
  * La clase Usuario representa a un usuario de la aplicación.
  * 
  * @author Carmen Gómez, María Pozo.
  */
 public abstract class Usuario {
-    /** Nombre del usuario*/
+    /** Nombre del usuario */
     private String nombre;
-    /** Contraseña del usuario*/
+    /** Contraseña del usuario */
     private String contrasena;
 
-    /** 
+    /**
      * Constructor de la clase Usuario.
      * 
-     * @param nombre        Nombre del usuario.
-     * @param contrasena    Contraseña del usuario.
+     * @param nombre     Nombre del usuario.
+     * @param contrasena Contraseña del usuario.
+     * 
      */
     public Usuario(String nombre, String contrasena) {
-        this.nombre=nombre;
-        this.contrasena=contrasena;
+        this.nombre = nombre;
+        this.contrasena = contrasena;
     }
 
     /**

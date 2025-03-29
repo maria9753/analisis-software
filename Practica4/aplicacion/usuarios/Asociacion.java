@@ -1,22 +1,26 @@
+package aplicacion.usuarios;
+
+import java.util.*;
+
 /**
  * La clase Asociacion representa una asociación de la aplicación.
  * 
  * @author Carmen Gómez, María Pozo.
  */
 public class Asociacion extends Usuario {
-    /** Ciudadanos inscritos en la asociación*/
+    /** Ciudadanos inscritos en la asociación */
     private Set<Ciudadano> ciudadanos;
-    /** Asociaciones que contiene la asociación*/
+    /** Asociaciones que contiene la asociación */
     private Set<Asociacion> asociaciones;
     /**  */
     private Ciudadano representante;
-    
-    public Asociacion(String nombre, String contrasena, Ciudadano representante, ) {
+
+    public Asociacion(String nombre, String contrasena, Ciudadano representante) {
         super(nombre, contrasena);
         this.representante = representante;
-        this.ciudadanos = new HashSet<Ciudadano>;
+        this.ciudadanos = new HashSet<Ciudadano>();
         this.ciudadanos.add(representante);
-        this.Asociacion = new HashSet<Asociacion>;
+        this.asociaciones = new HashSet<Asociacion>();
     }
 
     public Ciudadano getRepresentante() {
@@ -36,7 +40,7 @@ public class Asociacion extends Usuario {
             return true;
         }
 
-        for (Asociacion a: asociaciones) {
+        for (Asociacion a : asociaciones) {
             if (a.comprobarCiudadano(ciudadano) == true) {
                 return true;
             }
@@ -64,7 +68,5 @@ public class Asociacion extends Usuario {
 
         asociaciones.add(asociacion);
     }
-
-
 
 }
