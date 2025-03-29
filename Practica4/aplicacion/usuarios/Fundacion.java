@@ -29,4 +29,9 @@ public class Fundacion extends Usuario {
     public String getCif() {
         return cif;
     }
+
+    @Override
+    public String toString() {
+        return nombre + " (" + cif + ") <fundacion>";
+    }
 }

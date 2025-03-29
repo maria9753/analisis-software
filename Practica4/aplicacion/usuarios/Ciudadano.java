@@ -23,4 +23,9 @@ public class Ciudadano extends Usuario {
     public String getNif() {
         return this.nif;
     }
+
+    @Override
+    public String toString() {
+        return nombre + " (" + nif + ") <usuario>";
+    }
 }

@@ -7,7 +7,7 @@ package aplicacion.usuarios;
  */
 public abstract class Usuario {
     /** Nombre del usuario */
-    private String nombre;
+    protected String nombre;
     /** Contraseña del usuario */
     private String contrasena;
 

@@ -2,6 +2,8 @@ package aplicacion.usuarios;
 
 import java.util.*;
 
+import aplicacion.exceptions.RepresentanteInvalidoException;
+
 /**
  * La clase Asociacion representa una asociación de la aplicación.
  * 
@@ -27,8 +29,17 @@ public class Asociacion extends Usuario {
         return representante;
     }
 
+    public Set<Ciudadano> getCiudadanosDirectos() {
+        return this.ciudadanos;
+    }
+
     public Set<Ciudadano> getCiudadanos() {
-        return ciudadanos;
+        Set<Ciudadano> todosLosCiudadanos = new HashSet<>(this.ciudadanos);
+        for (Asociacion a : asociaciones) {
+            todosLosCiudadanos.addAll(a.getCiudadanos());
+        }
+        todosLosCiudadanos.addAll(getCiudadanosDirectos());
+        return todosLosCiudadanos;
     }
 
     public Set<Asociacion> getAsociaciones() {
@@ -61,12 +72,16 @@ public class Asociacion extends Usuario {
         ciudadanos.remove(ciudadano);
     }
 
-    public void anadirAsociacion(Asociacion asociacion) {
-        if (asociaciones.size() == 0 || asociacion.getRepresentante() != representante) {
-            return;
+    public void anadirAsociacion(Asociacion asociacion) throws RepresentanteInvalidoException {
+        if (asociacion.getRepresentante() != representante) {
+            throw new RepresentanteInvalidoException("El representante de la nueva asociación debe ser el mismo.");
         }
 
         asociaciones.add(asociacion);
     }
 
+    @Override
+    public String toString() {
+        return nombre + " <asociacion con " + getCiudadanos().size() + " ciudadanos>";
+    }
 }

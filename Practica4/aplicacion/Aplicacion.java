@@ -2,7 +2,9 @@ package aplicacion;
 
 import java.util.*;
 import aplicacion.usuarios.*;
-import aplicacion.exceptions.*;
+import aplicacion.exceptions.RepresentanteInvalidoException;
+import aplicacion.exceptions.CifInvalidoException;
+import aplicacion.exceptions.NifInvalidoException;
 
 public class Aplicacion {
     private Map<String, Ciudadano> ciudadanos;
@@ -36,8 +38,8 @@ public class Aplicacion {
     }
 
     public void validarNif(String nif) throws NifInvalidoException {
-        if (nif.length() != 9) {
-            throw new NifInvalidoException("La longitud del nif debería ser de 9 caracteres.");
+        if (nif.length() != 8) {
+            throw new NifInvalidoException("La longitud del nif debería ser de 8 caracteres.");
         }
         for (int i = 0; i < 8; i++) {
             if (!Character.isDigit(nif.charAt(i))) {
@@ -53,14 +55,32 @@ public class Aplicacion {
         if (cif.length() != 8) {
             throw new CifInvalidoException("La longitud del nif debería ser de 8 caracteres.");
         }
-        for (int i = 0; i < 7; i++) {
+
+        if (!Character.isLetter(cif.charAt(0))) {
+            throw new CifInvalidoException("El primer caracter debe ser una letra.");
+        }
+
+        for (int i = 1; i < 7; i++) {
             if (!Character.isDigit(cif.charAt(i))) {
-                throw new CifInvalidoException("Los 7 primeros caracteres deben ser números.");
+                throw new CifInvalidoException("Los 6 siguientes caracteres deben ser números.");
             }
         }
         if (!Character.isLetter(cif.charAt(7))) {
             throw new CifInvalidoException("El último caracter debe ser una letra.");
         }
+    }
+
+    public Ciudadano obtenerCiudadanoPorNombre(String nombre) {
+        for (Ciudadano ciudadano : ciudadanos.values()) {
+            if (ciudadano.getNombre().equals(nombre)) {
+                return ciudadano;
+            }
+        }
+        return null;
+    }
+
+    public List<Ciudadano> obtenerTodosLosCiudadanos() {
+        return new ArrayList<>(ciudadanos.values());
     }
 
 }
