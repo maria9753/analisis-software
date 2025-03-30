@@ -13,6 +13,8 @@ public class Ciudadano extends Usuario {
     private String nif;
     /** Asociaciones a las que pertenece un ciudadano. */
     private Set<Asociacion> asociaciones;
+    /** Proyectos que apoya un ciudadano. */
+    private Set<Proyecto> proyectos;
 
     /**
      * Constructor de la clase Ciudadano.
@@ -25,6 +27,7 @@ public class Ciudadano extends Usuario {
         super(nombre, contrasena);
         this.nif = nif;
         this.asociaciones = new HashSet<>();
+        this.proyectos = new HashSet<>();
     }
 
     /**
@@ -52,6 +55,26 @@ public class Ciudadano extends Usuario {
      */
     public String getNif() {
         return this.nif;
+    }
+
+    /**
+     * Obtiene los proyectos que apoya un ciudadano.
+     * 
+     * @return El conjunto de proyectos que apoya el ciudadano.
+     */
+    public Set<Proyecto> getProyectos() {
+        return proyectos;
+    }
+
+    /**
+     * Apoya un proyecto.
+     * 
+     * @param proyecto El proyecto que se quiere apoyar.
+     */
+    public void apoyarProyecto(Proyecto proyecto) {
+        if (proyecto.getProponente() == this) {
+            throw new 
+        }
     }
 
     /**
