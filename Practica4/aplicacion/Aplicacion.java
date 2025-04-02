@@ -183,4 +183,82 @@ public class Aplicacion {
         return new ArrayList<>(proyectos);
     }
 
+    /**
+     * Propone un proyecto en la aplicación.
+     * @param proyecto El proyecto que se propone.
+     */
+    public void proponerProyecto(Proyecto proyecto) {
+        proyectos.add(proyecto);
+    }
+
+    /**
+     * Obtiene los proyectos de la aplicación y su número de apoyos.
+     * 
+     * @return Un mapa con los proyectos y su número de apoyos.
+     */
+    public Map<Proyecto, Integer> obtenerProyectosConApoyosOrdenados() {
+        Map<Proyecto, Integer> apoyos = new HashMap<>();
+        List<Proyecto> ordenados = new ArrayList<>();
+
+        for (Ciudadano c: ciudadanos.values()) {
+            for (Proyecto p: c.getProyectosApoyados().keySet()) {
+                apoyos.put(p, apoyos.getOrDefault(p, 0) + 1);
+            }
+        }
+
+        for (Asociacion a: asociaciones) {
+            for (Proyecto p: a.getProyectosApoyados().keySet()) {
+                apoyos.put(p, apoyos.getOrDefault(p, 0) + a.getCiudadanos().size());
+            }
+        }
+
+        ordenados.addAll(apoyos.keySet());
+        int i, j;
+        for (i = ordenados.size() - 1; i > 0; i--) {
+            for (j = 0; j < i; j++) {
+                if (apoyos.get(ordenados.get(j)) > apoyos.get(ordenados.get(j+1))) {
+                    Collections.swap(ordenados, j, j+1);
+                } 
+            }
+        }
+
+        Map<Proyecto, Integer> resultado = new LinkedHashMap<>();
+        for (Proyecto p: ordenados) {
+            resultado.put(p, apoyos.get(p));
+        }
+
+        return resultado;
+    }
+
+    /**
+     * Obtiene los proyectos de la aplicación y los ciudadanos que los apoyan.
+     * 
+     * @return Un mapa con los proyectos y los ciudadanos que los apoyan.
+     */
+    public Map<Proyecto, Set<Ciudadano>> obtenerProyectosYCiudadanosQueLosApoyan() {
+        Map<Proyecto, Set<Ciudadano>> proyectosYciudadanos = new HashMap<>();
+
+        for (Ciudadano c: ciudadanos.values()) {
+            for (Proyecto p: c.getProyectosApoyados().keySet()) {
+                if (!proyectosYciudadanos.containsKey(p)) {
+                    proyectosYciudadanos.put(p, new HashSet<Ciudadano>());
+                }
+
+                proyectosYciudadanos.get(p).add(c);
+            }
+        }
+
+        for (Asociacion a: asociaciones) {
+            for (Proyecto p: a.getProyectosApoyados().keySet()) {
+                if (!proyectosYciudadanos.containsKey(p)) {
+                    proyectosYciudadanos.put(p, new HashSet<Ciudadano>());
+                }
+
+                proyectosYciudadanos.get(p).addAll(a.getCiudadanos());
+            }
+        }
+
+        return proyectosYciudadanos;
+    }
+
 }
