@@ -25,21 +25,22 @@ public class ApoyoProyectoTester {
      * Método main que ejecuta la prueba.
      * 
      * @param args Argumentos recibidos.
-     * @throws RepresentanteInvalidoException 
-     * @throws ProyectoYaApoyadoException 
-     * @throws ProyectoMasDe60Exception 
-     * @throws ProponenteNoApoyaException 
-     * @throws NifInvalidoException 
-     * @throws CifInvalidoException 
+     * @throws RepresentanteInvalidoException
+     * @throws ProyectoYaApoyadoException
+     * @throws ProyectoMasDe60Exception
+     * @throws ProponenteNoApoyaException
+     * @throws NifInvalidoException
+     * @throws CifInvalidoException
      */
-    public static void main(String[] args) throws RepresentanteInvalidoException, ProponenteNoApoyaException, ProyectoMasDe60Exception, ProyectoYaApoyadoException, NifInvalidoException, CifInvalidoException {
+    public static void main(String[] args) throws RepresentanteInvalidoException, ProponenteNoApoyaException,
+            ProyectoMasDe60Exception, ProyectoYaApoyadoException, NifInvalidoException, CifInvalidoException {
         Aplicacion app = new Aplicacion();
-        Ciudadano ciudadano1 = new Ciudadano("Juan Bravo", "dmcikd4", "01234567K");
-        Ciudadano ciudadano2 = new Ciudadano("Ana López", "dkcoep3", "01234567L");
-        Ciudadano ciudadano3 = new Ciudadano("Luisa Gomez", "dkowej5", "01234567G");
-        Fundacion fundacion = new Fundacion("Fundacion Canal", "akñsnfi7", "A1234567B");
-        Asociacion asociacion1 = new Asociacion("conservemos el manzanares", "aksodcj4", ciudadano2);
-        Asociacion asociacion2 = new Asociacion("amigos de los pájaros", "cdkwpnm5", ciudadano2);
+        Ciudadano ciudadano1 = new Ciudadano("Juan Bravo", "dmcikd4", app, "01234567K");
+        Ciudadano ciudadano2 = new Ciudadano("Ana López", "dkcoep3", app, "01234567L");
+        Ciudadano ciudadano3 = new Ciudadano("Luisa Gomez", "dkowej5", app, "01234567G");
+        Fundacion fundacion = new Fundacion("Fundacion Canal", "akñsnfi7", app, "A1234567B");
+        Asociacion asociacion1 = new Asociacion("conservemos el manzanares", "aksodcj4", app, ciudadano2);
+        Asociacion asociacion2 = new Asociacion("amigos de los pájaros", "cdkwpnm5", app, ciudadano2);
         asociacion2.inscribirCiudadano(ciudadano3);
         asociacion1.inscribirCiudadano(ciudadano1);
         asociacion1.anadirAsociacion(asociacion2);
@@ -57,7 +58,7 @@ public class ApoyoProyectoTester {
         app.proponerProyecto(proyecto1);
         app.proponerProyecto(proyecto2);
 
-        ciudadano1.apoyarProyecto(proyecto2);        
+        ciudadano1.apoyarProyecto(proyecto2);
 
         Map<Proyecto, Integer> mapa1 = app.obtenerProyectosConApoyosOrdenados();
         Map<Proyecto, Set<Ciudadano>> mapa2 = app.obtenerProyectosYCiudadanosQueLosApoyan();

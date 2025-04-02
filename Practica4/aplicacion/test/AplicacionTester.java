@@ -1,6 +1,8 @@
 package aplicacion.test;
 
 import aplicacion.Aplicacion;
+import aplicacion.exceptions.CifInvalidoException;
+import aplicacion.exceptions.NifInvalidoException;
 import aplicacion.exceptions.RepresentanteInvalidoException;
 import aplicacion.usuarios.*;
 
@@ -23,8 +25,11 @@ public class AplicacionTester {
      * @param args Argumentos recibidos.
      * @throws RepresentanteInvalidoException Si se asigna a una asociación un
      *                                        representante inválido.
+     * @throws NifInvalidoException
+     * @throws CifInvalidoException
      */
-    public static void main(String[] args) throws RepresentanteInvalidoException {
+    public static void main(String[] args)
+            throws RepresentanteInvalidoException, NifInvalidoException, CifInvalidoException {
         Aplicacion aplicacion = new Aplicacion();
         Ciudadano ciudadano1 = new Ciudadano("Juan Bravo", "dmcikd4", aplicacion, "01234567K");
         Ciudadano ciudadano2 = new Ciudadano("Ana Luisa", "dkcoep3", aplicacion, "01234567L");

@@ -5,6 +5,7 @@ import java.util.List;
 
 import aplicacion.proyectos.*;
 import aplicacion.anuncios.Anuncio;
+import aplicacion.exceptions.CifInvalidoException;
 import aplicacion.follower.*;
 import aplicacion.*;
 
@@ -25,8 +26,9 @@ public class Fundacion extends Usuario implements FollowedEntity {
      * @param nombre     Nombre de la fundación.
      * @param contrasena Contraseña de la fundación.
      * @param cif        Cif de la fundación.
+     * @throws CifInvalidoException
      */
-    public Fundacion(String nombre, String contrasena, Aplicacion aplicacion, String cif) {
+    public Fundacion(String nombre, String contrasena, Aplicacion aplicacion, String cif) throws CifInvalidoException {
         super(nombre, contrasena, aplicacion);
         this.cif = cif;
         this.followers = new ArrayList<>();

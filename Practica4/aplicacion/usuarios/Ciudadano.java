@@ -9,6 +9,7 @@ import aplicacion.anuncios.Anuncio;
 import aplicacion.follower.FollowedEntity;
 import aplicacion.follower.Follower;
 import aplicacion.proyectos.Proyecto;
+import aplicacion.exceptions.NifInvalidoException;
 import aplicacion.exceptions.ProponenteNoApoyaException;
 import aplicacion.exceptions.ProyectoMasDe60Exception;
 import aplicacion.exceptions.ProyectoYaApoyadoException;
@@ -36,8 +37,9 @@ public class Ciudadano extends Usuario implements Follower {
      * @param nombre     Nombre del ciudadano.
      * @param contrasena Contraseña del ciudadano.
      * @param nif        NIF del ciudadano.
+     * @throws NifInvalidoException
      */
-    public Ciudadano(String nombre, String contrasena, Aplicacion aplicacion, String nif) {
+    public Ciudadano(String nombre, String contrasena, Aplicacion aplicacion, String nif) throws NifInvalidoException {
         super(nombre, contrasena, aplicacion);
         this.nif = nif;
         this.asociaciones = new HashSet<>();
