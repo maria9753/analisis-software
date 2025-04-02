@@ -35,7 +35,7 @@ public class ApoyoProyectoTester {
     public static void main(String[] args) throws RepresentanteInvalidoException, ProponenteNoApoyaException, ProyectoMasDe60Exception, ProyectoYaApoyadoException, NifInvalidoException, CifInvalidoException {
         Aplicacion app = new Aplicacion();
         Ciudadano ciudadano1 = new Ciudadano("Juan Bravo", "dmcikd4", "01234567K");
-        Ciudadano ciudadano2 = new Ciudadano("Ana Luisa", "dkcoep3", "01234567L");
+        Ciudadano ciudadano2 = new Ciudadano("Ana López", "dkcoep3", "01234567L");
         Ciudadano ciudadano3 = new Ciudadano("Luisa Gomez", "dkowej5", "01234567G");
         Fundacion fundacion = new Fundacion("Fundacion Canal", "akñsnfi7", "A1234567B");
         Asociacion asociacion1 = new Asociacion("conservemos el manzanares", "aksodcj4", ciudadano2);
