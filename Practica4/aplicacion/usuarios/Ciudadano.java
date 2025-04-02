@@ -16,8 +16,8 @@ public class Ciudadano extends Usuario implements Follower {
     private String nif;
     /** Asociaciones a las que pertenece un ciudadano. */
     private Set<Asociacion> asociaciones;
-    /** Proyectos que apoya un ciudadano. */
-    private Set<Proyecto> proyectos;
+    /** Proyectos que apoya un ciudadano y fecha del apoyo. */
+    private Map<Proyecto, LocalDateTime> proyectosApoyados;
     private List<String> mensajes;
 
     /**
@@ -31,7 +31,7 @@ public class Ciudadano extends Usuario implements Follower {
         super(nombre, contrasena);
         this.nif = nif;
         this.asociaciones = new HashSet<>();
-        this.proyectos = new HashSet<>();
+        this.proyectos = new HashMap<>();
     }
 
     /**
@@ -66,19 +66,34 @@ public class Ciudadano extends Usuario implements Follower {
      * 
      * @return El conjunto de proyectos que apoya el ciudadano.
      */
-    public Set<Proyecto> getProyectos() {
-        return proyectos;
+    public Map<Proyecto, LocalDateTime> getProyectosApoyados() {
+        return proyectosApoyados;
     }
 
     /**
-     * Apoya un proyecto.
+     * Un ciudadano apoya un proyecto.
      * 
      * @param proyecto El proyecto que se quiere apoyar.
+     * 
+     * @throws ProponenteNoApoyaException
+     * @throws ProyectoMasDe60Exception
+     * @throws ProyectoYaApoyadoException
      */
-    public void apoyarProyecto(Proyecto proyecto) {
+    public void apoyarProyecto(Proyecto proyecto) throws ProponenteNoApoyaException, ProyectoMasDe60Exception, ProyectoYaApoyadoException {
         if (proyecto.getProponente() == this) {
-            throw new 
+            throw new ProponenteNoApoyaException("Un ciudadano no puede apoyar un proyecto del cual es el proponente");
         }
+
+        if (proyectosApoyados.values().contains(proyecto)) {
+            throw new ProyectoYaApoyadoException("Un ciudadano no puede apoyar un proyecto que ya apoyaba");
+        }
+
+        Duration rango = Duration.between(proyecto.getFechaCreacion(), LocalDateTime.now());
+        if (rango.toDays() > 60) {
+            throw new ProyectoMasDe60Exception("Un ciudadano no puede apoyar un proyecto que ha sido creado hace más de 60 días");
+        }
+
+        proyectosApoyados.put(proyecto, LocalDateTime.now());
     }
 
     /**
