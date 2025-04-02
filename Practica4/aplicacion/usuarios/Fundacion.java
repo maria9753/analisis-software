@@ -96,7 +96,7 @@ public class Fundacion extends Usuario implements FollowedEntity {
     @Override
     public void announce(Anuncio t) {
         for (Follower f : followers) {
-            f.recieve(t);
+            f.receive(t);
         }
     }
 

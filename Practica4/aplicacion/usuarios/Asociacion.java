@@ -24,9 +24,8 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
     private Ciudadano representante;
     /** Proyectos que apoya la asociación y fecha del apoyo. */
     private Map<Proyecto, LocalDateTime> proyectosApoyados;
-    private List<Follower> followers;
-    private List<FollowedEntity> following;
-    private List<Proyecto> proyectos;
+    private Set<Follower> followers;
+    private Set<FollowedEntity> following;
 
     /**
      * Constructor de la clase Asociacion.
@@ -44,9 +43,10 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
         this.ciudadanos.add(representante);
         this.asociaciones = new HashSet<Asociacion>();
         this.proyectosApoyados = new HashMap<>();
-        this.followers = new ArrayList<>();
-        this.proyectos = new ArrayList<>();
+        this.followers = new HashSet<>();
+        this.following = new HashSet<>();
         aplicacion.registrarAsociacion(this);
+        representante.startToFollow(this);
     }
 
     /**
@@ -132,8 +132,8 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
         }
 
         ciudadanos.add(ciudadano);
-        ciudadano.follow(this);
-        anuncioNuevaInscripcion();
+        ciudadano.startToFollow(this);
+        anuncioNuevaInscripcion(ciudadano.getNombre());
     }
 
     /**
@@ -143,6 +143,7 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
      */
     public void darDeBajaCiudadano(Ciudadano ciudadano) {
         ciudadanos.remove(ciudadano);
+        ciudadano.startToUnfollow(this);
     }
 
     /**
@@ -168,7 +169,6 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
      */
     public void proponerProyecto(Proyecto proyecto) {
         aplicacion.proponerProyecto(proyecto);
-        proyectos.add(proyecto);
         anuncioPropuestaProyecto(proyecto.getNombre(), proyecto.getDescripcion());
     }
 
@@ -207,27 +207,35 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
     }
 
     @Override
-    public void recieve(Anuncio t) {
-        for (Ciudadano c : getCiudadanosDirectos()) {
-            c.recieve(t);
+    public void receive(Anuncio t) {
+        for (Follower f : followers) {
+            f.receive(t);
         }
         for (Asociacion a : getAsociaciones()) {
-            a.recieve(t);
+            a.receive(t);
         }
     }
 
-    public boolean follow(FollowedEntity entity) {
-        if (entity.follow(this)) {
+    public boolean startToFollow(FollowedEntity entity) {
+        if (!following.contains(entity)) {
             following.add(entity);
-            return true;
+            if (entity instanceof Asociacion) {
+                return ((Asociacion) entity).follow(this);
+            } else if (entity instanceof Fundacion) {
+                return ((Fundacion) entity).follow(this);
+            }
         }
         return false;
     }
 
-    public boolean unfollow(FollowedEntity entity) {
-        if (entity.unfollow(this)) {
-            following.remove(entity);
-            return true;
+    public boolean startToUnfollow(FollowedEntity entity) {
+        if (!following.contains(entity)) {
+            following.add(entity);
+            if (entity instanceof Asociacion) {
+                return ((Asociacion) entity).unfollow(this);
+            } else if (entity instanceof Fundacion) {
+                return ((Fundacion) entity).unfollow(this);
+            }
         }
         return false;
     }
@@ -246,7 +254,7 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
     /**
      * Método para seguir a otros usuarios.
      * 
-     * @param f Seguidor al que se empieza a seguir.
+     * @param f Seguidor al que le empieza a seguir.
      * @return True si ha sido correcto, false si no.
      */
     @Override
@@ -257,7 +265,7 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
     /**
      * Método para dejar de seguir a otros usuarios.
      * 
-     * @param f Seguidor al que se deja de seguir.
+     * @param f Seguidor al que le deja de seguir.
      * @return True si ha sido correcto, false si no.
      */
     @Override
@@ -273,7 +281,13 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
     @Override
     public void announce(Anuncio t) {
         for (Follower f : followers) {
-            f.recieve(t);
+            f.receive(t);
+        }
+        for (Asociacion a : getAsociaciones()) {
+            a.receive(t);
+        }
+        for (FollowedEntity entity : following) {
+            entity.announce(t);
         }
     }
 
@@ -285,7 +299,8 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
         announce(new Anuncio(super.nombre + " da apoyo al proyecto" + title + ": \"" + description + "\""));
     }
 
-    public void anuncioNuevaInscripcion() {
-        announce(new Anuncio("(" + getCiudadanos().size() + ")"));
+    public void anuncioNuevaInscripcion(String nombre) {
+        announce(new Anuncio(
+                "Alta de " + nombre + " en " + super.nombre + " (" + getCiudadanos().size() + " miembros)"));
     }
 }

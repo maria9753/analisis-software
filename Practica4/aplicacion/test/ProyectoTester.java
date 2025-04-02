@@ -43,6 +43,7 @@ public class ProyectoTester {
         asociacion2.inscribirCiudadano(ciudadano3);
         asociacion1.inscribirCiudadano(ciudadano1);
         asociacion1.anadirAsociacion(asociacion2);
+
         Proyecto proyecto1 = new Proyecto("Limpieza del manzanares", "Se quiere hacer una limpieza del río manzanares",
                 asociacion1);
         ProyectoFundacion proyecto2 = new ProyectoFundacion("Gastemos menos agua",

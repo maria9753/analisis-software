@@ -14,5 +14,5 @@ public interface Follower {
      * 
      * @param t Anuncio que se recibe
      */
-    public void recieve(Anuncio t);
+    public void receive(Anuncio t);
 }

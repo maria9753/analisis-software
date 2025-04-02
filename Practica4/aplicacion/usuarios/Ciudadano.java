@@ -28,8 +28,8 @@ public class Ciudadano extends Usuario implements Follower {
     /** Proyectos que apoya un ciudadano y fecha del apoyo. */
     private Map<Proyecto, LocalDateTime> proyectosApoyados;
 
-    private List<String> mensajes;
-    private List<FollowedEntity> following;
+    private Set<String> mensajes;
+    private Set<FollowedEntity> following;
 
     /**
      * Constructor de la clase Ciudadano.
@@ -44,8 +44,8 @@ public class Ciudadano extends Usuario implements Follower {
         this.nif = nif;
         this.asociaciones = new HashSet<>();
         this.proyectosApoyados = new HashMap<>();
-        this.mensajes = new ArrayList<>();
-        this.following = new ArrayList<>();
+        this.mensajes = new HashSet<>();
+        this.following = new HashSet<>();
         aplicacion.registrarCiudadano(this);
     }
 
@@ -58,7 +58,7 @@ public class Ciudadano extends Usuario implements Follower {
         return this.asociaciones;
     }
 
-    public List<String> getMensajesAnuncios() {
+    public Set<String> getMensajesAnuncios() {
         return mensajes;
     }
 
@@ -117,18 +117,26 @@ public class Ciudadano extends Usuario implements Follower {
         proyectosApoyados.put(proyecto, LocalDateTime.now());
     }
 
-    public boolean follow(FollowedEntity entity) {
-        if (entity.follow(this)) {
+    public boolean startToFollow(FollowedEntity entity) {
+        if (!following.contains(entity)) {
             following.add(entity);
-            return true;
+            if (entity instanceof Asociacion) {
+                return ((Asociacion) entity).follow(this);
+            } else if (entity instanceof Fundacion) {
+                return ((Fundacion) entity).follow(this);
+            }
         }
         return false;
     }
 
-    public boolean unfollow(FollowedEntity entity) {
-        if (entity.unfollow(this)) {
-            following.remove(entity);
-            return true;
+    public boolean startToUnfollow(FollowedEntity entity) {
+        if (!following.contains(entity)) {
+            following.add(entity);
+            if (entity instanceof Asociacion) {
+                return ((Asociacion) entity).unfollow(this);
+            } else if (entity instanceof Fundacion) {
+                return ((Fundacion) entity).unfollow(this);
+            }
         }
         return false;
     }
@@ -144,7 +152,7 @@ public class Ciudadano extends Usuario implements Follower {
     }
 
     @Override
-    public void recieve(Anuncio t) {
+    public void receive(Anuncio t) {
         mensajes.add(t.getContenidoAnuncio());
     }
 }
