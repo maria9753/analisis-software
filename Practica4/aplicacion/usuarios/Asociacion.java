@@ -20,7 +20,8 @@ public class Asociacion extends Usuario implements FollowedEntity {
     private Set<Asociacion> asociaciones;
     /** Representante de la asocicacion */
     private Ciudadano representante;
-
+    /** Proyectos que apoya la asociación y fecha del apoyo. */
+    private Map<Proyecto, LocalDateTime> proyectosApoyados;
     private List<Follower> followers;
 
     /**
@@ -36,6 +37,7 @@ public class Asociacion extends Usuario implements FollowedEntity {
         this.ciudadanos = new HashSet<Ciudadano>();
         this.ciudadanos.add(representante);
         this.asociaciones = new HashSet<Asociacion>();
+        this.proyectosApoyados = new HashMap<>();
         this.followers = new ArrayList<>();
     }
 
@@ -79,6 +81,15 @@ public class Asociacion extends Usuario implements FollowedEntity {
      */
     public Set<Asociacion> getAsociaciones() {
         return asociaciones;
+    }
+
+    /**
+     * Obtiene los proyectos que apoya la asociación.
+     * 
+     * @return El conjunto de proyectos que apoya la asociación.
+     */
+    public Map<Proyecto, LocalDateTime> getProyectosApoyados() {
+        return proyectosApoyados;
     }
 
     /**
@@ -140,6 +151,36 @@ public class Asociacion extends Usuario implements FollowedEntity {
         asociaciones.add(asociacion);
     }
 
+    /**
+     * Una asociación apoya un proyecto.
+     * 
+     * @param proyecto El proyecto que se quiere apoyar.
+     * 
+     * @throws ProponenteNoApoyaException
+     * @throws ProyectoMasDe60Exception
+     * @throws ProyectoYaApoyadoException
+     */
+    public void apoyarProyecto(Proyecto proyecto) throws ProponenteNoApoyaException, ProyectoMasDe60Exception, ProyectoYaApoyadoException {
+        if (proyecto.getProponente() == this) {
+            throw new ProponenteNoApoyaException("Una asociación no puede apoyar un proyecto del cual es el proponente");
+        }
+
+        if (proyectosApoyados.values().contains(proyecto)) {
+            throw new ProyectoYaApoyadoException("Una asociación no puede apoyar un proyecto que ya apoyaba");
+        }
+
+        Duration rango = Duration.between(proyecto.getFechaCreacion(), LocalDateTime.now());
+        if (rango.toDays() > 60) {
+            throw new ProyectoMasDe60Exception("Una asociación no puede apoyar un proyecto que ha sido creado hace más de 60 días");
+        }
+
+        proyectosApoyados.put(proyecto, LocalDateTime.now());
+
+        for (Ciudadano c: getCiudadanos()) {
+            c.getProyectosApoyados().remove(proyecto);
+        }
+    }
+    
     /**
      * Representación en forma de cadena de la asociación, mostrando su nombre y
      * la cantidad de ciudadanos.
