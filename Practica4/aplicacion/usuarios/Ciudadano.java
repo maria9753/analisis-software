@@ -1,6 +1,9 @@
 package aplicacion.usuarios;
 
 import java.util.*;
+import aplicacion.*;
+import aplicacion.anuncios.Anuncio;
+import aplicacion.follower.Follower;
 
 /**
  * La clase Ciudadano representa los ciudadanos que forman asociaciones, o
@@ -8,13 +11,14 @@ import java.util.*;
  * 
  * @author Carmen Gómez, María Pozo.
  */
-public class Ciudadano extends Usuario {
+public class Ciudadano extends Usuario implements Follower {
     /** Nif del ciudadano */
     private String nif;
     /** Asociaciones a las que pertenece un ciudadano. */
     private Set<Asociacion> asociaciones;
     /** Proyectos que apoya un ciudadano. */
     private Set<Proyecto> proyectos;
+    private List<String> mensajes;
 
     /**
      * Constructor de la clase Ciudadano.
@@ -85,5 +89,10 @@ public class Ciudadano extends Usuario {
     @Override
     public String toString() {
         return nombre + " (" + nif + ") <usuario>";
+    }
+
+    @Override
+    public void recieve(Anuncio t) {
+        mensajes.add(t.getContenidoAnuncio());
     }
 }

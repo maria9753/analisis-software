@@ -1,5 +1,6 @@
-package aplicacion;
+package aplicacion.test;
 
+import aplicacion.Aplicacion;
 import aplicacion.exceptions.RepresentanteInvalidoException;
 import aplicacion.usuarios.*;
 

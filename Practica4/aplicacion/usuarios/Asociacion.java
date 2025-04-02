@@ -2,20 +2,26 @@ package aplicacion.usuarios;
 
 import java.util.*;
 
-import aplicacion.exceptions.RepresentanteInvalidoException;
+import aplicacion.*;
+import aplicacion.anuncios.Anuncio;
+import aplicacion.exceptions.*;
+import aplicacion.follower.FollowedEntity;
+import aplicacion.follower.Follower;
 
 /**
  * La clase Asociacion representa una asociación de la aplicación.
  * 
  * @author Carmen Gómez, María Pozo.
  */
-public class Asociacion extends Usuario {
+public class Asociacion extends Usuario implements FollowedEntity {
     /** Ciudadanos inscritos en la asociación */
     private Set<Ciudadano> ciudadanos;
     /** Asociaciones que contiene la asociación */
     private Set<Asociacion> asociaciones;
     /** Representante de la asocicacion */
     private Ciudadano representante;
+
+    private List<Follower> followers;
 
     /**
      * Constructor de la clase Asociacion.
@@ -30,6 +36,7 @@ public class Asociacion extends Usuario {
         this.ciudadanos = new HashSet<Ciudadano>();
         this.ciudadanos.add(representante);
         this.asociaciones = new HashSet<Asociacion>();
+        this.followers = new ArrayList<>();
     }
 
     /**
@@ -142,5 +149,43 @@ public class Asociacion extends Usuario {
     @Override
     public String toString() {
         return nombre + " <asociacion con " + getCiudadanos().size() + " ciudadanos>";
+    }
+
+    /**
+     * Método para seguir a otros usuarios.
+     * 
+     * @param f Seguidor al que se empieza a seguir.
+     * @return True si ha sido correcto, false si no.
+     */
+    @Override
+    public boolean follow(Follower f) {
+        return followers.add(f);
+    }
+
+    /**
+     * Método para dejar de seguir a otros usuarios.
+     * 
+     * @param f Seguidor al que se deja de seguir.
+     * @return True si ha sido correcto, false si no.
+     */
+    @Override
+    public boolean unfollow(Follower f) {
+        return followers.remove(f);
+    }
+
+    /**
+     * Método para recibir anuncios
+     * 
+     * @param t Anuncio que se recibe
+     */
+    @Override
+    public void announce(Anuncio t) {
+        for (Follower f : followers) {
+            f.recieve(t);
+        }
+    }
+
+    public void anuncioPropuestaProyecto(String title, String description) {
+        announce(new Anuncio(super.nombre + " propone el proyecto" + title + ": " + description));
     }
 }

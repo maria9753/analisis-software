@@ -1,5 +1,6 @@
-package aplicacion;
+package aplicacion.test;
 
+import aplicacion.Aplicacion;
 import aplicacion.exceptions.RepresentanteInvalidoException;
 import aplicacion.proyectos.Proyecto;
 import aplicacion.proyectos.ProyectoFundacion;
@@ -12,6 +13,9 @@ import aplicacion.usuarios.*;
  */
 public class ProyectoTester {
 
+    /**
+     * Constructor de ProyectoTester.
+     */
     public ProyectoTester() {
         /** Constructor vacio. */
     }
