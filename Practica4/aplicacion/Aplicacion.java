@@ -37,12 +37,14 @@ public class Aplicacion {
      * Registra un ciudadano en la aplicación.
      * 
      * @param ciudadano El ciudadano a registrar.
+     * @throws NifInvalidoException 
      * @throws IllegalArgumentException Si el NIF ya está registrado.
      */
-    public void registrarCiudadano(Ciudadano ciudadano) {
+    public void registrarCiudadano(Ciudadano ciudadano) throws NifInvalidoException {
         if (ciudadanos.containsKey(ciudadano.getNif())) {
             throw new IllegalArgumentException("NIF ya registrado");
         }
+        validarNif(ciudadano.getNif());
         ciudadanos.put(ciudadano.getNif(), ciudadano);
     }
 
@@ -50,8 +52,10 @@ public class Aplicacion {
      * Registra un ciudadano en la aplicación.
      * 
      * @param ciudadano El ciudadano a registrar.
+     * @throws RepresentanteInvalidoException 
      */
-    public void registrarAsociacion(Asociacion asociacion) {
+    public void registrarAsociacion(Asociacion asociacion) throws RepresentanteInvalidoException {
+        verificarRepresentante(asociacion);
         asociaciones.add(asociacion);
     }
 
@@ -59,12 +63,14 @@ public class Aplicacion {
      * Registra una fundación en la aplicación.
      * 
      * @param fundacion La fundación a registrar.
+     * @throws CifInvalidoException 
      * @throws IllegalArgumentException Si el CIF ya está registrado.
      */
-    public void registrarFundacion(Fundacion fundacion) {
+    public void registrarFundacion(Fundacion fundacion) throws CifInvalidoException {
         if (fundaciones.containsKey(fundacion.getCif())) {
             throw new IllegalArgumentException("CIF ya registrado");
         }
+        validarCif(fundacion.getCif());
         fundaciones.put(fundacion.getCif(), fundacion);
     }
 
@@ -79,7 +85,7 @@ public class Aplicacion {
     public void verificarRepresentante(Asociacion asociacion) throws RepresentanteInvalidoException {
         for (Asociacion a : asociacion.getAsociaciones()) {
             if (!a.getRepresentante().equals(asociacion.getRepresentante())) {
-                throw new RepresentanteInvalidoException("La longitud del nif debería ser de 9 caracteres.");
+                throw new RepresentanteInvalidoException("Las asociaciones que contenga la asociación deben tener el mismo representante");
             }
         }
     }
@@ -91,8 +97,8 @@ public class Aplicacion {
      * @throws NifInvalidoException Si el NIF no cumple con el formato requerido.
      */
     public void validarNif(String nif) throws NifInvalidoException {
-        if (nif.length() != 8) {
-            throw new NifInvalidoException("La longitud del nif debería ser de 8 caracteres.");
+        if (nif.length() != 9) {
+            throw new NifInvalidoException("La longitud del nif debería ser de 9 caracteres.");
         }
         for (int i = 0; i < 8; i++) {
             if (!Character.isDigit(nif.charAt(i))) {
@@ -111,8 +117,8 @@ public class Aplicacion {
      * @throws CifInvalidoException Si el CIF no cumple con el formato requerido.
      */
     public void validarCif(String cif) throws CifInvalidoException {
-        if (cif.length() != 8) {
-            throw new CifInvalidoException("La longitud del nif debería ser de 8 caracteres.");
+        if (cif.length() != 9) {
+            throw new CifInvalidoException("La longitud del cif debería ser de 9 caracteres.");
         }
 
         if (!Character.isLetter(cif.charAt(0))) {
@@ -124,7 +130,7 @@ public class Aplicacion {
                 throw new CifInvalidoException("Los 6 siguientes caracteres deben ser números.");
             }
         }
-        if (!Character.isLetter(cif.charAt(7))) {
+        if (!Character.isLetter(cif.charAt(8))) {
             throw new CifInvalidoException("El último caracter debe ser una letra.");
         }
     }
@@ -221,11 +227,19 @@ public class Aplicacion {
             }
         }
 
+        for (Proyecto p: proyectos) {
+            if (p.getProponente() instanceof Ciudadano) {
+                apoyos.put(p, apoyos.getOrDefault(p, 0) + 1);
+            } else if (p.getProponente() instanceof Asociacion) {
+                apoyos.put(p, apoyos.getOrDefault(p, 0) + ((Asociacion) p.getProponente()).getCiudadanos().size());
+            }
+        }
+
         ordenados.addAll(apoyos.keySet());
         int i, j;
         for (i = ordenados.size() - 1; i > 0; i--) {
             for (j = 0; j < i; j++) {
-                if (apoyos.get(ordenados.get(j)) > apoyos.get(ordenados.get(j+1))) {
+                if (apoyos.get(ordenados.get(j)) < apoyos.get(ordenados.get(j+1))) {
                     Collections.swap(ordenados, j, j+1);
                 } 
             }
@@ -264,6 +278,17 @@ public class Aplicacion {
                 }
 
                 proyectosYciudadanos.get(p).addAll(a.getCiudadanos());
+            }
+        }
+
+        for (Proyecto p: proyectos) {
+            if (!proyectosYciudadanos.containsKey(p)) {
+                proyectosYciudadanos.put(p, new HashSet<Ciudadano>());
+            }
+            if (p.getProponente() instanceof Ciudadano) {
+                proyectosYciudadanos.get(p).add((Ciudadano) p.getProponente());
+            } else if (p.getProponente() instanceof Asociacion) {
+                proyectosYciudadanos.get(p).addAll(((Asociacion) p.getProponente()).getCiudadanos());
             }
         }
 

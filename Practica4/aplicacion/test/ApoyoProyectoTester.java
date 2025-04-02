@@ -3,6 +3,8 @@ package aplicacion.test;
 import java.util.*;
 
 import aplicacion.Aplicacion;
+import aplicacion.exceptions.CifInvalidoException;
+import aplicacion.exceptions.NifInvalidoException;
 import aplicacion.exceptions.ProponenteNoApoyaException;
 import aplicacion.exceptions.ProyectoMasDe60Exception;
 import aplicacion.exceptions.ProyectoYaApoyadoException;
@@ -27,8 +29,10 @@ public class ApoyoProyectoTester {
      * @throws ProyectoYaApoyadoException 
      * @throws ProyectoMasDe60Exception 
      * @throws ProponenteNoApoyaException 
+     * @throws NifInvalidoException 
+     * @throws CifInvalidoException 
      */
-    public static void main(String[] args) throws RepresentanteInvalidoException, ProponenteNoApoyaException, ProyectoMasDe60Exception, ProyectoYaApoyadoException {
+    public static void main(String[] args) throws RepresentanteInvalidoException, ProponenteNoApoyaException, ProyectoMasDe60Exception, ProyectoYaApoyadoException, NifInvalidoException, CifInvalidoException {
         Aplicacion app = new Aplicacion();
         Ciudadano ciudadano1 = new Ciudadano("Juan Bravo", "dmcikd4", "01234567K");
         Ciudadano ciudadano2 = new Ciudadano("Ana Luisa", "dkcoep3", "01234567L");
@@ -58,22 +62,8 @@ public class ApoyoProyectoTester {
         Map<Proyecto, Integer> mapa1 = app.obtenerProyectosConApoyosOrdenados();
         Map<Proyecto, Set<Ciudadano>> mapa2 = app.obtenerProyectosYCiudadanosQueLosApoyan();
 
-        int i = 0;
-        System.out.printf("{");
-        for (Map.Entry<Proyecto, Integer> entry: mapa1.entrySet()) {
-            System.out.println(i + ": " + entry.getKey() + "=" + entry.getValue());
-            i++;
-        }
-        System.out.printf("}");
-
-
-        int j = 0;
-        System.out.printf("{");
-        for (Map.Entry<Proyecto, Set<Ciudadano>> entry: mapa2.entrySet()) {
-            System.out.println(j + ": " + entry.getKey() + "=" + entry.getValue());
-            j++;
-        }
-        System.out.printf("}");
+        System.out.println(mapa1);
+        System.out.println(mapa2);
 
     }
 }
