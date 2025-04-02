@@ -45,7 +45,7 @@ public class ProyectoFundacion extends Proyecto {
      */
     @Override
     public String toString() {
-        return super.toString() + ". Presupuesto " + presupuesto + " . Porcentaje: " + porcentaje
+        return super.toString() + ". Presupuesto " + presupuesto + "€. Porcentaje: " + porcentaje
                 + "% /proyecto de fundación/";
     }
 }

@@ -4,7 +4,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import aplicacion.Aplicacion;
 import aplicacion.anuncios.Anuncio;
+import aplicacion.follower.FollowedEntity;
 import aplicacion.follower.Follower;
 import aplicacion.proyectos.Proyecto;
 import aplicacion.exceptions.ProponenteNoApoyaException;
@@ -24,7 +26,9 @@ public class Ciudadano extends Usuario implements Follower {
     private Set<Asociacion> asociaciones;
     /** Proyectos que apoya un ciudadano y fecha del apoyo. */
     private Map<Proyecto, LocalDateTime> proyectosApoyados;
+
     private List<String> mensajes;
+    private List<FollowedEntity> following;
 
     /**
      * Constructor de la clase Ciudadano.
@@ -33,11 +37,14 @@ public class Ciudadano extends Usuario implements Follower {
      * @param contrasena Contraseña del ciudadano.
      * @param nif        NIF del ciudadano.
      */
-    public Ciudadano(String nombre, String contrasena, String nif) {
-        super(nombre, contrasena);
+    public Ciudadano(String nombre, String contrasena, Aplicacion aplicacion, String nif) {
+        super(nombre, contrasena, aplicacion);
         this.nif = nif;
         this.asociaciones = new HashSet<>();
         this.proyectosApoyados = new HashMap<>();
+        this.mensajes = new ArrayList<>();
+        this.following = new ArrayList<>();
+        aplicacion.registrarCiudadano(this);
     }
 
     /**
@@ -47,6 +54,10 @@ public class Ciudadano extends Usuario implements Follower {
      */
     public Set<Asociacion> getAsociaciones() {
         return this.asociaciones;
+    }
+
+    public List<String> getMensajesAnuncios() {
+        return mensajes;
     }
 
     /**
@@ -85,7 +96,8 @@ public class Ciudadano extends Usuario implements Follower {
      * @throws ProyectoMasDe60Exception
      * @throws ProyectoYaApoyadoException
      */
-    public void apoyarProyecto(Proyecto proyecto) throws ProponenteNoApoyaException, ProyectoMasDe60Exception, ProyectoYaApoyadoException {
+    public void apoyarProyecto(Proyecto proyecto)
+            throws ProponenteNoApoyaException, ProyectoMasDe60Exception, ProyectoYaApoyadoException {
         if (proyecto.getProponente() == this) {
             throw new ProponenteNoApoyaException("Un ciudadano no puede apoyar un proyecto del cual es el proponente");
         }
@@ -96,10 +108,27 @@ public class Ciudadano extends Usuario implements Follower {
 
         Duration rango = Duration.between(proyecto.getFechaCreacion(), LocalDateTime.now());
         if (rango.toDays() > 60) {
-            throw new ProyectoMasDe60Exception("Un ciudadano no puede apoyar un proyecto que ha sido creado hace más de 60 días");
+            throw new ProyectoMasDe60Exception(
+                    "Un ciudadano no puede apoyar un proyecto que ha sido creado hace más de 60 días");
         }
 
         proyectosApoyados.put(proyecto, LocalDateTime.now());
+    }
+
+    public boolean follow(FollowedEntity entity) {
+        if (entity.follow(this)) {
+            following.add(entity);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean unfollow(FollowedEntity entity) {
+        if (entity.unfollow(this)) {
+            following.remove(entity);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -109,7 +138,7 @@ public class Ciudadano extends Usuario implements Follower {
      */
     @Override
     public String toString() {
-        return nombre + " (" + nif + ") <usuario>";
+        return nombre + "NIF (" + nif + ") <usuario>";
     }
 
     @Override

@@ -2,6 +2,9 @@ package aplicacion.proyectos;
 
 import java.time.LocalDateTime;
 
+import aplicacion.anuncios.Anuncio;
+import aplicacion.follower.Follower;
+import aplicacion.follower.FollowedEntity;
 import aplicacion.usuarios.*;
 
 /**
@@ -10,7 +13,7 @@ import aplicacion.usuarios.*;
  * 
  * @author Carmen Gómez, María Pozo.
  */
-public class Proyecto {
+public class Proyecto implements FollowedEntity {
     /** Contador para generar códigos */
     private static int contador = 0;
     /** Título del proyecto */
@@ -92,5 +95,43 @@ public class Proyecto {
     @Override
     public String toString() {
         return codigo + ": " + titulo + ". Proponente: " + proponente;
+    }
+
+    /**
+     * Método para seguir a otros usuarios.
+     * 
+     * @param f Seguidor al que se empieza a seguir.
+     * @return True si ha sido correcto, false si no.
+     */
+    @Override
+    public boolean follow(Follower f) {
+        return followers.add(f);
+    }
+
+    /**
+     * Método para dejar de seguir a otros usuarios.
+     * 
+     * @param f Seguidor al que se deja de seguir.
+     * @return True si ha sido correcto, false si no.
+     */
+    @Override
+    public boolean unfollow(Follower f) {
+        return followers.remove(f);
+    }
+
+    /**
+     * Método para recibir anuncios
+     * 
+     * @param t Anuncio que se recibe
+     */
+    @Override
+    public void announce(Anuncio t) {
+        for (Follower f : followers) {
+            f.recieve(t);
+        }
+    }
+
+    public void anuncioApoyoProyecto(String title, String description) {
+        announce(new Anuncio("(" + " apoyos)"));
     }
 }

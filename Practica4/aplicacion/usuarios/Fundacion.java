@@ -3,9 +3,10 @@ package aplicacion.usuarios;
 import java.util.ArrayList;
 import java.util.List;
 
+import aplicacion.proyectos.*;
 import aplicacion.anuncios.Anuncio;
-import aplicacion.follower.FollowedEntity;
-import aplicacion.follower.Follower;
+import aplicacion.follower.*;
+import aplicacion.*;
 
 /**
  * La clase Fundacion representa a una fundación de la aplicación.
@@ -16,6 +17,7 @@ public class Fundacion extends Usuario implements FollowedEntity {
     /** Cif de la fundación */
     private String cif;
     private List<Follower> followers;
+    private List<ProyectoFundacion> proyectos;
 
     /**
      * Constructor de la clase Fundacion.
@@ -24,10 +26,12 @@ public class Fundacion extends Usuario implements FollowedEntity {
      * @param contrasena Contraseña de la fundación.
      * @param cif        Cif de la fundación.
      */
-    public Fundacion(String nombre, String contrasena, String cif) {
-        super(nombre, contrasena);
+    public Fundacion(String nombre, String contrasena, Aplicacion aplicacion, String cif) {
+        super(nombre, contrasena, aplicacion);
         this.cif = cif;
         this.followers = new ArrayList<>();
+        aplicacion.registrarFundacion(this);
+        this.proyectos = new ArrayList<>();
     }
 
     /**
@@ -46,7 +50,7 @@ public class Fundacion extends Usuario implements FollowedEntity {
      */
     @Override
     public String toString() {
-        return nombre + " (" + cif + ") <fundacion>";
+        return nombre + "CIF (" + cif + ") <fundacion>";
     }
 
     /**
@@ -72,6 +76,17 @@ public class Fundacion extends Usuario implements FollowedEntity {
     }
 
     /**
+     * Propone un proyecto en la aplicación.
+     * 
+     * @param proyecto El proyecto que se propone.
+     */
+    public void proponerProyecto(ProyectoFundacion proyecto) {
+        aplicacion.proponerProyecto(proyecto);
+        proyectos.add(proyecto);
+        anuncioPropuestaProyecto(proyecto.getNombre(), proyecto.getDescripcion());
+    }
+
+    /**
      * Método para recibir anuncios
      * 
      * @param t Anuncio que se recibe
@@ -84,6 +99,6 @@ public class Fundacion extends Usuario implements FollowedEntity {
     }
 
     public void anuncioPropuestaProyecto(String title, String description) {
-        announce(new Anuncio(super.nombre + " propone el proyecto" + title + ": " + description));
+        announce(new Anuncio(super.nombre + " propone el proyecto" + title + ": \"" + description + "\""));
     }
 }

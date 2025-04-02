@@ -1,5 +1,7 @@
 package aplicacion.usuarios;
 
+import aplicacion.*;
+
 /**
  * La clase Usuario representa a un usuario de la aplicación.
  * 
@@ -10,6 +12,7 @@ public abstract class Usuario {
     protected String nombre;
     /** Contraseña del usuario */
     private String contrasena;
+    protected Aplicacion aplicacion;
 
     /**
      * Constructor de la clase Usuario.
@@ -18,9 +21,10 @@ public abstract class Usuario {
      * @param contrasena Contraseña del usuario.
      * 
      */
-    public Usuario(String nombre, String contrasena) {
+    public Usuario(String nombre, String contrasena, Aplicacion aplicacion) {
         this.nombre = nombre;
         this.contrasena = contrasena;
+        this.aplicacion = aplicacion;
     }
 
     /**

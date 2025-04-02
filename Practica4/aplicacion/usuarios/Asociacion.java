@@ -6,16 +6,16 @@ import java.time.LocalDateTime;
 
 import aplicacion.anuncios.Anuncio;
 import aplicacion.exceptions.*;
-import aplicacion.follower.FollowedEntity;
-import aplicacion.follower.Follower;
-import aplicacion.proyectos.Proyecto;
+import aplicacion.*;
+import aplicacion.follower.*;
+import aplicacion.proyectos.*;
 
 /**
  * La clase Asociacion representa una asociación de la aplicación.
  * 
  * @author Carmen Gómez, María Pozo.
  */
-public class Asociacion extends Usuario implements FollowedEntity {
+public class Asociacion extends Usuario implements FollowedEntity, Follower {
     /** Ciudadanos inscritos en la asociación */
     private Set<Ciudadano> ciudadanos;
     /** Asociaciones que contiene la asociación */
@@ -25,6 +25,8 @@ public class Asociacion extends Usuario implements FollowedEntity {
     /** Proyectos que apoya la asociación y fecha del apoyo. */
     private Map<Proyecto, LocalDateTime> proyectosApoyados;
     private List<Follower> followers;
+    private List<FollowedEntity> following;
+    private List<Proyecto> proyectos;
 
     /**
      * Constructor de la clase Asociacion.
@@ -32,15 +34,19 @@ public class Asociacion extends Usuario implements FollowedEntity {
      * @param nombre        Nombre de la asociación.
      * @param contrasena    Contraseña de la asociación.
      * @param representante Representante de la asociación.
+     * @throws RepresentanteInvalidoException
      */
-    public Asociacion(String nombre, String contrasena, Ciudadano representante) {
-        super(nombre, contrasena);
+    public Asociacion(String nombre, String contrasena, Aplicacion aplicacion, Ciudadano representante)
+            throws RepresentanteInvalidoException {
+        super(nombre, contrasena, aplicacion);
         this.representante = representante;
         this.ciudadanos = new HashSet<Ciudadano>();
         this.ciudadanos.add(representante);
         this.asociaciones = new HashSet<Asociacion>();
         this.proyectosApoyados = new HashMap<>();
         this.followers = new ArrayList<>();
+        this.proyectos = new ArrayList<>();
+        aplicacion.registrarAsociacion(this);
     }
 
     /**
@@ -126,6 +132,8 @@ public class Asociacion extends Usuario implements FollowedEntity {
         }
 
         ciudadanos.add(ciudadano);
+        ciudadano.follow(this);
+        anuncioNuevaInscripcion();
     }
 
     /**
@@ -154,6 +162,17 @@ public class Asociacion extends Usuario implements FollowedEntity {
     }
 
     /**
+     * Propone un proyecto en la aplicación.
+     * 
+     * @param proyecto El proyecto que se propone.
+     */
+    public void proponerProyecto(Proyecto proyecto) {
+        aplicacion.proponerProyecto(proyecto);
+        proyectos.add(proyecto);
+        anuncioPropuestaProyecto(proyecto.getNombre(), proyecto.getDescripcion());
+    }
+
+    /**
      * Una asociación apoya un proyecto.
      * 
      * @param proyecto El proyecto que se quiere apoyar.
@@ -162,9 +181,11 @@ public class Asociacion extends Usuario implements FollowedEntity {
      * @throws ProyectoMasDe60Exception
      * @throws ProyectoYaApoyadoException
      */
-    public void apoyarProyecto(Proyecto proyecto) throws ProponenteNoApoyaException, ProyectoMasDe60Exception, ProyectoYaApoyadoException {
+    public void apoyarProyecto(Proyecto proyecto)
+            throws ProponenteNoApoyaException, ProyectoMasDe60Exception, ProyectoYaApoyadoException {
         if (proyecto.getProponente() == this) {
-            throw new ProponenteNoApoyaException("Una asociación no puede apoyar un proyecto del cual es el proponente");
+            throw new ProponenteNoApoyaException(
+                    "Una asociación no puede apoyar un proyecto del cual es el proponente");
         }
 
         if (proyectosApoyados.containsKey(proyecto)) {
@@ -173,16 +194,44 @@ public class Asociacion extends Usuario implements FollowedEntity {
 
         Duration rango = Duration.between(proyecto.getFechaCreacion(), LocalDateTime.now());
         if (rango.toDays() > 60) {
-            throw new ProyectoMasDe60Exception("Una asociación no puede apoyar un proyecto que ha sido creado hace más de 60 días");
+            throw new ProyectoMasDe60Exception(
+                    "Una asociación no puede apoyar un proyecto que ha sido creado hace más de 60 días");
         }
 
         proyectosApoyados.put(proyecto, LocalDateTime.now());
 
-        for (Ciudadano c: getCiudadanos()) {
+        for (Ciudadano c : getCiudadanos()) {
             c.getProyectosApoyados().remove(proyecto);
         }
+        anuncioApoyoProyecto(proyecto.getNombre(), proyecto.getDescripcion());
     }
-    
+
+    @Override
+    public void recieve(Anuncio t) {
+        for (Ciudadano c : getCiudadanosDirectos()) {
+            c.recieve(t);
+        }
+        for (Asociacion a : getAsociaciones()) {
+            a.recieve(t);
+        }
+    }
+
+    public boolean follow(FollowedEntity entity) {
+        if (entity.follow(this)) {
+            following.add(entity);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean unfollow(FollowedEntity entity) {
+        if (entity.unfollow(this)) {
+            following.remove(entity);
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Representación en forma de cadena de la asociación, mostrando su nombre y
      * la cantidad de ciudadanos.
@@ -229,6 +278,14 @@ public class Asociacion extends Usuario implements FollowedEntity {
     }
 
     public void anuncioPropuestaProyecto(String title, String description) {
-        announce(new Anuncio(super.nombre + " propone el proyecto" + title + ": " + description));
+        announce(new Anuncio(super.nombre + " propone el proyecto" + title + ": \"" + description + "\""));
+    }
+
+    public void anuncioApoyoProyecto(String title, String description) {
+        announce(new Anuncio(super.nombre + " da apoyo al proyecto" + title + ": \"" + description + "\""));
+    }
+
+    public void anuncioNuevaInscripcion() {
+        announce(new Anuncio("(" + getCiudadanos().size() + ")"));
     }
 }
