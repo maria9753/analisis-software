@@ -1,9 +1,15 @@
 package aplicacion.usuarios;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
-import aplicacion.*;
+
 import aplicacion.anuncios.Anuncio;
 import aplicacion.follower.Follower;
+import aplicacion.proyectos.Proyecto;
+import aplicacion.exceptions.ProponenteNoApoyaException;
+import aplicacion.exceptions.ProyectoMasDe60Exception;
+import aplicacion.exceptions.ProyectoYaApoyadoException;
 
 /**
  * La clase Ciudadano representa los ciudadanos que forman asociaciones, o
@@ -31,7 +37,7 @@ public class Ciudadano extends Usuario implements Follower {
         super(nombre, contrasena);
         this.nif = nif;
         this.asociaciones = new HashSet<>();
-        this.proyectos = new HashMap<>();
+        this.proyectosApoyados = new HashMap<>();
     }
 
     /**
@@ -84,7 +90,7 @@ public class Ciudadano extends Usuario implements Follower {
             throw new ProponenteNoApoyaException("Un ciudadano no puede apoyar un proyecto del cual es el proponente");
         }
 
-        if (proyectosApoyados.values().contains(proyecto)) {
+        if (proyectosApoyados.containsKey(proyecto)) {
             throw new ProyectoYaApoyadoException("Un ciudadano no puede apoyar un proyecto que ya apoyaba");
         }
 

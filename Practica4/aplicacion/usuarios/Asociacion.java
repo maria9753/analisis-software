@@ -1,12 +1,14 @@
 package aplicacion.usuarios;
 
 import java.util.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
-import aplicacion.*;
 import aplicacion.anuncios.Anuncio;
 import aplicacion.exceptions.*;
 import aplicacion.follower.FollowedEntity;
 import aplicacion.follower.Follower;
+import aplicacion.proyectos.Proyecto;
 
 /**
  * La clase Asociacion representa una asociación de la aplicación.
@@ -165,7 +167,7 @@ public class Asociacion extends Usuario implements FollowedEntity {
             throw new ProponenteNoApoyaException("Una asociación no puede apoyar un proyecto del cual es el proponente");
         }
 
-        if (proyectosApoyados.values().contains(proyecto)) {
+        if (proyectosApoyados.containsKey(proyecto)) {
             throw new ProyectoYaApoyadoException("Una asociación no puede apoyar un proyecto que ya apoyaba");
         }
 

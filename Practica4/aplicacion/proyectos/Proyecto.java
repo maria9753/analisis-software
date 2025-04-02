@@ -58,6 +58,33 @@ public class Proyecto {
     }
 
     /**
+     * Método para obtener la descripción del proyecto.
+     * 
+     * @return La descripción del proyecto.
+     */
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    /**
+     * Método para obtener el proponente del proyecto.
+     * 
+     * @return El proponente del proyecto.
+     */
+    public Usuario getProponente() {
+        return proponente;
+    }
+
+    /**
+     * Método para obtener la fecha de creación del proyecto.
+     * 
+     * @return La fecha de creación del proyecto.
+     */
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    /**
      * Sobrescribe el método toString para representar el proyecto como una cadena.
      * 
      * @return Una cadena del proyecto.

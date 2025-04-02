@@ -3,7 +3,6 @@ package aplicacion.usuarios;
 import java.util.ArrayList;
 import java.util.List;
 
-import aplicacion.*;
 import aplicacion.anuncios.Anuncio;
 import aplicacion.follower.FollowedEntity;
 import aplicacion.follower.Follower;
