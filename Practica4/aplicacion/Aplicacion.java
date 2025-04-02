@@ -47,6 +47,15 @@ public class Aplicacion {
     }
 
     /**
+     * Registra un ciudadano en la aplicación.
+     * 
+     * @param ciudadano El ciudadano a registrar.
+     */
+    public void registrarAsociacion(Asociacion asociacion) {
+        asociaciones.add(asociacion);
+    }
+
+    /**
      * Registra una fundación en la aplicación.
      * 
      * @param fundacion La fundación a registrar.
