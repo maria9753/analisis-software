@@ -26,6 +26,7 @@ public class Proyecto implements FollowedEntity {
     private LocalDateTime fechaCreacion;
     /** Código del proyecto */
     private int codigo;
+    private int numApoyos;
 
     /**
      * Constructor de la clase Proyecto.
@@ -40,6 +41,7 @@ public class Proyecto implements FollowedEntity {
         this.proponente = proponente;
         this.codigo = contador++;
         this.fechaCreacion = LocalDateTime.now();
+        this.numApoyos = 0;
     }
 
     /**
@@ -87,6 +89,14 @@ public class Proyecto implements FollowedEntity {
         return fechaCreacion;
     }
 
+    public void addApoyo() {
+        this.numApoyos++;
+    }
+
+    public void removeApoyo() {
+        this.numApoyos--;
+    }
+
     /**
      * Sobrescribe el método toString para representar el proyecto como una cadena.
      * 
@@ -131,7 +141,7 @@ public class Proyecto implements FollowedEntity {
         }
     }
 
-    public void anuncioApoyoProyecto(int apoyos) {
-        announce(new Anuncio("(" + apoyos + " apoyos)"));
+    public void anuncioApoyoProyecto() {
+        announce(new Anuncio("(" + numApoyos + " apoyos)"));
     }
 }

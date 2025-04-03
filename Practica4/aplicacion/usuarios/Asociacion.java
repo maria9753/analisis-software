@@ -172,7 +172,8 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
         this.startToFollow(proyecto);
         anuncioPropuestaProyecto(proyecto.getNombre(), proyecto.getDescripcion());
         anuncioApoyoProyecto(proyecto.getNombre(), proyecto.getDescripcion());
-        proyecto.anuncioApoyoProyecto(3);
+        proyecto.addApoyo();
+        proyecto.anuncioApoyoProyecto();
     }
 
     /**
@@ -207,7 +208,8 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
             c.getProyectosApoyados().remove(proyecto);
         }
         anuncioApoyoProyecto(proyecto.getNombre(), proyecto.getDescripcion());
-        proyecto.anuncioApoyoProyecto(3);
+        proyecto.addApoyo();
+        proyecto.anuncioApoyoProyecto();
     }
 
     @Override

@@ -1,24 +1,21 @@
-package aplicacion.test;
+package aplicacion.ejecutables;
 
 import aplicacion.Aplicacion;
 import aplicacion.exceptions.CifInvalidoException;
 import aplicacion.exceptions.NifInvalidoException;
 import aplicacion.exceptions.RepresentanteInvalidoException;
-import aplicacion.proyectos.Proyecto;
-import aplicacion.proyectos.ProyectoFundacion;
 import aplicacion.usuarios.*;
 
 /**
- * La clase ProyectoTester representa el test de la clase proyecto.
+ * La clase AplicacionTester representa el test de la aplicación.
  * 
  * @author Carmen Gómez, María Pozo.
  */
-public class ProyectoTester {
-
+public class AplicacionMain {
     /**
-     * Constructor de ProyectoTester.
+     * Contructor de la clase AplicacionTester.
      */
-    public ProyectoTester() {
+    public AplicacionMain() {
         /** Constructor vacio. */
     }
 
@@ -35,7 +32,7 @@ public class ProyectoTester {
             throws RepresentanteInvalidoException, NifInvalidoException, CifInvalidoException {
         Aplicacion aplicacion = new Aplicacion();
         Ciudadano ciudadano1 = new Ciudadano("Juan Bravo", "dmcikd4", aplicacion, "01234567K");
-        Ciudadano ciudadano2 = new Ciudadano("Ana Lopez", "dkcoep3", aplicacion, "01234567L");
+        Ciudadano ciudadano2 = new Ciudadano("Ana Luisa", "dkcoep3", aplicacion, "01234567L");
         Ciudadano ciudadano3 = new Ciudadano("Luisa Gomez", "dkowej5", aplicacion, "01234567G");
         Fundacion fundacion = new Fundacion("Fundacion Canal", "akñsnfi7", aplicacion, "A1234567B");
         Asociacion asociacion1 = new Asociacion("conservemos el manzanares", "aksodcj4", aplicacion, ciudadano2);
@@ -44,11 +41,7 @@ public class ProyectoTester {
         asociacion1.inscribirCiudadano(ciudadano1);
         asociacion1.anadirAsociacion(asociacion2);
 
-        Proyecto proyecto1 = new Proyecto("Limpieza del manzanares", "Se quiere hacer una limpieza del río manzanares",
-                asociacion1);
-        ProyectoFundacion proyecto2 = new ProyectoFundacion("Gastemos menos agua",
-                "Se quiere tartar de gastar menos agua en las casas", fundacion, 100000.0, 80.0);
-
-        System.out.println("[" + proyecto1.toString() + ",\n " + proyecto2.toString() + "]");
+        System.out.println("[" + ciudadano1.toString() + "\n" + ciudadano2.toString() + "\n" + ciudadano3.toString()
+                + "\n" + asociacion1.toString() + "\n" + asociacion2.toString() + "\n" + fundacion.toString() + "]");
     }
 }

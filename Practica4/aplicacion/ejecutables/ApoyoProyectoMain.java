@@ -1,4 +1,4 @@
-package aplicacion.test;
+package aplicacion.ejecutables;
 
 import java.util.*;
 
@@ -13,11 +13,11 @@ import aplicacion.proyectos.Proyecto;
 import aplicacion.proyectos.ProyectoFundacion;
 import aplicacion.usuarios.*;
 
-public class ApoyoProyectoTester {
+public class ApoyoProyectoMain {
     /**
      * Constructor de ApoyoProyectoTester.
      */
-    public ApoyoProyectoTester() {
+    public ApoyoProyectoMain() {
         /** Constructor vacio. */
     }
 
