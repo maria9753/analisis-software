@@ -47,11 +47,6 @@ public class FollowersTest {
         asociacion1.inscribirCiudadano(ciudadano1);
         ciudadano1.startToFollow(fundacion);
         asociacion1.proponerProyecto(proyecto1);
-        try {
-            asociacion1.apoyarProyecto(proyecto1);
-        } catch (Exception e) {
-            System.out.println("Error al apoyar el proyecto: " + e.getMessage());
-        }
 
         fundacion.proponerProyecto(proyecto2);
 

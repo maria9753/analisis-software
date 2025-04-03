@@ -169,7 +169,10 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
      */
     public void proponerProyecto(Proyecto proyecto) {
         aplicacion.proponerProyecto(proyecto);
+        this.startToFollow(proyecto);
         anuncioPropuestaProyecto(proyecto.getNombre(), proyecto.getDescripcion());
+        anuncioApoyoProyecto(proyecto.getNombre(), proyecto.getDescripcion());
+        proyecto.anuncioApoyoProyecto(3);
     }
 
     /**
@@ -204,6 +207,7 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
             c.getProyectosApoyados().remove(proyecto);
         }
         anuncioApoyoProyecto(proyecto.getNombre(), proyecto.getDescripcion());
+        proyecto.anuncioApoyoProyecto(3);
     }
 
     @Override
@@ -223,6 +227,8 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
                 return ((Asociacion) entity).follow(this);
             } else if (entity instanceof Fundacion) {
                 return ((Fundacion) entity).follow(this);
+            } else if (entity instanceof Proyecto) {
+                return ((Proyecto) entity).follow(this);
             }
         }
         return false;
@@ -235,6 +241,8 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
                 return ((Asociacion) entity).unfollow(this);
             } else if (entity instanceof Fundacion) {
                 return ((Fundacion) entity).unfollow(this);
+            } else if (entity instanceof Proyecto) {
+                return ((Proyecto) entity).unfollow(this);
             }
         }
         return false;

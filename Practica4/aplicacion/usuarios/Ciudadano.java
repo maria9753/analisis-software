@@ -124,6 +124,8 @@ public class Ciudadano extends Usuario implements Follower {
                 return ((Asociacion) entity).follow(this);
             } else if (entity instanceof Fundacion) {
                 return ((Fundacion) entity).follow(this);
+            } else if (entity instanceof Proyecto) {
+                return ((Proyecto) entity).follow(this);
             }
         }
         return false;
@@ -136,6 +138,8 @@ public class Ciudadano extends Usuario implements Follower {
                 return ((Asociacion) entity).unfollow(this);
             } else if (entity instanceof Fundacion) {
                 return ((Fundacion) entity).unfollow(this);
+            } else if (entity instanceof Proyecto) {
+                return ((Proyecto) entity).unfollow(this);
             }
         }
         return false;

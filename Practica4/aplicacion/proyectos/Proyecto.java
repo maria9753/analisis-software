@@ -131,7 +131,7 @@ public class Proyecto implements FollowedEntity {
         }
     }
 
-    public void anuncioApoyoProyecto(String title, String description) {
-        announce(new Anuncio("(" + " apoyos)"));
+    public void anuncioApoyoProyecto(int apoyos) {
+        announce(new Anuncio("(" + apoyos + " apoyos)"));
     }
 }
