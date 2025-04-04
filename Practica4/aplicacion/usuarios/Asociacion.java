@@ -208,7 +208,6 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
             c.getProyectosApoyados().remove(proyecto);
         }
         anuncioApoyoProyecto(proyecto.getNombre(), proyecto.getDescripcion());
-        proyecto.addApoyo();
         proyecto.anuncioApoyoProyecto();
     }
 

@@ -37,7 +37,7 @@ public class Aplicacion {
      * Registra un ciudadano en la aplicación.
      * 
      * @param ciudadano El ciudadano a registrar.
-     * @throws NifInvalidoException 
+     * @throws NifInvalidoException
      * @throws IllegalArgumentException Si el NIF ya está registrado.
      */
     public void registrarCiudadano(Ciudadano ciudadano) throws NifInvalidoException {
@@ -52,7 +52,7 @@ public class Aplicacion {
      * Registra un ciudadano en la aplicación.
      * 
      * @param ciudadano El ciudadano a registrar.
-     * @throws RepresentanteInvalidoException 
+     * @throws RepresentanteInvalidoException
      */
     public void registrarAsociacion(Asociacion asociacion) throws RepresentanteInvalidoException {
         verificarRepresentante(asociacion);
@@ -63,7 +63,7 @@ public class Aplicacion {
      * Registra una fundación en la aplicación.
      * 
      * @param fundacion La fundación a registrar.
-     * @throws CifInvalidoException 
+     * @throws CifInvalidoException
      * @throws IllegalArgumentException Si el CIF ya está registrado.
      */
     public void registrarFundacion(Fundacion fundacion) throws CifInvalidoException {
@@ -85,7 +85,8 @@ public class Aplicacion {
     public void verificarRepresentante(Asociacion asociacion) throws RepresentanteInvalidoException {
         for (Asociacion a : asociacion.getAsociaciones()) {
             if (!a.getRepresentante().equals(asociacion.getRepresentante())) {
-                throw new RepresentanteInvalidoException("Las asociaciones que contenga la asociación deben tener el mismo representante");
+                throw new RepresentanteInvalidoException(
+                        "Las asociaciones que contenga la asociación deben tener el mismo representante");
             }
         }
     }
@@ -200,6 +201,7 @@ public class Aplicacion {
 
     /**
      * Propone un proyecto en la aplicación.
+     * 
      * @param proyecto El proyecto que se propone.
      */
     public void proponerProyecto(Proyecto proyecto) {
@@ -215,19 +217,19 @@ public class Aplicacion {
         Map<Proyecto, Integer> apoyos = new HashMap<>();
         List<Proyecto> ordenados = new ArrayList<>();
 
-        for (Ciudadano c: ciudadanos.values()) {
-            for (Proyecto p: c.getProyectosApoyados().keySet()) {
+        for (Ciudadano c : ciudadanos.values()) {
+            for (Proyecto p : c.getProyectosApoyados().keySet()) {
                 apoyos.put(p, apoyos.getOrDefault(p, 0) + 1);
             }
         }
 
-        for (Asociacion a: asociaciones) {
-            for (Proyecto p: a.getProyectosApoyados().keySet()) {
+        for (Asociacion a : asociaciones) {
+            for (Proyecto p : a.getProyectosApoyados().keySet()) {
                 apoyos.put(p, apoyos.getOrDefault(p, 0) + a.getCiudadanos().size());
             }
         }
 
-        for (Proyecto p: proyectos) {
+        for (Proyecto p : proyectos) {
             if (p.getProponente() instanceof Ciudadano) {
                 apoyos.put(p, apoyos.getOrDefault(p, 0) + 1);
             } else if (p.getProponente() instanceof Asociacion) {
@@ -239,14 +241,14 @@ public class Aplicacion {
         int i, j;
         for (i = ordenados.size() - 1; i > 0; i--) {
             for (j = 0; j < i; j++) {
-                if (apoyos.get(ordenados.get(j)) < apoyos.get(ordenados.get(j+1))) {
-                    Collections.swap(ordenados, j, j+1);
-                } 
+                if (apoyos.get(ordenados.get(j)) < apoyos.get(ordenados.get(j + 1))) {
+                    Collections.swap(ordenados, j, j + 1);
+                }
             }
         }
 
         Map<Proyecto, Integer> resultado = new LinkedHashMap<>();
-        for (Proyecto p: ordenados) {
+        for (Proyecto p : ordenados) {
             resultado.put(p, apoyos.get(p));
         }
 
@@ -261,8 +263,8 @@ public class Aplicacion {
     public Map<Proyecto, Set<Ciudadano>> obtenerProyectosYCiudadanosQueLosApoyan() {
         Map<Proyecto, Set<Ciudadano>> proyectosYciudadanos = new HashMap<>();
 
-        for (Ciudadano c: ciudadanos.values()) {
-            for (Proyecto p: c.getProyectosApoyados().keySet()) {
+        for (Ciudadano c : ciudadanos.values()) {
+            for (Proyecto p : c.getProyectosApoyados().keySet()) {
                 if (!proyectosYciudadanos.containsKey(p)) {
                     proyectosYciudadanos.put(p, new HashSet<Ciudadano>());
                 }
@@ -271,8 +273,8 @@ public class Aplicacion {
             }
         }
 
-        for (Asociacion a: asociaciones) {
-            for (Proyecto p: a.getProyectosApoyados().keySet()) {
+        for (Asociacion a : asociaciones) {
+            for (Proyecto p : a.getProyectosApoyados().keySet()) {
                 if (!proyectosYciudadanos.containsKey(p)) {
                     proyectosYciudadanos.put(p, new HashSet<Ciudadano>());
                 }
@@ -281,7 +283,7 @@ public class Aplicacion {
             }
         }
 
-        for (Proyecto p: proyectos) {
+        for (Proyecto p : proyectos) {
             if (!proyectosYciudadanos.containsKey(p)) {
                 proyectosYciudadanos.put(p, new HashSet<Ciudadano>());
             }
