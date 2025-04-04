@@ -312,4 +312,8 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
         announce(new Anuncio(
                 "Alta de " + nombre + " en " + super.nombre + " (" + getCiudadanos().size() + " miembros)"));
     }
+
+	public Set<Follower> getFollowers() {
+		return this.followers;
+	}
 }

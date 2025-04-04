@@ -144,4 +144,8 @@ public class Proyecto implements FollowedEntity {
     public void anuncioApoyoProyecto() {
         announce(new Anuncio("(" + numApoyos + " apoyos)"));
     }
+
+	public int getNumApoyos() {
+		return this.numApoyos;
+	}
 }

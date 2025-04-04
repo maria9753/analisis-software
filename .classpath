@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-23">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="Practica1/src"/>
+	<classpathentry kind="src" path="Practica2/Apartado1"/>
+	<classpathentry kind="src" path="Practica2/Apartado2"/>
+	<classpathentry kind="src" path="Practica3"/>
+	<classpathentry excluding="aplicacion/test/" kind="src" path="Practica4"/>
+	<classpathentry kind="src" path="Practica4/aplicacion/test"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
