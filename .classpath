@@ -9,8 +9,7 @@
 	<classpathentry kind="src" path="Practica2/Apartado1"/>
 	<classpathentry kind="src" path="Practica2/Apartado2"/>
 	<classpathentry kind="src" path="Practica3"/>
-	<classpathentry excluding="aplicacion/test/" kind="src" path="Practica4"/>
-	<classpathentry kind="src" path="Practica4/aplicacion/test"/>
+	<classpathentry kind="src" path="Practica4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
