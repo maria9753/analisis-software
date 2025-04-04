@@ -1,5 +1,5 @@
 package aplicacion.test;
 
-public class Usuario {
+public class FundacionTest {
 
 }
