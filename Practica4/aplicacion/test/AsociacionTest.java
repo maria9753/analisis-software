@@ -82,7 +82,7 @@ public class AsociacionTest {
     }
     
     @Test
-    void testProponerProyecto() {
+    void testProponerProyecto() throws ProponenteNoApoyaException, ProyectoMasDe60Exception, ProyectoYaApoyadoException {
         asociacion.proponerProyecto(proyecto);
         assertEquals(1, proyecto.getNumApoyos());
         assertTrue(asociacion.getProyectosApoyados().containsKey(proyecto));

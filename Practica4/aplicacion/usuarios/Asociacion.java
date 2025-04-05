@@ -169,6 +169,7 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
      */
     public void proponerProyecto(Proyecto proyecto) {
         aplicacion.proponerProyecto(proyecto);
+        proyectosApoyados.put(proyecto, LocalDateTime.now());
         this.startToFollow(proyecto);
         anuncioPropuestaProyecto(proyecto.getNombre(), proyecto.getDescripcion());
         anuncioApoyoProyecto(proyecto.getNombre(), proyecto.getDescripcion());
@@ -209,6 +210,7 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
         }
         anuncioApoyoProyecto(proyecto.getNombre(), proyecto.getDescripcion());
         proyecto.anuncioApoyoProyecto();
+        proyecto.addApoyo();
     }
 
     @Override
@@ -237,7 +239,7 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
 
     public boolean startToUnfollow(FollowedEntity entity) {
         if (!following.contains(entity)) {
-            following.add(entity);
+            following.remove(entity);
             if (entity instanceof Asociacion) {
                 return ((Asociacion) entity).unfollow(this);
             } else if (entity instanceof Fundacion) {
@@ -316,4 +318,17 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
 	public Set<Follower> getFollowers() {
 		return this.followers;
 	}
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Asociacion that = (Asociacion) o;
+        return Objects.equals(nombre, that.nombre);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nombre);
+    }
 }

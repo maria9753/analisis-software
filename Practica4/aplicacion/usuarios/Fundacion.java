@@ -1,7 +1,10 @@
 package aplicacion.usuarios;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 import aplicacion.proyectos.*;
 import aplicacion.anuncios.Anuncio;
@@ -17,7 +20,7 @@ import aplicacion.*;
 public class Fundacion extends Usuario implements FollowedEntity {
     /** Cif de la fundación */
     private String cif;
-    private List<Follower> followers;
+    private Set<Follower> followers;
     private List<ProyectoFundacion> proyectos;
 
     /**
@@ -30,8 +33,11 @@ public class Fundacion extends Usuario implements FollowedEntity {
      */
     public Fundacion(String nombre, String contrasena, Aplicacion aplicacion, String cif) throws CifInvalidoException {
         super(nombre, contrasena, aplicacion);
+        if(cif==null) {
+        	throw new CifInvalidoException("El cif no puede ser null.");
+        }
         this.cif = cif;
-        this.followers = new ArrayList<>();
+        this.followers = new HashSet<>();
         aplicacion.registrarFundacion(this);
         this.proyectos = new ArrayList<>();
     }
@@ -63,6 +69,9 @@ public class Fundacion extends Usuario implements FollowedEntity {
      */
     @Override
     public boolean follow(Follower f) {
+    	if(f==null) {
+    		throw new IllegalArgumentException("El seguidor no puede ser null.");
+    	}
         return followers.add(f);
     }
 
@@ -83,6 +92,9 @@ public class Fundacion extends Usuario implements FollowedEntity {
      * @param proyecto El proyecto que se propone.
      */
     public void proponerProyecto(ProyectoFundacion proyecto) {
+    	if(proyecto==null) {
+    		throw new IllegalArgumentException("El proyecto no puede ser null.");
+    	}
         aplicacion.proponerProyecto(proyecto);
         proyectos.add(proyecto);
         anuncioPropuestaProyecto(proyecto.getNombre(), proyecto.getDescripcion());
@@ -102,5 +114,22 @@ public class Fundacion extends Usuario implements FollowedEntity {
 
     public void anuncioPropuestaProyecto(String title, String description) {
         announce(new Anuncio(super.nombre + " propone el proyecto" + title + ": \"" + description + "\""));
+    }
+
+	public Set<Follower> getFollowers() {
+		return this.followers;
+	}
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Fundacion that = (Fundacion) o;
+        return Objects.equals(cif, that.cif);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cif);
     }
 }

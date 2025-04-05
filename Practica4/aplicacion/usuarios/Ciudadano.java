@@ -133,7 +133,7 @@ public class Ciudadano extends Usuario implements Follower {
 
     public boolean startToUnfollow(FollowedEntity entity) {
         if (!following.contains(entity)) {
-            following.add(entity);
+            following.remove(entity);
             if (entity instanceof Asociacion) {
                 return ((Asociacion) entity).unfollow(this);
             } else if (entity instanceof Fundacion) {
@@ -159,4 +159,21 @@ public class Ciudadano extends Usuario implements Follower {
     public void receive(Anuncio t) {
         mensajes.add(t.getContenidoAnuncio());
     }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ciudadano that = (Ciudadano) o;
+        return Objects.equals(nif, that.nif);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nif);
+    }
+
+	public Set<FollowedEntity> getFollowing() {
+		return this.following;
+	}
 }

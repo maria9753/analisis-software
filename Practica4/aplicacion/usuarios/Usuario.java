@@ -44,4 +44,8 @@ public abstract class Usuario {
     public String getContrasena() {
         return contrasena;
     }
+    
+    public Aplicacion getAplicacion() {
+    	return this.aplicacion;
+    }
 }

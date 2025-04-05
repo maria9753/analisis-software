@@ -1,5 +1,6 @@
 package aplicacion.test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,7 @@ public class CiudadanoTest {
     private Proyecto proyectoViejo;
 
     @BeforeEach
-    void setUp() throws NifInvalidoException, RepresentanteInvalidoException {
+    public void setUp() throws NifInvalidoException, RepresentanteInvalidoException {
         app = new Aplicacion();
         ciudadano = new Ciudadano("Juan Perez", "password", app, "12345678A");
         asociacion = new Asociacion("Asociacion Vecinal", "pass", app, ciudadano);
@@ -40,7 +41,7 @@ public class CiudadanoTest {
     }
 
     @Test
-    void testConstructor() {
+    public void testConstructor() {
         assertEquals("Juan Perez", ciudadano.getNombre());
         assertEquals("12345678A", ciudadano.getNif());
         assertTrue(ciudadano.getAsociaciones().isEmpty());
@@ -49,21 +50,24 @@ public class CiudadanoTest {
     }
 
     @Test
-    void testConstructorNifInvalido() {
-        assertThrows(NifInvalidoException.class, () -> {
+    public void testConstructorNifInvalido() {
+        try {
             new Ciudadano("Maria", "pass", app, "123");
-        });
+            fail("Debería haber lanzado NifInvalidoException");
+        } catch (NifInvalidoException e) {
+            // Test pasa
+        }
     }
 
     @Test
-    void testRegistrarAsociacion() {
+    public void testRegistrarAsociacion() {
         ciudadano.registarAsociacion(asociacion);
         assertTrue(ciudadano.getAsociaciones().contains(asociacion));
         assertEquals(1, ciudadano.getAsociaciones().size());
     }
 
     @Test
-    void testApoyarProyecto() throws ProponenteNoApoyaException, ProyectoMasDe60Exception, ProyectoYaApoyadoException, NifInvalidoException {
+    public void testApoyarProyecto() throws ProponenteNoApoyaException, ProyectoMasDe60Exception, ProyectoYaApoyadoException, NifInvalidoException {
         Ciudadano otroCiudadano = new Ciudadano("Ana", "pass", app, "87654321B");
         Proyecto otroProyecto = new Proyecto("Biblioteca", "Ampliación biblioteca", otroCiudadano);
         
@@ -75,46 +79,92 @@ public class CiudadanoTest {
     }
 
     @Test
-    void testApoyarProyectoProponenteNoApoya() {
-        assertThrows(ProponenteNoApoyaException.class, () -> {
+    public void testApoyarProyectoProponenteNoApoya() {
+        try {
             ciudadano.apoyarProyecto(proyecto);
-        });
+            fail("Debería haber lanzado ProponenteNoApoyaException");
+        } catch (ProponenteNoApoyaException e) {
+            // Test pasa
+        } catch (Exception e) {
+            fail("Lanzó una excepción diferente a ProponenteNoApoyaException");
+        }
     }
 
     @Test
-    void testApoyarProyectoYaApoyado() throws ProponenteNoApoyaException, ProyectoMasDe60Exception, ProyectoYaApoyadoException, NifInvalidoException {
+    public void testApoyarProyectoYaApoyado() throws ProponenteNoApoyaException, ProyectoMasDe60Exception, ProyectoYaApoyadoException, NifInvalidoException {
         Ciudadano otroCiudadano = new Ciudadano("Ana", "pass", app, "87654321B");
         Proyecto otroProyecto = new Proyecto("Biblioteca", "Ampliación biblioteca", otroCiudadano);
         
         ciudadano.apoyarProyecto(otroProyecto);
         
-        assertThrows(ProyectoYaApoyadoException.class, () -> {
-            ciudadano.apoyarProyecto(otroProyecto); 
-        });
+        try {
+            ciudadano.apoyarProyecto(otroProyecto);
+            fail("Debería haber lanzado ProyectoYaApoyadoException");
+        } catch (ProyectoYaApoyadoException e) {
+            // Test pasa
+        }
     }
 
     @Test
-    void testApoyarProyectoMasDe60Dias() {
-        assertThrows(ProyectoMasDe60Exception.class, () -> {
-            ciudadano.apoyarProyecto(proyectoViejo); 
-        });
+    public void testApoyarProyectoMasDe60Dias() {
+        try {
+            ciudadano.apoyarProyecto(proyectoViejo);
+            fail("Debería haber lanzado ProyectoMasDe60Exception");
+        } catch (ProyectoMasDe60Exception e) {
+            // Test pasa
+        } catch (Exception e) {
+            fail("Lanzó una excepción diferente a ProyectoMasDe60Exception");
+        }
     }
 
     @Test
-    void testStartToFollow() {
+    public void testStartToFollow() {
         assertTrue(ciudadano.startToFollow(asociacion));
-        assertFalse(ciudadano.startToFollow(asociacion)); 
+        assertTrue(ciudadano.getFollowing().contains(asociacion));
+        assertTrue(asociacion.getFollowers().contains(ciudadano));
+        
+        assertFalse(ciudadano.startToFollow(asociacion));
+        
+        ciudadano.registarAsociacion(asociacion);
+        assertFalse(ciudadano.startToFollow(asociacion));
     }
 
     @Test
-    void testStartToUnfollow() {
+    public void testStartToUnfollow() {
         ciudadano.startToFollow(asociacion);
+   
         assertTrue(ciudadano.startToUnfollow(asociacion));
+        assertFalse(ciudadano.getFollowing().contains(asociacion));
+        assertFalse(asociacion.getFollowers().contains(ciudadano));
+     
         assertFalse(ciudadano.startToUnfollow(asociacion));
+        
+        ciudadano.registarAsociacion(asociacion);
+        ciudadano.startToFollow(asociacion);
+        
+        try {
+            ciudadano.startToUnfollow(asociacion);
+            fail("Debería haber lanzado IllegalStateException");
+        } catch (IllegalStateException e) {
+            assertEquals("No puedes dejar de seguir una asociación a la que perteneces. Date de baja primero.", 
+                        e.getMessage());
+        }
     }
 
     @Test
-    void testReceiveAnuncio() {
+    public void testUnfollowAfterDarDeBaja() {
+        ciudadano.registarAsociacion(asociacion);
+        ciudadano.startToFollow(asociacion);
+
+        asociacion.darDeBajaCiudadano(ciudadano);
+  
+        assertTrue(ciudadano.startToUnfollow(asociacion));
+        assertFalse(ciudadano.getFollowing().contains(asociacion));
+        assertFalse(asociacion.getFollowers().contains(ciudadano));
+    }
+
+    @Test
+    public void testReceiveAnuncio() {
         Anuncio anuncio = new Anuncio("Nuevo parque en el barrio");
         ciudadano.receive(anuncio);
         
@@ -124,7 +174,7 @@ public class CiudadanoTest {
     }
 
     @Test
-    void testToString() {
+    public void testToString() {
         String expected = "Juan PerezNIF (12345678A) <usuario>";
         assertEquals(expected, ciudadano.toString());
     }
