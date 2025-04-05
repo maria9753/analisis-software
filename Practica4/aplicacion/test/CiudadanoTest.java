@@ -114,11 +114,13 @@ public class CiudadanoTest {
             // Test pasa
         } catch (Exception e) {
             fail("Lanzó una excepción diferente a ProyectoMasDe60Exception");
+            e.printStackTrace();
         }
     }
 
     @Test
     public void testStartToFollow() {
+    	assertTrue(ciudadano.startToUnfollow(asociacion));
         assertTrue(ciudadano.startToFollow(asociacion));
         assertTrue(ciudadano.getFollowing().contains(asociacion));
         assertTrue(asociacion.getFollowers().contains(ciudadano));

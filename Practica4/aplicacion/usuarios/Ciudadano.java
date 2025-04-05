@@ -132,7 +132,7 @@ public class Ciudadano extends Usuario implements Follower {
     }
 
     public boolean startToUnfollow(FollowedEntity entity) {
-        if (!following.contains(entity)) {
+        if (following.contains(entity)) {
             following.remove(entity);
             if (entity instanceof Asociacion) {
                 return ((Asociacion) entity).unfollow(this);
