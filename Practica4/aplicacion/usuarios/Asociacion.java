@@ -143,7 +143,7 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
      */
     public void darDeBajaCiudadano(Ciudadano ciudadano) {
         ciudadanos.remove(ciudadano);
-        ciudadano.startToUnfollow(this);
+        ciudadano.eliminarRegistroAsociacion(this);
     }
 
     /**

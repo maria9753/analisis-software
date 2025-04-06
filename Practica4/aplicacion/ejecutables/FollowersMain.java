@@ -4,13 +4,8 @@ import aplicacion.proyectos.*;
 import aplicacion.*;
 import aplicacion.exceptions.CifInvalidoException;
 import aplicacion.exceptions.NifInvalidoException;
-import aplicacion.exceptions.ProponenteNoApoyaException;
-import aplicacion.exceptions.ProyectoMasDe60Exception;
-import aplicacion.exceptions.ProyectoYaApoyadoException;
 import aplicacion.exceptions.RepresentanteInvalidoException;
 import aplicacion.usuarios.*;
-import aplicacion.follower.*;
-import aplicacion.anuncios.*;
 
 public class FollowersMain {
 

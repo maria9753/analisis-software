@@ -49,12 +49,6 @@ public class ApoyoProyectoMain {
         ProyectoFundacion proyecto2 = new ProyectoFundacion("Gastemos menos agua",
                 "Se quiere tartar de gastar menos agua en las casas", fundacion, 100000.0, 80.0);
 
-        app.registrarCiudadano(ciudadano1);
-        app.registrarCiudadano(ciudadano2);
-        app.registrarCiudadano(ciudadano3);
-        app.registrarAsociacion(asociacion1);
-        app.registrarAsociacion(asociacion2);
-        app.registrarFundacion(fundacion);
         app.proponerProyecto(proyecto1);
         app.proponerProyecto(proyecto2);
 

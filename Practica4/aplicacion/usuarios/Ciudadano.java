@@ -68,6 +68,7 @@ public class Ciudadano extends Usuario implements Follower {
      * @param asociacion La asociación a la que se desea agregar el ciudadano.
      */
     public void registarAsociacion(Asociacion asociacion) {
+    	asociacion.inscribirCiudadano(this);
         this.asociaciones.add(asociacion);
     }
 
@@ -132,6 +133,10 @@ public class Ciudadano extends Usuario implements Follower {
     }
 
     public boolean startToUnfollow(FollowedEntity entity) {
+    	if (entity instanceof Asociacion && this.asociaciones.contains(entity)) {
+            throw new IllegalStateException(
+                "No puedes dejar de seguir una asociación a la que perteneces.");
+        }
         if (following.contains(entity)) {
             following.remove(entity);
             if (entity instanceof Asociacion) {
@@ -175,5 +180,10 @@ public class Ciudadano extends Usuario implements Follower {
 
 	public Set<FollowedEntity> getFollowing() {
 		return this.following;
+	}
+
+	public void eliminarRegistroAsociacion(Asociacion asociacion) {
+		this.asociaciones.remove(asociacion);
+		
 	}
 }

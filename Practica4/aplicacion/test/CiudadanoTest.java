@@ -108,7 +108,8 @@ public class CiudadanoTest {
     @Test
     public void testApoyarProyectoMasDe60Dias() {
         try {
-            ciudadano.apoyarProyecto(proyectoViejo);
+        	Ciudadano ciudadano1= new Ciudadano("Maria", "pass", app, "12345688A");
+        	ciudadano1.apoyarProyecto(proyectoViejo);
             fail("Debería haber lanzado ProyectoMasDe60Exception");
         } catch (ProyectoMasDe60Exception e) {
             // Test pasa
@@ -141,6 +142,7 @@ public class CiudadanoTest {
      
         assertFalse(ciudadano.startToUnfollow(asociacion));
         
+    
         ciudadano.registarAsociacion(asociacion);
         ciudadano.startToFollow(asociacion);
         
@@ -148,8 +150,7 @@ public class CiudadanoTest {
             ciudadano.startToUnfollow(asociacion);
             fail("Debería haber lanzado IllegalStateException");
         } catch (IllegalStateException e) {
-            assertEquals("No puedes dejar de seguir una asociación a la que perteneces. Date de baja primero.", 
-                        e.getMessage());
+            assertEquals("No puedes dejar de seguir una asociación a la que perteneces.", e.getMessage());
         }
     }
 

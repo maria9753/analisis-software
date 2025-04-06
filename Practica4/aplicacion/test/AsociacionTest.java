@@ -10,6 +10,9 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Clase de prueba junit de Asociacion.
+ */
 public class AsociacionTest {
     
     private Aplicacion app;
@@ -19,6 +22,13 @@ public class AsociacionTest {
     private Ciudadano ciudadano1;
     private Ciudadano ciudadano2;
     private Asociacion subAsociacion;
+    
+    /**
+     * Constructor de la clase.
+     */
+    public AsociacionTest(){
+    	/**Constructor vacío*/
+    }
     
     @BeforeEach
     void setUp() throws RepresentanteInvalidoException, NifInvalidoException {
