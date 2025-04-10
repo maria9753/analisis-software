@@ -1,7 +1,10 @@
 package aplicacion.proyectos;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
+import aplicacion.anuncios.AnnouncementStrategy;
 import aplicacion.anuncios.Anuncio;
 import aplicacion.follower.Follower;
 import aplicacion.follower.FollowedEntity;
@@ -27,6 +30,7 @@ public class Proyecto implements FollowedEntity {
     /** Código del proyecto */
     private int codigo;
     private int numApoyos;
+    private Map<Follower, AnnouncementStrategy> followerStrategies;
 
     /**
      * Constructor de la clase Proyecto.
@@ -42,6 +46,7 @@ public class Proyecto implements FollowedEntity {
         this.codigo = contador++;
         this.fechaCreacion = LocalDateTime.now();
         this.numApoyos = 0;
+        this.followerStrategies = new HashMap<>();
     }
 
     /**
@@ -107,16 +112,26 @@ public class Proyecto implements FollowedEntity {
         return codigo + ": " + titulo + ". Proponente: " + proponente;
     }
 
-    /**
-     * Método para seguir a otros usuarios.
-     * 
-     * @param f Seguidor al que se empieza a seguir.
-     * @return True si ha sido correcto, false si no.
-     */
     @Override
-    public boolean follow(Follower f) {
-        return followers.add(f);
-    }
+	public boolean follow(Follower f, AnnouncementStrategy ns) {
+		if (ns == null || followerStrategies.containsKey(f)) {
+			return false;
+		}
+		
+		followerStrategies.put(f, ns);
+		return true;
+	}
+
+	@Override
+	public boolean follow(Follower f) {
+		if (f == null) {
+			return false;
+		}
+		
+        followerStrategies.put(f, null);
+        
+        return true;
+	}
 
     /**
      * Método para dejar de seguir a otros usuarios.
@@ -126,7 +141,11 @@ public class Proyecto implements FollowedEntity {
      */
     @Override
     public boolean unfollow(Follower f) {
-        return followers.remove(f);
+    	if (f == null) {
+            return false;
+        }
+    	
+        return followerStrategies.remove(f) != null;
     }
 
     /**
@@ -136,8 +155,16 @@ public class Proyecto implements FollowedEntity {
      */
     @Override
     public void announce(Anuncio t) {
-        for (Follower f : followers) {
-            f.receive(t);
+    	Follower f = null;
+    	AnnouncementStrategy ns = null;
+    	
+    	for (Map.Entry<Follower, AnnouncementStrategy> entry : followerStrategies.entrySet()) {
+            f = entry.getKey();
+            ns = entry.getValue();
+            
+            if (ns == null || ns.enviarOnoEnviar(t, f, this)) {
+                f.receive(t);
+            }
         }
     }
 
@@ -147,5 +174,17 @@ public class Proyecto implements FollowedEntity {
 
 	public int getNumApoyos() {
 		return this.numApoyos;
+	}
+
+    @Override
+	public AnnouncementStrategy getAnnouncementStrategy(Follower f) {
+		return followerStrategies.get(f);
+	}
+
+	@Override
+	public void setAnnouncementStrategy(Follower f, AnnouncementStrategy ns) {
+		if (f != null) {
+			followerStrategies.put(f, ns);
+		}
 	}
 }

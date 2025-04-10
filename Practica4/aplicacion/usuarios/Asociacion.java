@@ -4,6 +4,7 @@ import java.util.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import aplicacion.anuncios.AnnouncementStrategy;
 import aplicacion.anuncios.Anuncio;
 import aplicacion.exceptions.*;
 import aplicacion.*;
@@ -24,7 +25,7 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
     private Ciudadano representante;
     /** Proyectos que apoya la asociación y fecha del apoyo. */
     private Map<Proyecto, LocalDateTime> proyectosApoyados;
-    private Set<Follower> followers;
+    private Map<Follower, AnnouncementStrategy> followerStrategies;
     private Set<FollowedEntity> following;
 
     /**
@@ -43,10 +44,10 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
         this.ciudadanos.add(representante);
         this.asociaciones = new HashSet<Asociacion>();
         this.proyectosApoyados = new HashMap<>();
-        this.followers = new HashSet<>();
+        this.followerStrategies = new HashMap<>();
         this.following = new HashSet<>();
         aplicacion.registrarAsociacion(this);
-        representante.startToFollow(this);
+        representante.startToFollow(this, null);
     }
 
     /**
@@ -132,7 +133,7 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
         }
 
         ciudadanos.add(ciudadano);
-        ciudadano.startToFollow(this);
+        ciudadano.startToFollow(this, null);
         anuncioNuevaInscripcion(ciudadano.getNombre());
     }
 
@@ -170,7 +171,7 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
     public void proponerProyecto(Proyecto proyecto) {
         aplicacion.proponerProyecto(proyecto);
         proyectosApoyados.put(proyecto, LocalDateTime.now());
-        this.startToFollow(proyecto);
+        this.startToFollow(proyecto, null);
         anuncioPropuestaProyecto(proyecto.getNombre(), proyecto.getDescripcion());
         anuncioApoyoProyecto(proyecto.getNombre(), proyecto.getDescripcion());
         proyecto.addApoyo();
@@ -223,15 +224,15 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
         }
     }
 
-    public boolean startToFollow(FollowedEntity entity) {
+    public boolean startToFollow(FollowedEntity entity, AnnouncementStrategy ns) {
         if (!following.contains(entity)) {
             following.add(entity);
             if (entity instanceof Asociacion) {
-                return ((Asociacion) entity).follow(this);
+                return ((Asociacion) entity).follow(this, ns);
             } else if (entity instanceof Fundacion) {
-                return ((Fundacion) entity).follow(this);
+                return ((Fundacion) entity).follow(this, ns);
             } else if (entity instanceof Proyecto) {
-                return ((Proyecto) entity).follow(this);
+                return ((Proyecto) entity).follow(this, ns);
             }
         }
         return false;
@@ -270,7 +271,7 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
      */
     @Override
     public boolean follow(Follower f) {
-        return followers.add(f);
+        return follow(f, null);
     }
 
     /**
@@ -281,7 +282,13 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
      */
     @Override
     public boolean unfollow(Follower f) {
-        return followers.remove(f);
+        if (f == null) {
+        	return false;
+        }
+        
+        followerStrategies.remove(f);
+        
+        return true;
     }
 
     /**
@@ -291,15 +298,16 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
      */
     @Override
     public void announce(Anuncio t) {
-        for (Follower f : followers) {
-            f.receive(t);
-        }
-        for (Asociacion a : getAsociaciones()) {
-            a.receive(t);
-        }
-        for (FollowedEntity entity : following) {
-            entity.announce(t);
-        }
+    	Follower f = null;
+    	AnnouncementStrategy ns = null;
+        for (Map.Entry<Follower, AnnouncementStrategy> e : followerStrategies.entrySet()) {
+            f = e.getKey();
+            ns = e.getValue();
+            
+            if (ns == null || ns.enviarOnoEnviar(t, f, this)) {
+            	f.receive(t);
+            }
+        }      
     }
 
     public void anuncioPropuestaProyecto(String title, String description) {
@@ -316,7 +324,7 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
     }
 
 	public Set<Follower> getFollowers() {
-		return this.followers;
+		return followerStrategies.keySet();
 	}
 	
 	@Override
@@ -331,4 +339,27 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
     public int hashCode() {
         return Objects.hash(nombre);
     }
+
+    @Override
+	public boolean follow(Follower f, AnnouncementStrategy ns) {
+		if (f == null || followerStrategies.containsKey(f)) {
+	        return false;
+	    }
+		
+	    followerStrategies.put(f, ns);
+	    
+	    return true;
+	}
+
+    @Override
+	public AnnouncementStrategy getAnnouncementStrategy(Follower f) {
+		return followerStrategies.get(f);
+	}
+
+	@Override
+	public void setAnnouncementStrategy(Follower f, AnnouncementStrategy ns) {
+		if (f != null) {
+			followerStrategies.put(f, ns);
+		}
+	}
 }

@@ -1,30 +1,27 @@
 package aplicacion.ejecutables;
 
-import aplicacion.proyectos.*;
-import aplicacion.*;
+import java.util.Set;
+
+import aplicacion.Aplicacion;
+import aplicacion.anuncios.AnnouncementStrategy;
+import aplicacion.anuncios.UnoDeCadaNStrategy;
 import aplicacion.exceptions.CifInvalidoException;
 import aplicacion.exceptions.NifInvalidoException;
 import aplicacion.exceptions.RepresentanteInvalidoException;
-import aplicacion.usuarios.*;
+import aplicacion.proyectos.Proyecto;
+import aplicacion.proyectos.ProyectoFundacion;
+import aplicacion.usuarios.Asociacion;
+import aplicacion.usuarios.Ciudadano;
+import aplicacion.usuarios.Fundacion;
 
-public class FollowersMain {
-
-    public FollowersMain() {
-        /** Constructor vacío */
-    }
-
-    /**
-     * Método main que ejecuta la prueba.
-     * 
-     * @param args Argumentos recibidos.
-     * @throws RepresentanteInvalidoException Si se asigna a una asociación un
-     *                                        representante inválido.
-     * @throws NifInvalidoException
-     * @throws CifInvalidoException
-     */
-    public static void main(String[] args)
-            throws RepresentanteInvalidoException, NifInvalidoException, CifInvalidoException {
-        Aplicacion aplicacion = new Aplicacion();
+public class StrategyMain {
+	
+	public StrategyMain() {
+		/** Contructor vacío. */
+	}
+	
+	public static void main(String[] args) throws NifInvalidoException, RepresentanteInvalidoException, CifInvalidoException {
+		Aplicacion aplicacion = new Aplicacion();
         Ciudadano ciudadano1 = new Ciudadano("Juan Bravo", "dmcikd4", aplicacion, "01234567K");
         Ciudadano ciudadano2 = new Ciudadano("Ana López", "dkcoep3", aplicacion, "01234567L");
         Ciudadano ciudadano3 = new Ciudadano("Luisa Gómez", "dkowej5", aplicacion, "01234567G");
@@ -37,20 +34,17 @@ public class FollowersMain {
 
         Proyecto proyecto1 = new Proyecto("Limpieza del manzanares", "Se quiere hacer una limpieza del río manzanares",
                 asociacion1);
+        ciudadano1.startToFollow(fundacion, new UnoDeCadaNStrategy(2));
         ProyectoFundacion proyecto2 = new ProyectoFundacion("Gastemos menos agua",
                 "Se quiere tartar de gastar menos agua en las casas", fundacion, 100000.0, 80.0);
         asociacion1.inscribirCiudadano(ciudadano1);
-        ciudadano1.startToFollow(fundacion, null);
         asociacion1.proponerProyecto(proyecto1);
 
         fundacion.proponerProyecto(proyecto2);
 
-        for (Ciudadano c : aplicacion.obtenerTodosLosCiudadanos()) {
-            System.out.println("Anuncios para " + c.getNombre() + ":");
-            for (String s : c.getMensajesAnuncios()) {
+       
+        for (String s : ciudadano1.getMensajesAnuncios()) {
                 System.out.println(s);
-            }
-            System.out.println("\n");
         }
     }
 }

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import aplicacion.Aplicacion;
+import aplicacion.anuncios.AnnouncementStrategy;
 import aplicacion.anuncios.Anuncio;
 import aplicacion.follower.FollowedEntity;
 import aplicacion.follower.Follower;
@@ -118,15 +119,15 @@ public class Ciudadano extends Usuario implements Follower {
         proyectosApoyados.put(proyecto, LocalDateTime.now());
     }
 
-    public boolean startToFollow(FollowedEntity entity) {
+    public boolean startToFollow(FollowedEntity entity, AnnouncementStrategy ns) {
         if (!following.contains(entity)) {
             following.add(entity);
             if (entity instanceof Asociacion) {
-                return ((Asociacion) entity).follow(this);
+                return ((Asociacion) entity).follow(this, ns);
             } else if (entity instanceof Fundacion) {
-                return ((Fundacion) entity).follow(this);
+                return ((Fundacion) entity).follow(this, ns);
             } else if (entity instanceof Proyecto) {
-                return ((Proyecto) entity).follow(this);
+                return ((Proyecto) entity).follow(this, ns);
             }
         }
         return false;

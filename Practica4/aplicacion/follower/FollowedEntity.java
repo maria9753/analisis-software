@@ -2,6 +2,7 @@ package aplicacion.follower;
 
 import java.util.*;
 
+import aplicacion.anuncios.AnnouncementStrategy;
 import aplicacion.anuncios.Anuncio;
 
 /**
@@ -36,4 +37,17 @@ public interface FollowedEntity {
      * @param t Anuncio que se recibe
      */
     public void announce(Anuncio t);
+
+    /**
+     * Método para seguir a otros usuarios.
+     * 
+     * @param f Seguidor al que se empieza a seguir.
+     * @param ns Estrategia que se sigue.
+     * @return True si ha sido correcto, false si no.
+     */
+    public boolean follow(Follower f, AnnouncementStrategy ns);
+
+	public AnnouncementStrategy getAnnouncementStrategy(Follower f);
+
+	public void setAnnouncementStrategy(Follower f, AnnouncementStrategy ns);
 }

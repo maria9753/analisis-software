@@ -1,12 +1,15 @@
 package aplicacion.usuarios;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
 import aplicacion.proyectos.*;
+import aplicacion.anuncios.AnnouncementStrategy;
 import aplicacion.anuncios.Anuncio;
 import aplicacion.exceptions.CifInvalidoException;
 import aplicacion.follower.*;
@@ -20,7 +23,7 @@ import aplicacion.*;
 public class Fundacion extends Usuario implements FollowedEntity {
     /** Cif de la fundación */
     private String cif;
-    private Set<Follower> followers;
+    private Map<Follower, AnnouncementStrategy> followerStrategies;
     private List<ProyectoFundacion> proyectos;
 
     /**
@@ -37,7 +40,7 @@ public class Fundacion extends Usuario implements FollowedEntity {
         	throw new CifInvalidoException("El cif no puede ser null.");
         }
         this.cif = cif;
-        this.followers = new HashSet<>();
+        this.followerStrategies = new HashMap<>();
         aplicacion.registrarFundacion(this);
         this.proyectos = new ArrayList<>();
     }
@@ -69,10 +72,7 @@ public class Fundacion extends Usuario implements FollowedEntity {
      */
     @Override
     public boolean follow(Follower f) {
-    	if(f==null) {
-    		throw new IllegalArgumentException("El seguidor no puede ser null.");
-    	}
-        return followers.add(f);
+        return follow(f, null);
     }
 
     /**
@@ -83,7 +83,13 @@ public class Fundacion extends Usuario implements FollowedEntity {
      */
     @Override
     public boolean unfollow(Follower f) {
-        return followers.remove(f);
+    	if (f == null) {
+    		return false;
+    	}
+    	
+        followerStrategies.remove(f);
+        
+        return true;
     }
 
     /**
@@ -107,9 +113,16 @@ public class Fundacion extends Usuario implements FollowedEntity {
      */
     @Override
     public void announce(Anuncio t) {
-        for (Follower f : followers) {
-            f.receive(t);
-        }
+    	Follower f = null;
+    	AnnouncementStrategy ns = null;
+        for (Map.Entry<Follower, AnnouncementStrategy> e : followerStrategies.entrySet()) {
+            f = e.getKey();
+            ns = e.getValue();
+            
+            if (ns == null || ns.enviarOnoEnviar(t, f, this)) {
+            	f.receive(t);
+            }
+        }        
     }
 
     public void anuncioPropuestaProyecto(String title, String description) {
@@ -117,7 +130,7 @@ public class Fundacion extends Usuario implements FollowedEntity {
     }
 
 	public Set<Follower> getFollowers() {
-		return this.followers;
+		return this.followerStrategies.keySet();
 	}
 	
 	@Override
@@ -132,4 +145,27 @@ public class Fundacion extends Usuario implements FollowedEntity {
     public int hashCode() {
         return Objects.hash(cif);
     }
+
+    @Override
+	public boolean follow(Follower f, AnnouncementStrategy ns) {
+		if (f == null || followerStrategies.containsKey(f)) {
+			return false;
+		}
+		
+		followerStrategies.put(f, ns);
+		
+		return true;
+	}
+
+    @Override
+	public AnnouncementStrategy getAnnouncementStrategy(Follower f) {
+		return followerStrategies.get(f);
+	}
+
+	@Override
+	public void setAnnouncementStrategy(Follower f, AnnouncementStrategy ns) {
+		if (f != null) {
+			followerStrategies.put(f, ns);
+		}
+	}
 }
