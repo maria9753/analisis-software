@@ -1,7 +1,5 @@
 package aplicacion.follower;
 
-import java.util.*;
-
 import aplicacion.anuncios.AnnouncementStrategy;
 import aplicacion.anuncios.Anuncio;
 
@@ -12,9 +10,6 @@ import aplicacion.anuncios.Anuncio;
  * @author Carmen Gómez, María Pozo.
  */
 public interface FollowedEntity {
-    /** Lista de seguidores */
-    List<Follower> followers = new ArrayList<>();
-
     /**
      * Método para seguir a otros usuarios.
      * 
