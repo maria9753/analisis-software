@@ -37,7 +37,7 @@ public class Aplicacion {
      * Registra un ciudadano en la aplicación.
      * 
      * @param ciudadano El ciudadano a registrar.
-     * @throws NifInvalidoException
+     * @throws NifInvalidoException Si el nif es inválido.
      * @throws IllegalArgumentException Si el NIF ya está registrado.
      */
     public void registrarCiudadano(Ciudadano ciudadano) throws NifInvalidoException {
@@ -51,8 +51,8 @@ public class Aplicacion {
     /**
      * Registra un ciudadano en la aplicación.
      * 
-     * @param ciudadano El ciudadano a registrar.
-     * @throws RepresentanteInvalidoException
+     * @param asociacion La asociacion donde se registra.
+     * @throws RepresentanteInvalidoException El representante no es válido
      */
     public void registrarAsociacion(Asociacion asociacion) throws RepresentanteInvalidoException {
         verificarRepresentante(asociacion);
@@ -63,7 +63,7 @@ public class Aplicacion {
      * Registra una fundación en la aplicación.
      * 
      * @param fundacion La fundación a registrar.
-     * @throws CifInvalidoException
+     * @throws CifInvalidoException El cif no es validp.
      * @throws IllegalArgumentException Si el CIF ya está registrado.
      */
     public void registrarFundacion(Fundacion fundacion) throws CifInvalidoException {
