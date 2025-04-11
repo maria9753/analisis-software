@@ -12,6 +12,7 @@ public abstract class Usuario {
     protected String nombre;
     /** Contraseña del usuario */
     private String contrasena;
+    /** Aplicacion */
     protected Aplicacion aplicacion;
 
     /**
@@ -19,6 +20,7 @@ public abstract class Usuario {
      * 
      * @param nombre     Nombre del usuario.
      * @param contrasena Contraseña del usuario.
+     * @param aplicacion Aplicación.
      * 
      */
     public Usuario(String nombre, String contrasena, Aplicacion aplicacion) {

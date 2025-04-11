@@ -28,8 +28,8 @@ public class ProyectoMain {
      * @param args Argumentos recibidos.
      * @throws RepresentanteInvalidoException Si se asigna a una asociación un
      *                                        representante inválido.
-     * @throws NifInvalidoException
-     * @throws CifInvalidoException
+     * @throws NifInvalidoException Nif inválido.
+     * @throws CifInvalidoException Cif inválido.
      */
     public static void main(String[] args)
             throws RepresentanteInvalidoException, NifInvalidoException, CifInvalidoException {

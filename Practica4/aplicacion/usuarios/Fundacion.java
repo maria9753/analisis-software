@@ -30,8 +30,9 @@ public class Fundacion extends Usuario implements FollowedEntity {
      * 
      * @param nombre     Nombre de la fundación.
      * @param contrasena Contraseña de la fundación.
+     * @param aplicacion Aplicacion.
      * @param cif        Cif de la fundación.
-     * @throws CifInvalidoException
+     * @throws CifInvalidoException Cif invalido.
      */
     public Fundacion(String nombre, String contrasena, Aplicacion aplicacion, String cif) throws CifInvalidoException {
         super(nombre, contrasena, aplicacion);
@@ -145,7 +146,7 @@ public class Fundacion extends Usuario implements FollowedEntity {
 	/**
 	 * Compara este objeto con el objeto especificado para determinar si son iguales.
 	 *
-	 * @param obj el objeto con el que se va a comparar.
+	 * @param o el objeto con el que se va a comparar.
 	 * @return true si los objetos son iguales; false en caso contrario.
 	 */
 	@Override

@@ -38,8 +38,9 @@ public class Ciudadano extends Usuario implements Follower {
      * 
      * @param nombre     Nombre del ciudadano.
      * @param contrasena Contraseña del ciudadano.
+     * @param aplicacion Aplicacion.
      * @param nif        NIF del ciudadano.
-     * @throws NifInvalidoException
+     * @throws NifInvalidoException Nif invalido.
      */
     public Ciudadano(String nombre, String contrasena, Aplicacion aplicacion, String nif) throws NifInvalidoException {
         super(nombre, contrasena, aplicacion);
@@ -60,6 +61,11 @@ public class Ciudadano extends Usuario implements Follower {
         return this.asociaciones;
     }
 
+    /**
+     * Obtiene los mensajes del ciudadano.
+     * 
+     * @return Un conjunto de mensajes.
+     */
     public List<String> getMensajesAnuncios() {
         return mensajes;
     }
@@ -87,9 +93,9 @@ public class Ciudadano extends Usuario implements Follower {
      * 
      * @param proyecto El proyecto que se quiere apoyar.
      * 
-     * @throws ProponenteNoApoyaException
-     * @throws ProyectoMasDe60Exception
-     * @throws ProyectoYaApoyadoException
+     * @throws ProponenteNoApoyaException El proponente no puede apoyar su proyecto.
+     * @throws ProyectoMasDe60Exception No se peude apoyar un proyecto que ha sido creado hace mas de 60 dias.
+     * @throws ProyectoYaApoyadoException No se puede apoyar un proyecto que ya se apoya.
      */
     public void apoyarProyecto(Proyecto proyecto)
             throws ProponenteNoApoyaException, ProyectoMasDe60Exception, ProyectoYaApoyadoException {
@@ -180,7 +186,7 @@ public class Ciudadano extends Usuario implements Follower {
     /**
 	 * Compara este objeto con el objeto especificado para determinar si son iguales.
 	 *
-	 * @param obj el objeto con el que se va a comparar.
+	 * @param o el objeto con el que se va a comparar.
 	 * @return true si los objetos son iguales; false en caso contrario.
 	 */
     @Override

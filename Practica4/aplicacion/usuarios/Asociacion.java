@@ -35,8 +35,9 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
      * 
      * @param nombre        Nombre de la asociación.
      * @param contrasena    Contraseña de la asociación.
+     * @param aplicacion Aplicacion.
      * @param representante Representante de la asociación.
-     * @throws RepresentanteInvalidoException
+     * @throws RepresentanteInvalidoException Representante invalido.
      */
     public Asociacion(String nombre, String contrasena, Aplicacion aplicacion, Ciudadano representante)
             throws RepresentanteInvalidoException {
@@ -190,9 +191,9 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
      * 
      * @param proyecto El proyecto que se quiere apoyar.
      * 
-     * @throws ProponenteNoApoyaException
-     * @throws ProyectoMasDe60Exception
-     * @throws ProyectoYaApoyadoException
+     * @throws ProponenteNoApoyaException Proponente no puede apoyar.
+     * @throws ProyectoMasDe60Exception Proyecto lleva creado más de 60 días.
+     * @throws ProyectoYaApoyadoException Proyecto ya apoyado.
      */
     public void apoyarProyecto(Proyecto proyecto)
             throws ProponenteNoApoyaException, ProyectoMasDe60Exception, ProyectoYaApoyadoException {
@@ -378,7 +379,7 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
 	/**
 	 * Compara este objeto con el objeto especificado para determinar si son iguales.
 	 *
-	 * @param obj el objeto con el que se va a comparar.
+	 * @param o el objeto con el que se va a comparar.
 	 * @return true si los objetos son iguales; false en caso contrario.
 	 */
 	@Override

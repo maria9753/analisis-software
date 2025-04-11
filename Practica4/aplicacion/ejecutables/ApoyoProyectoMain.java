@@ -30,12 +30,12 @@ public class ApoyoProyectoMain {
      * Método main que ejecuta la prueba.
      * 
      * @param args Argumentos recibidos.
-     * @throws RepresentanteInvalidoException
-     * @throws ProyectoYaApoyadoException
-     * @throws ProyectoMasDe60Exception
-     * @throws ProponenteNoApoyaException
-     * @throws NifInvalidoException
-     * @throws CifInvalidoException
+     * @throws RepresentanteInvalidoException Representante inválido.
+     * @throws ProyectoYaApoyadoException Proyecto ya apoyado.
+     * @throws ProyectoMasDe60Exception Proeycto creado hace mas de 60 días.
+     * @throws ProponenteNoApoyaException Proponente no puede apoyar.
+     * @throws NifInvalidoException Nif inválido.
+     * @throws CifInvalidoException Cif inválido.
      */
     public static void main(String[] args) throws RepresentanteInvalidoException, ProponenteNoApoyaException,
             ProyectoMasDe60Exception, ProyectoYaApoyadoException, NifInvalidoException, CifInvalidoException {

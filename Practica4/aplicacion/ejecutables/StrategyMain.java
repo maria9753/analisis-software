@@ -18,6 +18,9 @@ import aplicacion.usuarios.Fundacion;
  */
 public class StrategyMain {
 	
+	/**
+	 * Constructor de la clase StartegyMain.
+	 */
 	public StrategyMain() {
 		/** Contructor vacío. */
 	}
@@ -25,9 +28,9 @@ public class StrategyMain {
 	/**
 	 * Método main que ejecuta la prueba.
 	 * @param args Argumentos recibidos.
-	 * @throws NifInvalidoException
-	 * @throws RepresentanteInvalidoException
-	 * @throws CifInvalidoException
+	 * @throws NifInvalidoException Nif inválido.
+	 * @throws RepresentanteInvalidoException Representante inválido.
+	 * @throws CifInvalidoException Cif inválido.
 	 */
 	public static void main(String[] args) throws NifInvalidoException, RepresentanteInvalidoException, CifInvalidoException {
 		Aplicacion aplicacion = new Aplicacion();

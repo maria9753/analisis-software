@@ -17,6 +17,9 @@ import aplicacion.usuarios.*;
  */
 public class FollowersMain {
 
+	/**
+	 * Constructor de la clase FollowersMain.
+	 */
     public FollowersMain() {
         /** Constructor vacío */
     }
@@ -27,11 +30,11 @@ public class FollowersMain {
      * @param args Argumentos recibidos.
      * @throws RepresentanteInvalidoException Si se asigna a una asociación un
      *                                        representante inválido.
-     * @throws NifInvalidoException
-     * @throws CifInvalidoException
-     * @throws ProyectoYaApoyadoException 
-     * @throws ProyectoMasDe60Exception 
-     * @throws ProponenteNoApoyaException 
+     * @throws NifInvalidoException Nif inválido.
+     * @throws CifInvalidoException Cif inválido.
+     * @throws ProyectoYaApoyadoException  Proyecto ya apoyado.
+     * @throws ProyectoMasDe60Exception Proyecto más de 60 días creado.
+     * @throws ProponenteNoApoyaException  Proponente no apoya.
      */
     public static void main(String[] args) throws RepresentanteInvalidoException, NifInvalidoException, CifInvalidoException, ProponenteNoApoyaException, ProyectoMasDe60Exception, ProyectoYaApoyadoException {
 		Aplicacion aplicacion = new Aplicacion();
