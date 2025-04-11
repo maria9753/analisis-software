@@ -10,6 +10,11 @@ import aplicacion.exceptions.ProyectoYaApoyadoException;
 import aplicacion.exceptions.RepresentanteInvalidoException;
 import aplicacion.usuarios.*;
 
+/**
+ * La clase FollowersMain representa el main del apartado 4.
+ * 
+ * @author Carmen Gómez, María Pozo.
+ */
 public class FollowersMain {
 
     public FollowersMain() {

@@ -7,7 +7,7 @@ import aplicacion.exceptions.RepresentanteInvalidoException;
 import aplicacion.usuarios.*;
 
 /**
- * La clase AplicacionTester representa el test de la aplicación.
+ * La clase AplicacionMain representa el main del apartado 1.
  * 
  * @author Carmen Gómez, María Pozo.
  */

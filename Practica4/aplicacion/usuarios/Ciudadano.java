@@ -28,8 +28,9 @@ public class Ciudadano extends Usuario implements Follower {
     private Set<Asociacion> asociaciones;
     /** Proyectos que apoya un ciudadano y fecha del apoyo. */
     private Map<Proyecto, LocalDateTime> proyectosApoyados;
-
+    /** Mensajes del ciudadano */
     private List<String> mensajes;
+    /** Entidades a las que se sigue */
     private Set<FollowedEntity> following;
 
     /**
@@ -111,6 +112,13 @@ public class Ciudadano extends Usuario implements Follower {
         proyecto.addApoyo();
     }
 
+    /**
+     * Método para comenzar a seguir a una entidad según una estrategia.
+     * 
+     * @param entity Entidad a la que se va a seguir.
+     * @param ns Estrategia que se quiere seguir.
+     * @return True si sale bien, false si no.
+     */
     public boolean startToFollow(FollowedEntity entity, AnnouncementStrategy ns) {
         if (!following.contains(entity)) {
             following.add(entity);
@@ -125,6 +133,12 @@ public class Ciudadano extends Usuario implements Follower {
         return false;
     }
 
+    /**
+     * Método para comenzar dejar de seguir a una entidad según una estrategia.
+     * 
+     * @param entity Entidad a la que se va a dejar de seguir.
+     * @return True si sale bien, false si no.
+     */
     public boolean startToUnfollow(FollowedEntity entity) {
     	if (entity instanceof Asociacion && this.asociaciones.contains(entity)) {
             throw new IllegalStateException(
@@ -150,14 +164,25 @@ public class Ciudadano extends Usuario implements Follower {
      */
     @Override
     public String toString() {
-        return nombre + "NIF (" + nif + ") <usuario>";
+        return nombre + " NIF (" + nif + ") <usuario>";
     }
 
+    /**
+     * Método para recibir anuncios
+     * 
+     * @param t Anuncio que se recibe
+     */
     @Override
     public void receive(Anuncio t) {
         mensajes.add(t.getContenidoAnuncio());
     }
     
+    /**
+	 * Compara este objeto con el objeto especificado para determinar si son iguales.
+	 *
+	 * @param obj el objeto con el que se va a comparar.
+	 * @return true si los objetos son iguales; false en caso contrario.
+	 */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -166,15 +191,30 @@ public class Ciudadano extends Usuario implements Follower {
         return Objects.equals(nif, that.nif);
     }
 
+    /**
+	 * Devuelve un valor hash para este objeto. Este método está diseñado para que
+	 * sea coherente con equals(Object): si dos objetos son iguales según el método equals,
+	 * entonces deben tener el mismo valor hash.
+	 *
+	 * @return el valor hash del objeto.
+	 */
     @Override
     public int hashCode() {
         return Objects.hash(nif);
     }
 
+    /**
+     * Método para obtener las entidades a las que se sigue.
+     * @return Las entidades a las que se sigue.
+     */
 	public Set<FollowedEntity> getFollowing() {
 		return this.following;
 	}
 
+	/**
+	 * Método para eliminar un registro de una asociación.
+	 * @param asociacion Asociación de la que se quiere borrar el registro.
+	 */
 	public void eliminarRegistroAsociacion(Asociacion asociacion) {
 		this.asociaciones.remove(asociacion);
 		

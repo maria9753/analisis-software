@@ -48,4 +48,22 @@ public class ProyectoFundacion extends Proyecto {
         return super.toString() + ". Presupuesto " + presupuesto + "€. Porcentaje: " + porcentaje
                 + "% /proyecto de fundación/";
     }
+    
+    /**
+     * Método para obtener el presupuesto de un proyecto de fundación.
+     * 
+     * @return El presupuesto del proyecto de fundación.
+     */
+    public double getPresupuesto() {
+    	return presupuesto;
+    }
+    
+    /**
+     * Método para obtener el porcentaje de un proyecto de fundación.
+     * 
+     * @return El porcentaje del proyecto de fundación.
+     */
+    public double getPorcentaje() {
+    	return porcentaje;
+    }
 }

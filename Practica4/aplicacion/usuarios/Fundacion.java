@@ -60,7 +60,7 @@ public class Fundacion extends Usuario implements FollowedEntity {
      */
     @Override
     public String toString() {
-        return nombre + "CIF (" + cif + ") <fundacion>";
+        return nombre + " CIF (" + cif + ") <fundacion>";
     }
 
     /**
@@ -124,14 +124,30 @@ public class Fundacion extends Usuario implements FollowedEntity {
         }        
     }
 
+    /**
+     * Método para anunciar un nuevo proyecto.
+     * 
+     * @param title Título del proyecto.
+     * @param description Descripción del proyecto.
+     */
     public void anuncioPropuestaProyecto(String title, String description) {
         announce(new Anuncio(super.nombre + " propone el proyecto " + title + ": \"" + description + "\""));
     }
 
+    /**
+     * Método para obtener los seguidores.
+     * @return Los seguidores.
+     */
 	public Set<Follower> getFollowers() {
 		return this.followerStrategies.keySet();
 	}
 	
+	/**
+	 * Compara este objeto con el objeto especificado para determinar si son iguales.
+	 *
+	 * @param obj el objeto con el que se va a comparar.
+	 * @return true si los objetos son iguales; false en caso contrario.
+	 */
 	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -140,11 +156,25 @@ public class Fundacion extends Usuario implements FollowedEntity {
         return Objects.equals(cif, that.cif);
     }
 
+	/**
+	 * Devuelve un valor hash para este objeto. Este método está diseñado para que
+	 * sea coherente con equals(Object): si dos objetos son iguales según el método equals,
+	 * entonces deben tener el mismo valor hash.
+	 *
+	 * @return el valor hash del objeto.
+	 */
     @Override
     public int hashCode() {
         return Objects.hash(cif);
     }
 
+    /**
+     * Método para seguir a otros usuarios según una estrategia.
+     * 
+     * @param f Seguidor al que se empieza a seguir.
+     * @param ns Estrategia que se sigue.
+     * @return True si ha sido correcto, false si no.
+     */
     @Override
 	public boolean follow(Follower f, AnnouncementStrategy ns) {
 		if (f == null || followerStrategies.containsKey(f)) {
@@ -156,11 +186,22 @@ public class Fundacion extends Usuario implements FollowedEntity {
 		return true;
 	}
 
+    /**
+     * Método para obtener la estrategia de un seguidor.
+     * 
+     * @param f El seguidor.
+     * @return La estrategia con la que sigue el seguidor a la entidad.
+     */
     @Override
 	public AnnouncementStrategy getAnnouncementStrategy(Follower f) {
 		return followerStrategies.get(f);
 	}
 
+    /**
+	 * Método para modificar la estrategia de un seguidor.
+	 * @param f El seguidor.
+	 * @param ns La estrategia con la que sigue el seguidor a la entidad.
+	 */
 	@Override
 	public void setAnnouncementStrategy(Follower f, AnnouncementStrategy ns) {
 		if (f != null) {

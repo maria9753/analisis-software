@@ -45,6 +45,11 @@ public abstract class Usuario {
         return contrasena;
     }
     
+    /**
+     * Método para obtener la aplicación.
+     * 
+     * @return La aplicación.
+     */
     public Aplicacion getAplicacion() {
     	return this.aplicacion;
     }

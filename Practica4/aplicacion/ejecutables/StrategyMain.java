@@ -1,6 +1,5 @@
 package aplicacion.ejecutables;
 
-
 import aplicacion.Aplicacion;
 import aplicacion.anuncios.UnoDeCadaNStrategy;
 import aplicacion.exceptions.CifInvalidoException;
@@ -12,12 +11,24 @@ import aplicacion.usuarios.Asociacion;
 import aplicacion.usuarios.Ciudadano;
 import aplicacion.usuarios.Fundacion;
 
+/**
+ * La clase StrategyMain representa el main del apartado 5.
+ * 
+ * @author Carmen Gómez, María Pozo.
+ */
 public class StrategyMain {
 	
 	public StrategyMain() {
 		/** Contructor vacío. */
 	}
 	
+	/**
+	 * Método main que ejecuta la prueba.
+	 * @param args Argumentos recibidos.
+	 * @throws NifInvalidoException
+	 * @throws RepresentanteInvalidoException
+	 * @throws CifInvalidoException
+	 */
 	public static void main(String[] args) throws NifInvalidoException, RepresentanteInvalidoException, CifInvalidoException {
 		Aplicacion aplicacion = new Aplicacion();
 		

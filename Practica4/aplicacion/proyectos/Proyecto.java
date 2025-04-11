@@ -29,7 +29,9 @@ public class Proyecto implements FollowedEntity {
     private LocalDateTime fechaCreacion;
     /** Código del proyecto */
     private int codigo;
+    /** Número de apoyos */
     private int numApoyos;
+    /** Seguidores y sus estrategias */
     private Map<Follower, AnnouncementStrategy> followerStrategies;
 
     /**
@@ -94,10 +96,16 @@ public class Proyecto implements FollowedEntity {
         return fechaCreacion;
     }
 
+    /**
+     * Método para añadir un apoyo.
+     */
     public void addApoyo() {
         this.numApoyos++;
     }
 
+    /**
+     * Método para quitar un apoyo.
+     */
     public void removeApoyo() {
         this.numApoyos--;
     }
@@ -112,6 +120,13 @@ public class Proyecto implements FollowedEntity {
         return codigo + ": " + titulo + ". Proponente: " + proponente;
     }
 
+    /**
+     * Método para seguir a otros usuarios según una estrategia.
+     * 
+     * @param f Seguidor al que se empieza a seguir.
+     * @param ns Estrategia que se sigue.
+     * @return True si ha sido correcto, false si no.
+     */
     @Override
 	public boolean follow(Follower f, AnnouncementStrategy ns) {
 		if (ns == null || followerStrategies.containsKey(f)) {
@@ -122,6 +137,12 @@ public class Proyecto implements FollowedEntity {
 		return true;
 	}
 
+    /**
+     * Método para seguir a otros usuarios.
+     * 
+     * @param f Seguidor al que se empieza a seguir.
+     * @return True si ha sido correcto, false si no.
+     */
 	@Override
 	public boolean follow(Follower f) {
 		if (f == null) {
@@ -168,16 +189,30 @@ public class Proyecto implements FollowedEntity {
         }
     }
 
-
+    /**
+     * Método para obtener el número de apoyos de un proyecto.
+     * @return El número de apoyos.
+     */
 	public int getNumApoyos() {
 		return this.numApoyos;
 	}
 
+	/**
+     * Método para obtener la estrategia de un seguidor.
+     * 
+     * @param f El seguidor.
+     * @return La estrategia con la que sigue el seguidor a la entidad.
+     */
     @Override
 	public AnnouncementStrategy getAnnouncementStrategy(Follower f) {
 		return followerStrategies.get(f);
 	}
 
+    /**
+	 * Método para modificar la estrategia de un seguidor.
+	 * @param f El seguidor.
+	 * @param ns La estrategia con la que sigue el seguidor a la entidad.
+	 */
 	@Override
 	public void setAnnouncementStrategy(Follower f, AnnouncementStrategy ns) {
 		if (f != null) {

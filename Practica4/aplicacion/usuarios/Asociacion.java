@@ -18,14 +18,16 @@ import aplicacion.proyectos.*;
  */
 public class Asociacion extends Usuario implements FollowedEntity, Follower {
     /** Ciudadanos inscritos en la asociación */
-    private Set<Ciudadano> ciudadanos;
+    private List<Ciudadano> ciudadanos;
     /** Asociaciones que contiene la asociación */
     private Set<Asociacion> asociaciones;
     /** Representante de la asocicacion */
     private Ciudadano representante;
     /** Proyectos que apoya la asociación y fecha del apoyo. */
     private Map<Proyecto, LocalDateTime> proyectosApoyados;
+    /** Seguidores y sus estrategias */
     private Map<Follower, AnnouncementStrategy> followerStrategies;
+    /** Entidades a las que se sigue */
     private Set<FollowedEntity> following;
 
     /**
@@ -40,7 +42,7 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
             throws RepresentanteInvalidoException {
         super(nombre, contrasena, aplicacion);
         this.representante = representante;
-        this.ciudadanos = new HashSet<Ciudadano>();
+        this.ciudadanos = new ArrayList<Ciudadano>();
         this.asociaciones = new HashSet<Asociacion>();
         this.proyectosApoyados = new HashMap<>();
         this.followerStrategies = new HashMap<>();
@@ -62,7 +64,7 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
      * 
      * @return Un conjunto de ciudadanos directos en la asociación.
      */
-    public Set<Ciudadano> getCiudadanosDirectos() {
+    public List<Ciudadano> getCiudadanosDirectos() {
         return this.ciudadanos;
     }
 
@@ -222,6 +224,11 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
         anuncioApoyoProyecto(proyecto.getNombre(), proyecto.getDescripcion(), proyecto.getNumApoyos());
     }
 
+    /**
+     * Método para recibir anuncios
+     * 
+     * @param t Anuncio que se recibe
+     */
     @Override
     public void receive(Anuncio t) {
         for (Follower f : followerStrategies.keySet()) {
@@ -232,6 +239,13 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
         }
     }
 
+    /**
+     * Método para comenzar a seguir a una entidad según una estrategia.
+     * 
+     * @param entity Entidad a la que se va a seguir.
+     * @param ns Estrategia que se quiere seguir.
+     * @return True si sale bien, false si no.
+     */
     public boolean startToFollow(FollowedEntity entity, AnnouncementStrategy ns) {
         if (!following.contains(entity)) {
             following.add(entity);
@@ -246,6 +260,12 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
         return false;
     }
 
+    /**
+     * Método para comenzar dejar de seguir a una entidad según una estrategia.
+     * 
+     * @param entity Entidad a la que se va a dejar de seguir.
+     * @return True si sale bien, false si no.
+     */
     public boolean startToUnfollow(FollowedEntity entity) {
         if (following.contains(entity)) {
             following.remove(entity);
@@ -316,23 +336,51 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
         }      
     }
 
+    /**
+     * Método para anunciar un nuevo proyecto.
+     * 
+     * @param title Título del proyecto.
+     * @param description Descripción del proyecto.
+     */
     public void anuncioPropuestaProyecto(String title, String description) {
         announce(new Anuncio(super.nombre + " propone el proyecto " + title + ": \"" + description + "\""));
     }
 
+    /**
+     * Método para anunciar un apoyo a un proyecto.
+     * 
+     * @param title Título del proyecto.
+     * @param description Descripción del proyecto.
+     * @param numApoyos Número de apoyos del proyecto.
+     */
     public void anuncioApoyoProyecto(String title, String description, int numApoyos) {
         announce(new Anuncio(super.nombre + " da apoyo al proyecto " + title + ": \"" + description + "\" (" + numApoyos + " apoyos)"));
     }
 
+    /**
+     * Método para anunciar una nueva suscripción.
+     * 
+     * @param nombre Nombre del ciudadano.
+     */
     public void anuncioNuevaInscripcion(String nombre) {
         announce(new Anuncio(
                 "Alta de " + nombre + " en " + super.nombre + " (" + getCiudadanosDirectos().size() + " miembros)"));
     }
 
+    /**
+     * Método para obtener los seguidores.
+     * @return Los seguidores.
+     */
 	public Set<Follower> getFollowers() {
 		return followerStrategies.keySet();
 	}
 	
+	/**
+	 * Compara este objeto con el objeto especificado para determinar si son iguales.
+	 *
+	 * @param obj el objeto con el que se va a comparar.
+	 * @return true si los objetos son iguales; false en caso contrario.
+	 */
 	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -341,11 +389,25 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
         return Objects.equals(nombre, that.nombre);
     }
 
+	/**
+	 * Devuelve un valor hash para este objeto. Este método está diseñado para que
+	 * sea coherente con equals(Object): si dos objetos son iguales según el método equals,
+	 * entonces deben tener el mismo valor hash.
+	 *
+	 * @return el valor hash del objeto.
+	 */
     @Override
     public int hashCode() {
         return Objects.hash(nombre);
     }
 
+    /**
+     * Método para seguir a otros usuarios según una estrategia.
+     * 
+     * @param f Seguidor al que se empieza a seguir.
+     * @param ns Estrategia que se sigue.
+     * @return True si ha sido correcto, false si no.
+     */
     @Override
 	public boolean follow(Follower f, AnnouncementStrategy ns) {
 		if (f == null || followerStrategies.containsKey(f)) {
@@ -356,12 +418,23 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
 	    
 	    return true;
 	}
-
+    
+    /**
+     * Método para obtener la estrategia de un seguidor.
+     * 
+     * @param f El seguidor.
+     * @return La estrategia con la que sigue el seguidor a la entidad.
+     */
     @Override
 	public AnnouncementStrategy getAnnouncementStrategy(Follower f) {
 		return followerStrategies.get(f);
 	}
 
+    /**
+	 * Método para modificar la estrategia de un seguidor.
+	 * @param f El seguidor.
+	 * @param ns La estrategia con la que sigue el seguidor a la entidad.
+	 */
 	@Override
 	public void setAnnouncementStrategy(Follower f, AnnouncementStrategy ns) {
 		if (f != null) {

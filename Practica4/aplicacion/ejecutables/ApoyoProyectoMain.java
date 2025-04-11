@@ -13,6 +13,11 @@ import aplicacion.proyectos.Proyecto;
 import aplicacion.proyectos.ProyectoFundacion;
 import aplicacion.usuarios.*;
 
+/**
+ * La clase ApoyoProyectoMain representa el main del apartado 3.
+ * 
+ * @author Carmen Gómez, María Pozo.
+ */
 public class ApoyoProyectoMain {
     /**
      * Constructor de ApoyoProyectoTester.
@@ -41,6 +46,7 @@ public class ApoyoProyectoMain {
         Fundacion fundacion = new Fundacion("Fundacion Canal", "akñsnfi7", app, "A1234567B");
         Asociacion asociacion1 = new Asociacion("conservemos el manzanares", "aksodcj4", app, ciudadano2);
         Asociacion asociacion2 = new Asociacion("amigos de los pájaros", "cdkwpnm5", app, ciudadano2);
+        asociacion2.inscribirCiudadano(ciudadano2, null);
         asociacion2.inscribirCiudadano(ciudadano3, null);
         asociacion1.inscribirCiudadano(ciudadano1, null);
         asociacion1.anadirAsociacion(asociacion2);
@@ -49,8 +55,8 @@ public class ApoyoProyectoMain {
         ProyectoFundacion proyecto2 = new ProyectoFundacion("Gastemos menos agua",
                 "Se quiere tartar de gastar menos agua en las casas", fundacion, 100000.0, 80.0);
 
-        app.proponerProyecto(proyecto1);
-        app.proponerProyecto(proyecto2);
+        asociacion1.proponerProyecto(proyecto1);
+        fundacion.proponerProyecto(proyecto2);
 
         ciudadano1.apoyarProyecto(proyecto2);
 

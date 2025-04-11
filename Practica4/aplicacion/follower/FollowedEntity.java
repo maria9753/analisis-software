@@ -34,7 +34,7 @@ public interface FollowedEntity {
     public void announce(Anuncio t);
 
     /**
-     * Método para seguir a otros usuarios.
+     * Método para seguir a otros usuarios según una estrategia.
      * 
      * @param f Seguidor al que se empieza a seguir.
      * @param ns Estrategia que se sigue.
@@ -42,7 +42,18 @@ public interface FollowedEntity {
      */
     public boolean follow(Follower f, AnnouncementStrategy ns);
 
+    /**
+     * Método para obtener la estrategia de un seguidor.
+     * 
+     * @param f El seguidor.
+     * @return La estrategia con la que sigue el seguidor a la entidad.
+     */
 	public AnnouncementStrategy getAnnouncementStrategy(Follower f);
 
+	/**
+	 * Método para modificar la estrategia de un seguidor.
+	 * @param f El seguidor.
+	 * @param ns La estrategia con la que sigue el seguidor a la entidad.
+	 */
 	public void setAnnouncementStrategy(Follower f, AnnouncementStrategy ns);
 }

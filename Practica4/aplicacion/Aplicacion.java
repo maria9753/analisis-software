@@ -42,7 +42,7 @@ public class Aplicacion {
      */
     public void registrarCiudadano(Ciudadano ciudadano) throws NifInvalidoException {
         if (ciudadanos.containsKey(ciudadano.getNif())) {
-            throw new IllegalArgumentException("NIF ya registrado");
+            throw new NifInvalidoException("NIF ya registrado");
         }
         validarNif(ciudadano.getNif());
         ciudadanos.put(ciudadano.getNif(), ciudadano);
@@ -159,6 +159,24 @@ public class Aplicacion {
     public List<Ciudadano> obtenerTodosLosCiudadanos() {
         return new ArrayList<>(ciudadanos.values());
     }
+    
+    /**
+     * Obtiene todas las fundaciones registradas en la aplicación.
+     * 
+     * @return Una lista con todas las fundaciones registradas.
+     */
+    public List<Fundacion> obtenerTodasLasFundaciones() {
+        return new ArrayList<>(fundaciones.values());
+    }
+    
+    /**
+     * Obtiene todas las asociaciones registradas en la aplicación.
+     * 
+     * @return Una lista con todas las asociaciones registradas.
+     */
+    public List<Asociacion> obtenerTodasLasAsociaciones() {
+        return asociaciones;
+    }
 
     /**
      * Obtiene un proyecto por su nombre.
@@ -226,14 +244,6 @@ public class Aplicacion {
         for (Asociacion a : asociaciones) {
             for (Proyecto p : a.getProyectosApoyados().keySet()) {
                 apoyos.put(p, apoyos.getOrDefault(p, 0) + a.getCiudadanos().size());
-            }
-        }
-
-        for (Proyecto p : proyectos) {
-            if (p.getProponente() instanceof Ciudadano) {
-                apoyos.put(p, apoyos.getOrDefault(p, 0) + 1);
-            } else if (p.getProponente() instanceof Asociacion) {
-                apoyos.put(p, apoyos.getOrDefault(p, 0) + ((Asociacion) p.getProponente()).getCiudadanos().size());
             }
         }
 

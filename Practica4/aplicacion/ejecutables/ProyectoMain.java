@@ -9,7 +9,7 @@ import aplicacion.proyectos.ProyectoFundacion;
 import aplicacion.usuarios.*;
 
 /**
- * La clase ProyectoTester representa el test de la clase proyecto.
+ * La clase ProyectoMain representa el main del apartado 2.
  * 
  * @author Carmen Gómez, María Pozo.
  */
@@ -40,6 +40,7 @@ public class ProyectoMain {
         Fundacion fundacion = new Fundacion("Fundacion Canal", "akñsnfi7", aplicacion, "A1234567B");
         Asociacion asociacion1 = new Asociacion("conservemos el manzanares", "aksodcj4", aplicacion, ciudadano2);
         Asociacion asociacion2 = new Asociacion("amigos de los pájaros", "cdkwpnm5", aplicacion, ciudadano2);
+        asociacion2.inscribirCiudadano(ciudadano2, null);
         asociacion2.inscribirCiudadano(ciudadano3, null);
         asociacion1.inscribirCiudadano(ciudadano1, null);
         asociacion1.anadirAsociacion(asociacion2);
