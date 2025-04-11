@@ -37,8 +37,8 @@ public class AplicacionMain {
         Fundacion fundacion = new Fundacion("Fundacion Canal", "akñsnfi7", aplicacion, "A1234567B");
         Asociacion asociacion1 = new Asociacion("conservemos el manzanares", "aksodcj4", aplicacion, ciudadano2);
         Asociacion asociacion2 = new Asociacion("amigos de los pájaros", "cdkwpnm5", aplicacion, ciudadano2);
-        asociacion2.inscribirCiudadano(ciudadano3);
-        asociacion1.inscribirCiudadano(ciudadano1);
+        asociacion2.inscribirCiudadano(ciudadano3, null);
+        asociacion1.inscribirCiudadano(ciudadano1, null);
         asociacion1.anadirAsociacion(asociacion2);
 
         System.out.println("[" + ciudadano1.toString() + "\n" + ciudadano2.toString() + "\n" + ciudadano3.toString()

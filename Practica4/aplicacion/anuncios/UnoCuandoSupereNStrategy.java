@@ -5,7 +5,7 @@ import aplicacion.follower.Follower;
 import aplicacion.proyectos.Proyecto;
 
 public class UnoCuandoSupereNStrategy implements AnnouncementStrategy {
-	private int n;
+	private final int n;
 	private int flag;
 	
 	public UnoCuandoSupereNStrategy(int n) {
@@ -32,9 +32,5 @@ public class UnoCuandoSupereNStrategy implements AnnouncementStrategy {
 		}
 		
 		return false;
-	}
-	
-	public void setN(int n) {
-		this.n = n;
 	}
 }

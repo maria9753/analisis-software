@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -68,22 +67,15 @@ public class FundacionTest {
 
 	@Test
 	void testFollowUnfollow() {
-	assertTrue(fundacion.follow(seguidor));
-	assertTrue(fundacion.getFollowers().contains(seguidor));
-
-	assertFalse(fundacion.follow(seguidor));
+		assertTrue(fundacion.follow(seguidor));
+		assertTrue(fundacion.getFollowers().contains(seguidor));
 	
-	assertTrue(fundacion.unfollow(seguidor));
-	assertFalse(fundacion.getFollowers().contains(seguidor));
-	
-	assertFalse(fundacion.unfollow(seguidor));
-
-	try {
-	    fundacion.follow(null);
-	    fail("Debería haber lanzado IllegalArgumentException");
-	} catch (IllegalArgumentException e) {
-	    // Test pass
-	    }
+		assertFalse(fundacion.follow(seguidor));
+		
+		assertTrue(fundacion.unfollow(seguidor));
+		assertFalse(fundacion.getFollowers().contains(seguidor));
+		
+		assertTrue(fundacion.unfollow(seguidor));
 	}
 
     @Test

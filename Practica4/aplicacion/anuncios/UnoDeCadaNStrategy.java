@@ -4,7 +4,7 @@ import aplicacion.follower.FollowedEntity;
 import aplicacion.follower.Follower;
 
 public class UnoDeCadaNStrategy implements AnnouncementStrategy {
-	private int n;
+	private final int n;
 	private int counter;
 	
 	public UnoDeCadaNStrategy(int n) {
@@ -18,16 +18,13 @@ public class UnoDeCadaNStrategy implements AnnouncementStrategy {
 
 	@Override
 	public boolean enviarOnoEnviar(Anuncio anuncio, Follower follower, FollowedEntity followedEntity) {
+		int aux = counter;
 		counter++;
-		if (counter == n) {
+		if (aux == n || aux == 0) {
 			counter = 0;
 			return true;
 		}
 		
 		return false;
-	}
-	
-	public void setN(int n) {
-		this.n = n;
 	}
 }

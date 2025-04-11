@@ -4,6 +4,9 @@ import aplicacion.proyectos.*;
 import aplicacion.*;
 import aplicacion.exceptions.CifInvalidoException;
 import aplicacion.exceptions.NifInvalidoException;
+import aplicacion.exceptions.ProponenteNoApoyaException;
+import aplicacion.exceptions.ProyectoMasDe60Exception;
+import aplicacion.exceptions.ProyectoYaApoyadoException;
 import aplicacion.exceptions.RepresentanteInvalidoException;
 import aplicacion.usuarios.*;
 
@@ -21,36 +24,48 @@ public class FollowersMain {
      *                                        representante inválido.
      * @throws NifInvalidoException
      * @throws CifInvalidoException
+     * @throws ProyectoYaApoyadoException 
+     * @throws ProyectoMasDe60Exception 
+     * @throws ProponenteNoApoyaException 
      */
-    public static void main(String[] args)
-            throws RepresentanteInvalidoException, NifInvalidoException, CifInvalidoException {
-        Aplicacion aplicacion = new Aplicacion();
-        Ciudadano ciudadano1 = new Ciudadano("Juan Bravo", "dmcikd4", aplicacion, "01234567K");
-        Ciudadano ciudadano2 = new Ciudadano("Ana López", "dkcoep3", aplicacion, "01234567L");
-        Ciudadano ciudadano3 = new Ciudadano("Luisa Gómez", "dkowej5", aplicacion, "01234567G");
+    public static void main(String[] args) throws RepresentanteInvalidoException, NifInvalidoException, CifInvalidoException, ProponenteNoApoyaException, ProyectoMasDe60Exception, ProyectoYaApoyadoException {
+		Aplicacion aplicacion = new Aplicacion();
+		
+		Ciudadano juan = new Ciudadano("Juan Bravo", "dmcikd4", aplicacion, "01234567K");
+		Ciudadano ana = new Ciudadano("Ana López", "dkcoep3", aplicacion, "01234567L");
+		Ciudadano luisa = new Ciudadano("Luisa Gómez", "dkowej5", aplicacion, "01234567G");
+		
+		Fundacion fundacionCanal = new Fundacion("Fundación Canal", "akñsnfi7", aplicacion, "A1234567B");
+		
+		Asociacion amigosPajaros = new Asociacion("amigos de los pájaros", "cdkwpnm5", aplicacion, ana);
+		Asociacion conservemosManzanares = new Asociacion("conservemos el manzanares", "aksodcj4", aplicacion, ana);
+		
+		
+		amigosPajaros.inscribirCiudadano(ana, null);   
+		amigosPajaros.inscribirCiudadano(luisa, null);
+		
+		conservemosManzanares.inscribirCiudadano(juan, null);
+		conservemosManzanares.anadirAsociacion(amigosPajaros);
+		
+		juan.startToFollow(fundacionCanal, null);
+		
+		Proyecto limpiezaManzanares = new Proyecto ("Limpieza del manzanares", "Limpiar el manzanares para recuperar su flora y fauna", conservemosManzanares);
+				
+		conservemosManzanares.proponerProyecto(limpiezaManzanares);
+		
+		ProyectoFundacion gastarMenosAgua = new ProyectoFundacion("Gastemos menos agua", "Mejora de las infraestructuras de distribución y captación de agua", fundacionCanal, 1000000.0, 80.0);
 
-        Fundacion fundacion = new Fundacion("Fundacion Canal", "akñsnfi7", aplicacion, "A1234567B");
-        Asociacion asociacion1 = new Asociacion("conservemos el manzanares", "aksodcj4", aplicacion, ciudadano2);
-        Asociacion asociacion2 = new Asociacion("amigos de los pájaros", "cdkwpnm5", aplicacion, ciudadano2);
-        asociacion2.inscribirCiudadano(ciudadano3);
-        asociacion1.anadirAsociacion(asociacion2);
-
-        Proyecto proyecto1 = new Proyecto("Limpieza del manzanares", "Se quiere hacer una limpieza del río manzanares",
-                asociacion1);
-        ProyectoFundacion proyecto2 = new ProyectoFundacion("Gastemos menos agua",
-                "Se quiere tartar de gastar menos agua en las casas", fundacion, 100000.0, 80.0);
-        asociacion1.inscribirCiudadano(ciudadano1);
-        ciudadano1.startToFollow(fundacion, null);
-        asociacion1.proponerProyecto(proyecto1);
-
-        fundacion.proponerProyecto(proyecto2);
-
-        for (Ciudadano c : aplicacion.obtenerTodosLosCiudadanos()) {
-            System.out.println("Anuncios para " + c.getNombre() + ":");
-            for (String s : c.getMensajesAnuncios()) {
-                System.out.println(s);
-            }
-            System.out.println("\n");
-        }
-    }
+		fundacionCanal.proponerProyecto(gastarMenosAgua);
+		
+		System.out.println("Anuncios para Juan Bravo:");
+		System.out.println(juan.getMensajesAnuncios());
+		System.out.println("\n");
+		
+		System.out.println("Anuncios para Ana López:");
+		System.out.println(ana.getMensajesAnuncios());
+		System.out.println("\n");
+		
+		System.out.println("Anuncios para Luisa Gómez:");
+		System.out.println(luisa.getMensajesAnuncios());
+	}
 }

@@ -2,7 +2,6 @@ package aplicacion.usuarios;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -126,7 +125,7 @@ public class Fundacion extends Usuario implements FollowedEntity {
     }
 
     public void anuncioPropuestaProyecto(String title, String description) {
-        announce(new Anuncio(super.nombre + " propone el proyecto" + title + ": \"" + description + "\""));
+        announce(new Anuncio(super.nombre + " propone el proyecto " + title + ": \"" + description + "\""));
     }
 
 	public Set<Follower> getFollowers() {

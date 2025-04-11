@@ -29,7 +29,7 @@ public class Ciudadano extends Usuario implements Follower {
     /** Proyectos que apoya un ciudadano y fecha del apoyo. */
     private Map<Proyecto, LocalDateTime> proyectosApoyados;
 
-    private Set<String> mensajes;
+    private List<String> mensajes;
     private Set<FollowedEntity> following;
 
     /**
@@ -45,7 +45,7 @@ public class Ciudadano extends Usuario implements Follower {
         this.nif = nif;
         this.asociaciones = new HashSet<>();
         this.proyectosApoyados = new HashMap<>();
-        this.mensajes = new HashSet<>();
+        this.mensajes = new ArrayList<>();
         this.following = new HashSet<>();
         aplicacion.registrarCiudadano(this);
     }
@@ -59,18 +59,8 @@ public class Ciudadano extends Usuario implements Follower {
         return this.asociaciones;
     }
 
-    public Set<String> getMensajesAnuncios() {
+    public List<String> getMensajesAnuncios() {
         return mensajes;
-    }
-
-    /**
-     * Registra a un ciudadano en una asociación.
-     * 
-     * @param asociacion La asociación a la que se desea agregar el ciudadano.
-     */
-    public void registarAsociacion(Asociacion asociacion) {
-    	asociacion.inscribirCiudadano(this);
-        this.asociaciones.add(asociacion);
     }
 
     /**
@@ -117,6 +107,8 @@ public class Ciudadano extends Usuario implements Follower {
         }
 
         proyectosApoyados.put(proyecto, LocalDateTime.now());
+        
+        proyecto.addApoyo();
     }
 
     public boolean startToFollow(FollowedEntity entity, AnnouncementStrategy ns) {

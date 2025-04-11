@@ -41,13 +41,11 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
         super(nombre, contrasena, aplicacion);
         this.representante = representante;
         this.ciudadanos = new HashSet<Ciudadano>();
-        this.ciudadanos.add(representante);
         this.asociaciones = new HashSet<Asociacion>();
         this.proyectosApoyados = new HashMap<>();
         this.followerStrategies = new HashMap<>();
         this.following = new HashSet<>();
         aplicacion.registrarAsociacion(this);
-        representante.startToFollow(this, null);
     }
 
     /**
@@ -126,14 +124,16 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
      * Inscribe un nuevo ciudadano en la asociación si no está ya inscrito.
      * 
      * @param ciudadano El ciudadano a inscribir.
+     * @param ns 		Estrategia con la que va a seguir a la asociación.
      */
-    public void inscribirCiudadano(Ciudadano ciudadano) {
+    public void inscribirCiudadano(Ciudadano ciudadano, AnnouncementStrategy ns) {
         if (comprobarCiudadano(ciudadano) == true) {
             return;
         }
 
         ciudadanos.add(ciudadano);
-        ciudadano.startToFollow(this, null);
+        ciudadano.getAsociaciones().add(this);
+        ciudadano.startToFollow(this, ns);
         anuncioNuevaInscripcion(ciudadano.getNombre());
     }
 
@@ -161,6 +161,9 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
         }
 
         asociaciones.add(asociacion);
+        for (Ciudadano c: asociacion.getCiudadanos()) {
+        	c.startToFollow(this, null);
+        }
     }
 
     /**
@@ -173,9 +176,11 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
         proyectosApoyados.put(proyecto, LocalDateTime.now());
         this.startToFollow(proyecto, null);
         anuncioPropuestaProyecto(proyecto.getNombre(), proyecto.getDescripcion());
-        anuncioApoyoProyecto(proyecto.getNombre(), proyecto.getDescripcion());
-        proyecto.addApoyo();
-        proyecto.anuncioApoyoProyecto();
+        int i;
+        for (i = 0; i < getCiudadanos().size(); i++) {
+            proyecto.addApoyo();
+        }
+        anuncioApoyoProyecto(proyecto.getNombre(), proyecto.getDescripcion(), proyecto.getNumApoyos());
     }
 
     /**
@@ -207,16 +212,19 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
         proyectosApoyados.put(proyecto, LocalDateTime.now());
 
         for (Ciudadano c : getCiudadanos()) {
+        	if (c.getProyectosApoyados().containsKey(proyecto)) {
+        		proyecto.removeApoyo();
+        	}
             c.getProyectosApoyados().remove(proyecto);
+            proyecto.addApoyo();
         }
-        anuncioApoyoProyecto(proyecto.getNombre(), proyecto.getDescripcion());
-        proyecto.anuncioApoyoProyecto();
-        proyecto.addApoyo();
+        
+        anuncioApoyoProyecto(proyecto.getNombre(), proyecto.getDescripcion(), proyecto.getNumApoyos());
     }
 
     @Override
     public void receive(Anuncio t) {
-        for (Follower f : followers) {
+        for (Follower f : followerStrategies.keySet()) {
             f.receive(t);
         }
         for (Asociacion a : getAsociaciones()) {
@@ -298,11 +306,9 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
      */
     @Override
     public void announce(Anuncio t) {
-    	Follower f = null;
-    	AnnouncementStrategy ns = null;
         for (Map.Entry<Follower, AnnouncementStrategy> e : followerStrategies.entrySet()) {
-            f = e.getKey();
-            ns = e.getValue();
+            Follower f = e.getKey();
+            AnnouncementStrategy ns = e.getValue();
             
             if (ns == null || ns.enviarOnoEnviar(t, f, this)) {
             	f.receive(t);
@@ -311,16 +317,16 @@ public class Asociacion extends Usuario implements FollowedEntity, Follower {
     }
 
     public void anuncioPropuestaProyecto(String title, String description) {
-        announce(new Anuncio(super.nombre + " propone el proyecto" + title + ": \"" + description + "\""));
+        announce(new Anuncio(super.nombre + " propone el proyecto " + title + ": \"" + description + "\""));
     }
 
-    public void anuncioApoyoProyecto(String title, String description) {
-        announce(new Anuncio(super.nombre + " da apoyo al proyecto" + title + ": \"" + description + "\""));
+    public void anuncioApoyoProyecto(String title, String description, int numApoyos) {
+        announce(new Anuncio(super.nombre + " da apoyo al proyecto " + title + ": \"" + description + "\" (" + numApoyos + " apoyos)"));
     }
 
     public void anuncioNuevaInscripcion(String nombre) {
         announce(new Anuncio(
-                "Alta de " + nombre + " en " + super.nombre + " (" + getCiudadanos().size() + " miembros)"));
+                "Alta de " + nombre + " en " + super.nombre + " (" + getCiudadanosDirectos().size() + " miembros)"));
     }
 
 	public Set<Follower> getFollowers() {

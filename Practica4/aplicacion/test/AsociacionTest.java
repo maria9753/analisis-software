@@ -47,28 +47,28 @@ public class AsociacionTest {
     void testConstructor() {
         assertEquals("Asociacion Principal", asociacion.getNombre());
         assertEquals(representante, asociacion.getRepresentante());
-        assertTrue(asociacion.getCiudadanosDirectos().contains(representante));
-        assertEquals(1, asociacion.getCiudadanosDirectos().size());
+        assertFalse(asociacion.getCiudadanosDirectos().contains(representante));
+        assertEquals(0, asociacion.getCiudadanosDirectos().size());
         assertTrue(asociacion.getAsociaciones().isEmpty());
         assertTrue(asociacion.getProyectosApoyados().isEmpty());
     }
     
     @Test
     void testInscribirCiudadano() {
-        asociacion.inscribirCiudadano(ciudadano1);
+        asociacion.inscribirCiudadano(ciudadano1, null);
         assertTrue(asociacion.getCiudadanosDirectos().contains(ciudadano1));
-        assertEquals(2, asociacion.getCiudadanos().size());
+        assertEquals(1, asociacion.getCiudadanos().size());
         
-        asociacion.inscribirCiudadano(ciudadano1);
-        assertEquals(2, asociacion.getCiudadanos().size());
+        asociacion.inscribirCiudadano(ciudadano1, null);
+        assertEquals(1, asociacion.getCiudadanos().size());
     }
     
     @Test
     void testDarDeBajaCiudadano() {
-        asociacion.inscribirCiudadano(ciudadano1);
+        asociacion.inscribirCiudadano(ciudadano1, null);
         asociacion.darDeBajaCiudadano(ciudadano1);
         assertFalse(asociacion.getCiudadanosDirectos().contains(ciudadano1));
-        assertEquals(1, asociacion.getCiudadanos().size());
+        assertEquals(0, asociacion.getCiudadanos().size());
     }
     
     @Test
@@ -93,7 +93,8 @@ public class AsociacionTest {
     
     @Test
     void testProponerProyecto() throws ProponenteNoApoyaException, ProyectoMasDe60Exception, ProyectoYaApoyadoException {
-        asociacion.proponerProyecto(proyecto);
+        asociacion.inscribirCiudadano(ciudadano1, null);
+    	asociacion.proponerProyecto(proyecto);
         assertEquals(1, proyecto.getNumApoyos());
         assertTrue(asociacion.getProyectosApoyados().containsKey(proyecto));
     }
@@ -105,7 +106,7 @@ public class AsociacionTest {
         Proyecto otroProyecto = new Proyecto("Otro Proyecto", "Desc", otroCiudadano);
         asociacion.apoyarProyecto(otroProyecto);
         assertTrue(asociacion.getProyectosApoyados().containsKey(otroProyecto));
-        assertEquals(1, otroProyecto.getNumApoyos());
+        assertEquals(0, otroProyecto.getNumApoyos());
     }
     
     @Test
@@ -159,20 +160,20 @@ public class AsociacionTest {
     
     @Test
     void testGetCiudadanosConSubasociaciones() throws RepresentanteInvalidoException {
-        asociacion.inscribirCiudadano(ciudadano1);
-        subAsociacion.inscribirCiudadano(ciudadano2);
+        asociacion.inscribirCiudadano(ciudadano1, null);
+        subAsociacion.inscribirCiudadano(ciudadano2, null);
         asociacion.anadirAsociacion(subAsociacion);
         
         Set<Ciudadano> ciudadanos = asociacion.getCiudadanos();
-        assertEquals(3, ciudadanos.size()); 
-        assertTrue(ciudadanos.contains(representante));
+        assertEquals(2, ciudadanos.size()); 
+        assertFalse(ciudadanos.contains(representante));
         assertTrue(ciudadanos.contains(ciudadano1));
         assertTrue(ciudadanos.contains(ciudadano2));
     }
     
     @Test
     void testComprobarCiudadano() {
-        asociacion.inscribirCiudadano(ciudadano1);
+        asociacion.inscribirCiudadano(ciudadano1, null);
         assertTrue(asociacion.comprobarCiudadano(ciudadano1));
         assertFalse(asociacion.comprobarCiudadano(ciudadano2));
     }
@@ -188,8 +189,8 @@ public class AsociacionTest {
     
     @Test
     void testToString() {
-        asociacion.inscribirCiudadano(ciudadano1);
-        String expected = "Asociacion Principal <asociacion con 2 ciudadanos>";
+        asociacion.inscribirCiudadano(ciudadano1, null);
+        String expected = "Asociacion Principal <asociacion con 1 ciudadanos>";
         assertEquals(expected, asociacion.toString());
     }
 }

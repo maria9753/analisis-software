@@ -13,8 +13,8 @@ import aplicacion.proyectos.*;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class CiudadanoTest {
 
@@ -61,7 +61,7 @@ public class CiudadanoTest {
 
     @Test
     public void testRegistrarAsociacion() {
-        ciudadano.registarAsociacion(asociacion);
+        asociacion.inscribirCiudadano(ciudadano, null);
         assertTrue(ciudadano.getAsociaciones().contains(asociacion));
         assertEquals(1, ciudadano.getAsociaciones().size());
     }
@@ -121,20 +121,20 @@ public class CiudadanoTest {
 
     @Test
     public void testStartToFollow() {
-    	assertTrue(ciudadano.startToUnfollow(asociacion));
-        assertTrue(ciudadano.startToFollow(asociacion));
+    	assertFalse(ciudadano.startToUnfollow(asociacion));
+        assertTrue(ciudadano.startToFollow(asociacion, null));
         assertTrue(ciudadano.getFollowing().contains(asociacion));
         assertTrue(asociacion.getFollowers().contains(ciudadano));
         
-        assertFalse(ciudadano.startToFollow(asociacion));
+        assertFalse(ciudadano.startToFollow(asociacion, null));
         
-        ciudadano.registarAsociacion(asociacion);
-        assertFalse(ciudadano.startToFollow(asociacion));
+        asociacion.inscribirCiudadano(ciudadano, null);
+        assertFalse(ciudadano.startToFollow(asociacion, null));
     }
 
     @Test
     public void testStartToUnfollow() {
-        ciudadano.startToFollow(asociacion);
+        ciudadano.startToFollow(asociacion, null);
    
         assertTrue(ciudadano.startToUnfollow(asociacion));
         assertFalse(ciudadano.getFollowing().contains(asociacion));
@@ -142,9 +142,8 @@ public class CiudadanoTest {
      
         assertFalse(ciudadano.startToUnfollow(asociacion));
         
-    
-        ciudadano.registarAsociacion(asociacion);
-        ciudadano.startToFollow(asociacion);
+        asociacion.inscribirCiudadano(ciudadano, null);
+        ciudadano.startToFollow(asociacion, null);
         
         try {
             ciudadano.startToUnfollow(asociacion);
@@ -156,8 +155,8 @@ public class CiudadanoTest {
 
     @Test
     public void testUnfollowAfterDarDeBaja() {
-        ciudadano.registarAsociacion(asociacion);
-        ciudadano.startToFollow(asociacion);
+        asociacion.inscribirCiudadano(ciudadano, null);
+        ciudadano.startToFollow(asociacion, null);
 
         asociacion.darDeBajaCiudadano(ciudadano);
   
@@ -171,7 +170,7 @@ public class CiudadanoTest {
         Anuncio anuncio = new Anuncio("Nuevo parque en el barrio");
         ciudadano.receive(anuncio);
         
-        Set<String> mensajes = ciudadano.getMensajesAnuncios();
+        List<String> mensajes = ciudadano.getMensajesAnuncios();
         assertTrue(mensajes.contains("Nuevo parque en el barrio"));
         assertEquals(1, mensajes.size());
     }
