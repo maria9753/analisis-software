@@ -14,7 +14,17 @@ import aplicacion.exceptions.NifInvalidoException;
 import aplicacion.follower.FollowedEntity;
 import aplicacion.follower.Follower;
 
+/**
+ * Clase prueba junit de proyecto.
+ */
 public class ProyectoTest {
+
+    /**
+     * Constructor de la clase.
+     */
+    public ProyectoTest(){
+    	/**Constructor vacío*/
+    }
     
     private Aplicacion app;
     private Ciudadano proponente;

@@ -10,7 +10,17 @@ import aplicacion.anuncios.UnoDeCadaNStrategy;
 import aplicacion.follower.FollowedEntity;
 import aplicacion.follower.Follower;
 
+/**
+ * Clase prueba junit de uno de cada N strategy.
+ */
 public class UnoDeCadaNStrategyTest {
+
+    /**
+     * Constructor de la clase.
+     */
+    public UnoDeCadaNStrategyTest(){
+    	/**Constructor vacío*/
+    }
 
     private TestFollower follower;
     private TestFollowedEntity followedEntity;

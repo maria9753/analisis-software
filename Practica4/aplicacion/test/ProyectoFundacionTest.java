@@ -11,7 +11,17 @@ import aplicacion.proyectos.ProyectoFundacion;
 import aplicacion.usuarios.Ciudadano;
 import aplicacion.usuarios.Fundacion;
 
+/**
+ * Clase prueba junit de rpoyecto fundacion.
+ */
 public class ProyectoFundacionTest {
+
+    /**
+     * Constructor de la clase.
+     */
+    public ProyectoFundacionTest(){
+    	/**Constructor vacío*/
+    }
     
     private Aplicacion app;
     private Fundacion proponente;

@@ -16,7 +16,17 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Clase de prueba junit de Ciudadano.
+ */
 public class CiudadanoTest {
+
+    /**
+     * Constructor de la clase.
+     */
+    public CiudadanoTest(){
+    	/**Constructor vacío*/
+    }
 
     private Aplicacion app;
     private Ciudadano ciudadano;

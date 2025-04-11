@@ -16,7 +16,17 @@ import aplicacion.usuarios.*;
 import aplicacion.exceptions.*;
 import aplicacion.proyectos.*;
 
+/**
+ * Clase prueba junit de fundacion.
+ */
 public class FundacionTest {
+
+    /**
+     * Constructor de la clase.
+     */
+    public FundacionTest(){
+    	/**Constructor vacío*/
+    }
 
     private Aplicacion app;
     private Fundacion fundacion;

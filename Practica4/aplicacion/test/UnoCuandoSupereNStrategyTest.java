@@ -14,7 +14,17 @@ import aplicacion.follower.Follower;
 import aplicacion.proyectos.Proyecto;
 import aplicacion.usuarios.Ciudadano;
 
+/**
+ * Clase prueba junit de uno cuando supere N strategy.
+ */
 public class UnoCuandoSupereNStrategyTest {
+
+    /**
+     * Constructor de la clase.
+     */
+    public UnoCuandoSupereNStrategyTest(){
+    	/**Constructor vacío*/
+    }
 
     private TestFollower follower;
     private TestProyecto proyecto;

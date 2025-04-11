@@ -7,7 +7,17 @@ import org.junit.jupiter.api.Test;
 import aplicacion.Aplicacion;
 import aplicacion.usuarios.Usuario;
 
+/**
+ * Clase prueba junit de usuario.
+ */
 public class UsuarioTest {
+
+    /**
+     * Constructor de la clase.
+     */
+    public UsuarioTest(){
+    	/**Constructor vacío*/
+    }
     
     private Aplicacion app;
     private UsuarioConcreto usuario;

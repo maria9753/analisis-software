@@ -5,7 +5,17 @@ import org.junit.jupiter.api.Test;
 
 import aplicacion.anuncios.Anuncio;
 
+/**
+ * Clase de prueba junit de anuncio.
+ */
 public class AnuncioTest {
+
+    /**
+     * Constructor de la clase.
+     */
+    public AnuncioTest(){
+    	/**Constructor vacío*/
+    }
 
     @Test
     void testConstructorYGetter() {

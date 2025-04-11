@@ -13,7 +13,16 @@ import aplicacion.exceptions.*;
 import aplicacion.usuarios.*;
 import aplicacion.proyectos.Proyecto;
 
+/**
+ * Clase de prueba junit de aplicacion.
+ */
 public class AplicacionTest {
+    /**
+     * Constructor de la clase.
+     */
+    public AplicacionTest(){
+    	/**Constructor vacío*/
+    }
     
     private Aplicacion app;
     private Ciudadano ciudadano;
