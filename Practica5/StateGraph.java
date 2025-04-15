@@ -1,5 +1,6 @@
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * La clase StateGraph representa la clase genérica de flujo de trabajo.
@@ -16,6 +17,8 @@ public class StateGraph<T> {
     private final Map<String, Consumer<T>> nodes = new LinkedHashMap<>();
     /** Mapa que representa las conexiones entre nodos */
     private final Map<String, List<String>> edges = new HashMap<>();
+    /** Mapa que representa las conexiones entre nodos con condiciones */
+    private final Map<String, List<ConditionalEdge<T>>> conditionalEdges = new HashMap<>();
     /** Nodos finales del grafo */
     private final Set<String> finalNodes = new HashSet<>();
     /** Nodo inicialdel grafo */
@@ -52,6 +55,17 @@ public class StateGraph<T> {
      */
     public void addEdge(String from, String to) {
         edges.computeIfAbsent(from, k -> new ArrayList<>()).add(to);
+    }
+
+    /**
+     * Método que establece una conexión condicional entre dos nodos.
+     * 
+     * @param from      Nodo de origen.
+     * @param to        Nodo de destino.
+     * @param condition Condición.
+     */
+    public void addConditionalEdge(String from, String to, Predicate<T> condition) {
+        conditionalEdges.computeIfAbsent(from, k -> new ArrayList<>()).add(new ConditionalEdge<>(to, condition));
     }
 
     /**
@@ -108,6 +122,14 @@ public class StateGraph<T> {
             for (int i = next.size() - 1; i >= 0; i--) {
                 stack.push(next.get(i));
             }
+
+            List<ConditionalEdge<T>> conditionals = conditionalEdges.getOrDefault(current, new ArrayList<>());
+            for (int i = conditionals.size() - 1; i >= 0; i--) {
+                ConditionalEdge<T> edge = conditionals.get(i);
+                if (edge.condition.test(input)) {
+                    stack.push(edge.toNode);
+                }
+            }
         }
         return input;
     }
@@ -124,11 +146,27 @@ public class StateGraph<T> {
         for (String nodeName : nodes.keySet()) {
             if (!first)
                 string += ", ";
-            List<String> salida = edges.getOrDefault(nodeName, new ArrayList<>());
-            string += nodeName + "=Node " + nodeName + " (" + salida.size() + " output nodes)";
+
+            int normalEdges = edges.getOrDefault(nodeName, new ArrayList<>()).size();
+            int conditionalEdgesCount = conditionalEdges.getOrDefault(nodeName, new ArrayList<>()).size();
+            int totalOutputs = normalEdges + conditionalEdgesCount;
+            string += nodeName + "=Node " + nodeName + " (" + totalOutputs + " output nodes)";
             first = false;
         }
         string += "}\n- Initial: " + initialNode + "\n- Final: " + String.join(", ", finalNodes);
         return string;
+    }
+
+    /**
+     * Clase interna para representar las condiciones.
+     */
+    private static class ConditionalEdge<T> {
+        String toNode;
+        Predicate<T> condition;
+
+        ConditionalEdge(String toNode, Predicate<T> condition) {
+            this.toNode = toNode;
+            this.condition = condition;
+        }
     }
 }
