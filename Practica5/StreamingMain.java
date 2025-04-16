@@ -34,6 +34,11 @@ public class StreamingMain {
     public static StreamingStateGraph<DoubleData> buildWorkflow() {
         StreamingStateGraph<DoubleData> sg = new StreamingStateGraph<>("average",
                 "Calculates the average of incoming data");
+
+        sg.addNode("average", d -> {
+            System.out.println("Executing node 'average'");
+        });
+        sg.setInitial("average");
         sg.setProcessor(history -> {
             double sum = 0;
             for (DoubleData data : history) {
@@ -43,6 +48,8 @@ public class StreamingMain {
             DoubleData last = history.get(history.size() - 1);
             return new DoubleData(last.getValue(), avg);
         });
+
         return sg;
     }
+
 }
