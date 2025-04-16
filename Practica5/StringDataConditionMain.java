@@ -1,5 +1,7 @@
 /**
  * Clase para probar el flujo con datos de texto y condiciones.
+ * 
+ * @author Carmen Gómez, María Pozo.
  */
 public class StringDataConditionMain {
     /**

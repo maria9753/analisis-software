@@ -3,6 +3,8 @@ import java.util.*;
 /**
  * Clase para probar el flujo con datos numéricos y condiciones, y con un flujo
  * de decremento aleatorio.
+ * 
+ * @author Carmen Gómez, María Pozo.
  */
 public class NumericDataConditionMain {
     /**

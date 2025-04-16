@@ -1,6 +1,8 @@
 /**
  * La clase NumericDataMain contiene el método main que sirve para probar y
- * ejecutar el flujo de trabajo
+ * ejecutar el flujo de trabajo.
+ * 
+ * @author Carmen Gómez, María Pozo.
  */
 public class NumericDataMain {
 
