@@ -1,5 +1,9 @@
+package src.stategraph; 
+
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -19,6 +23,8 @@ public class StateGraph<T> {
     private final Map<String, List<String>> edges = new HashMap<>();
     /** Mapa que representa las conexiones entre nodos con condiciones */
     private final Map<String, List<ConditionalEdge<T>>> conditionalEdges = new HashMap<>();
+    /** Mapa que representa los flujos de trabajo en forma de nodos */
+    private final Map<String, WorkflowNode<T, ?>> workflowNodes = new HashMap<>();
     /** Nodos finales del grafo */
     private final Set<String> finalNodes = new HashSet<>();
     /** Nodo inicialdel grafo */
@@ -69,6 +75,19 @@ public class StateGraph<T> {
     }
 
     /**
+     * Método para añadir un nodo que en realidad es un flujo de trabajo.
+     * @param <S>		Tipo del estado de flujo.
+     * @param nodeName	Nombre del nodo.
+     * @param workflow  Flujo de trabajo.
+     * @return El nodo creado.
+     */
+    public <S> WorkflowNode<T, S> addWfNode(String nodeName, StateGraph<S> workflow) {
+    	WorkflowNode<T, S> node = new WorkflowNode<>(nodeName, workflow);
+    	workflowNodes.put(nodeName, node);
+    	return node;
+    }
+
+    /**
      * Método que establece el nodo inicial del grafo.
      * 
      * @param nodeName El nodo inicial.
@@ -99,9 +118,11 @@ public class StateGraph<T> {
         Deque<String> stack = new ArrayDeque<>();
         stack.push(initialNode);
         int step = 1;
+
         if (debug) {
             System.out.println("Step " + (step++) + " (" + name + ") - input: " + input);
         }
+
         /** Recorrido DFS del grafo */
         while (!stack.isEmpty()) {
             String current = stack.pop();
@@ -113,6 +134,15 @@ public class StateGraph<T> {
             if (action != null) {
                 action.accept(input);
                 if (debug) {
+                    System.out.println("Step " + (step++) + " (" + name + ") - " + current
+                            + " executed : " + input);
+                }
+            }
+
+            WorkflowNode<T, ?> wfNode = workflowNodes.get(current);
+            if (wfNode != null) {
+            	wfNode.execute(input);
+            	if (debug) {
                     System.out.println("Step " + (step++) + " (" + name + ") - " + current
                             + " executed : " + input);
                 }
@@ -168,5 +198,42 @@ public class StateGraph<T> {
             this.toNode = toNode;
             this.condition = condition;
         }
+    }
+
+    /**
+     * Clase interna para representar los flujos de trabajo en forma de nodo.
+     * @param <T> 
+     * @param <S> Tipo del estado de flujo.
+     */
+    public static class WorkflowNode<T, S> {
+    	private final String name;
+    	private final StateGraph<S> workflow;
+    	private Function<T, S> injector;
+    	private BiConsumer<S, T> extractor;
+    	
+    	public WorkflowNode(String name, StateGraph<S> workflow) {
+    		this.name = name;
+    		this.workflow = workflow;
+    	}
+    	
+    	public WorkflowNode<T, S> withInjector(Function<T, S> injector) {
+    		this.injector = injector;
+    		return this;
+    	}
+    	
+    	public WorkflowNode<T, S> withExtractor(BiConsumer<S, T> extractor) {
+    		this.extractor = extractor;
+    		return this;
+    	}
+    	
+    	public void execute(T parentState) throws IllegalStateException {
+    		if (injector == null || extractor == null) {
+    			throw new IllegalStateException("El flujo de trabajo debe tener inyector y extractor especificado.");
+    		}
+    		
+    		S state = injector.apply(parentState);
+    		workflow.run(state, false);
+    		extractor.accept(state,  parentState);
+    	}	
     }
 }

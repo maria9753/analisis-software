@@ -1,3 +1,4 @@
+package src.tiposDatos;
 /**
  * La clase DoubleData almacena datos numéricos.
  * 

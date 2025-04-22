@@ -1,3 +1,5 @@
+package src.ejecutables;
+
 /**
  * La clase NumericDataMain contiene el método main que sirve para probar y
  * ejecutar el flujo de trabajo.

@@ -1,4 +1,5 @@
-import java.util.*;
+package src.ejecutables;
+import java.util.*; 
 
 /**
  * Clase para probar el flujo con datos numéricos y condiciones, y con un flujo

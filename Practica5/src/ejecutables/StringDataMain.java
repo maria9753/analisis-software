@@ -1,27 +1,24 @@
+package src.ejecutables;
+
 /**
- * Clase para probar el flujo con datos de texto y condiciones.
+ * La clase StringDataMain contiene el método main que sirve para probar y
+ * ejecutar el flujo de trabajo.
  * 
  * @author Carmen Gómez, María Pozo.
  */
-public class StringDataConditionMain {
+public class StringDataMain {
+
     /**
      * Programa principal para probar el flujo de trabajo. Lo crea, ejecuta y
      * muestra los resultados.
      */
     public static void main(String[] args) {
         StateGraph<StringData> sg = buildWorkflow();
-
         System.out.println(sg);
-
-        StringData input1 = new StringData("hello");
-        System.out.println("input = " + input1);
-        StringData output1 = sg.run(input1, true);
-        System.out.println("result = " + output1);
-
-        StringData input2 = new StringData("world");
-        System.out.println("input = " + input2);
-        StringData output2 = sg.run(input2, true);
-        System.out.println("result = " + output2);
+        StringData input = new StringData("hola");
+        System.out.println("input = " + input);
+        StringData output = sg.run(input, true);
+        System.out.println("result = " + output);
     }
 
     /**
@@ -30,15 +27,13 @@ public class StringDataConditionMain {
      * @return StateGraph configurado.
      */
     private static StateGraph<StringData> buildWorkflow() {
-        StateGraph<StringData> sg = new StateGraph<>("textFlow", "Reverse and uppercase if starts with 'h'");
-
+        StateGraph<StringData> sg = new StateGraph<>("textFlow", "Reverse and uppercase");
         sg.addNode("reverse", d -> d.put("result", new StringBuilder(d.get("text")).reverse().toString()))
                 .addNode("uppercase", d -> d.put("result", d.get("result").toUpperCase()));
-        sg.addConditionalEdge("reverse", "uppercase", d -> d.get("text").startsWith("h"));
 
+        sg.addEdge("reverse", "uppercase");
         sg.setInitial("reverse");
         sg.setFinal("uppercase");
-
         return sg;
     }
 }
