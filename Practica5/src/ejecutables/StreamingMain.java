@@ -1,5 +1,8 @@
 package src.ejecutables;
+
 import java.util.*;
+import src.stategraph.*;
+import src.tiposDatos.*;
 
 /**
  * La clase StreamingMain contiene el método main que sirve para probar y

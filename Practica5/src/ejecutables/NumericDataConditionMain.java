@@ -1,5 +1,8 @@
 package src.ejecutables;
-import java.util.*; 
+
+import java.util.*;
+import src.stategraph.StateGraph;
+import src.tiposDatos.*;
 
 /**
  * Clase para probar el flujo con datos numéricos y condiciones, y con un flujo

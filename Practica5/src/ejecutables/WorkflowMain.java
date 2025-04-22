@@ -16,7 +16,7 @@ public class WorkflowMain {
     public WorkflowMain() {
         /** Constructor vacío */
     }
-    
+
     /**
      * Programa principal para probar el flujo de trabajo. Lo crea, ejecuta y
      * muestra los resultados.
@@ -39,7 +39,7 @@ public class WorkflowMain {
 
         StringData output = sg.run(input, true);
 
-        System.out.prinln("result = " + output);
+        System.out.println("result = " + output);
     }
 
     /**
@@ -48,16 +48,16 @@ public class WorkflowMain {
      * @param wfNumeric Flujo de trabajo anidado.
      * @return StateGraph configurado.
      */
-    public static StateGraph<StringData > buildWorflow(StateGraph<NumericData > wfNumeric) {
+    public static StateGraph<StringData> buildWorflow(StateGraph<NumericData> wfNumeric) {
         StateGraph<StringData> sg = new StateGraph<>("replicate", "Replicates a given word");
 
-        sg.addWfNode ("calculate", wfNumeric)
-            .withInjector ((StringData sd) -> sd.toNumericData())
-            .withExtractor ((NumericData nd, StringData sd) -> sd.setTimes(nd.get("result")));
-        
+        sg.addWfNode("calculate", wfNumeric)
+                .withInjector((StringData sd) -> sd.toNumericData())
+                .withExtractor((NumericData nd, StringData sd) -> sd.setTimes(nd.get("result")));
+
         sg.addNode("replicate", sd -> sd.replicate());
-        sg.addEdge("calculate", "replicate")
-            .addConditionaledge("replicate", "replicate", sd -> sd.times()>0);
+        sg.addEdge("calculate", "replicate");
+        sg.addConditionalEdge("replicate", "replicate", sd -> sd.getTimes() > 0);
 
         sg.setInitial("calculate");
 

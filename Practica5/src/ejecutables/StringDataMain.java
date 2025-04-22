@@ -1,5 +1,8 @@
 package src.ejecutables;
 
+import src.stategraph.StateGraph;
+import src.tiposDatos.*;
+
 /**
  * La clase StringDataMain contiene el método main que sirve para probar y
  * ejecutar el flujo de trabajo.
@@ -15,7 +18,7 @@ public class StringDataMain {
     public static void main(String[] args) {
         StateGraph<StringData> sg = buildWorkflow();
         System.out.println(sg);
-        StringData input = new StringData("hola");
+        StringData input = new StringData("hola", 0);
         System.out.println("input = " + input);
         StringData output = sg.run(input, true);
         System.out.println("result = " + output);

@@ -1,5 +1,8 @@
 package src.ejecutables;
 
+import src.stategraph.StateGraph;
+import src.tiposDatos.*;
+
 /**
  * La clase NumericDataMain contiene el método main que sirve para probar y
  * ejecutar el flujo de trabajo.
