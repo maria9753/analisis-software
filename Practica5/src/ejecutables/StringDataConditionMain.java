@@ -1,12 +1,10 @@
 package src.ejecutables;
 
-import src.stategraph.StateGraph;
+import src.stategraph.*;
 import src.tiposDatos.*;
 
 /**
  * Clase para probar el flujo con datos de texto y condiciones.
- * 
- * @author Carmen Gómez, María Pozo.
  */
 public class StringDataConditionMain {
     /**
@@ -18,12 +16,12 @@ public class StringDataConditionMain {
 
         System.out.println(sg);
 
-        StringData input1 = new StringData("hello", 0);
+        StringData input1 = new StringData("hello");
         System.out.println("input = " + input1);
         StringData output1 = sg.run(input1, true);
         System.out.println("result = " + output1);
 
-        StringData input2 = new StringData("world", 0);
+        StringData input2 = new StringData("world");
         System.out.println("input = " + input2);
         StringData output2 = sg.run(input2, true);
         System.out.println("result = " + output2);

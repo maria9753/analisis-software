@@ -1,4 +1,5 @@
 package src.tiposDatos;
+
 /**
  * La clase DoubleData almacena datos numéricos.
  * 
@@ -48,5 +49,9 @@ public class DoubleData {
     @Override
     public String toString() {
         return String.format("%.1f (avg.= %.3f)", value, average);
+    }
+
+    public void setAverage(double avg) {
+        average = avg;
     }
 }

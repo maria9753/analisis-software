@@ -1,7 +1,7 @@
 package src.ejecutables;
 
 import src.stategraph.StateGraph;
-import src.tiposDatos.StringData;
+import src.tiposDatos.StringDataTimes;
 import src.tiposDatos.NumericData;
 
 /**
@@ -29,15 +29,15 @@ public class WorkflowMain {
         wfNumeric.setInitial("sum");
         wfNumeric.setFinal("square");
 
-        StateGraph<StringData> sg = buildWorflow(wfNumeric);
+        StateGraph<StringDataTimes> sg = buildWorflow(wfNumeric);
 
         System.out.println(sg);
 
-        StringData input = new StringData("jamon", 2);
+        StringDataTimes input = new StringDataTimes("jamon", 2);
 
         System.out.println("input = " + input);
 
-        StringData output = sg.run(input, true);
+        StringDataTimes output = sg.run(input, true);
 
         System.out.println("result = " + output);
     }
@@ -48,16 +48,16 @@ public class WorkflowMain {
      * @param wfNumeric Flujo de trabajo anidado.
      * @return StateGraph configurado.
      */
-    public static StateGraph<StringData> buildWorflow(StateGraph<NumericData> wfNumeric) {
-        StateGraph<StringData> sg = new StateGraph<>("replicate", "Replicates a given word");
+    public static StateGraph<StringDataTimes> buildWorflow(StateGraph<NumericData> wfNumeric) {
+        StateGraph<StringDataTimes> sg = new StateGraph<>("replicate", "Replicates a given word");
 
         sg.addWfNode("calculate", wfNumeric)
-                .withInjector((StringData sd) -> sd.toNumericData())
-                .withExtractor((NumericData nd, StringData sd) -> sd.setTimes(nd.get("result")));
+                .withInjector((StringDataTimes sd) -> sd.toNumericData())
+                .withExtractor((NumericData nd, StringDataTimes sd) -> sd.setTimes(nd.get("result")));
 
         sg.addNode("replicate", sd -> sd.replicate());
         sg.addEdge("calculate", "replicate")
-        	.addConditionalEdge("replicate", "replicate", sd -> sd.times() > 0);
+                .addConditionalEdge("replicate", "replicate", sd -> sd.times() > 0);
 
         sg.setInitial("calculate");
 

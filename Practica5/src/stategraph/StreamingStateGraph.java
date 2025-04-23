@@ -1,4 +1,5 @@
 package src.stategraph;
+
 import java.util.*;
 import java.util.function.Function;
 
@@ -39,10 +40,6 @@ public class StreamingStateGraph<T> extends StateGraph<T> {
         // Guardamos el input recibido
         history.add(input);
 
-        if (debug) {
-            System.out.println("Step 1 (average) - input: " + history);
-        }
-
         // Se calcula el nuevo estado a partir del histórico
         if (processor != null) {
             T processed = processor.apply(new ArrayList<>(history));
@@ -52,9 +49,6 @@ public class StreamingStateGraph<T> extends StateGraph<T> {
             // Ejecutamos el flujo normal sobre el dato procesado
             super.run(processed, debug);
 
-            if (debug) {
-                System.out.println("Step 2 (average) - average executed: " + history);
-            }
             return processed;
         }
 
@@ -66,17 +60,5 @@ public class StreamingStateGraph<T> extends StateGraph<T> {
      */
     public List<T> history() {
         return history;
-    }
-
-    /**
-     * Método to string para imprimir el grafo del flujo de trabajo con memoria.
-     * 
-     * @return Cadena que representa el grafo.
-     */
-    @Override
-    public String toString() {
-        return "Workflow 'average' (Calculates the average of incoming data):\n" +
-                "- Nodes: {average=Node average (0 output nodes)}\n" +
-                "- Initial: average\n";
     }
 }

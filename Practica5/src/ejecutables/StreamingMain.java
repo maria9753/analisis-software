@@ -40,17 +40,18 @@ public class StreamingMain {
                 "Calculates the average of incoming data");
 
         sg.addNode("average", d -> {
-            System.out.println("Executing node 'average'");
-        });
-        sg.setInitial("average");
-        sg.setProcessor(history -> {
+            List<DoubleData> history = sg.history(); // accede al historial
             double sum = 0;
             for (DoubleData data : history) {
                 sum += data.getValue();
             }
             double avg = sum / history.size();
+            history.get(history.size() - 1).setAverage(avg); // actualiza la media del último dato
+        });
+        sg.setInitial("average");
+        sg.setProcessor(history -> {
             DoubleData last = history.get(history.size() - 1);
-            return new DoubleData(last.getValue(), avg);
+            return new DoubleData(last.getValue(), 0.0); // Media inicial = 0
         });
 
         return sg;
