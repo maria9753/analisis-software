@@ -51,7 +51,7 @@ public class StringData extends LinkedHashMap<String, String> {
      * 
      * @return El número de veces.
      */
-    public int getTimes() {
+    public int times() {
         return times;
     }
 

@@ -59,8 +59,9 @@ public class StateGraph<T> {
      * @param from Nodo de origen.
      * @param to   Nodo de destino.
      */
-    public void addEdge(String from, String to) {
+    public StateGraph<T> addEdge(String from, String to) {
         edges.computeIfAbsent(from, k -> new ArrayList<>()).add(to);
+        return this;
     }
 
     /**
@@ -70,8 +71,9 @@ public class StateGraph<T> {
      * @param to        Nodo de destino.
      * @param condition Condición.
      */
-    public void addConditionalEdge(String from, String to, Predicate<T> condition) {
+    public StateGraph<T> addConditionalEdge(String from, String to, Predicate<T> condition) {
         conditionalEdges.computeIfAbsent(from, k -> new ArrayList<>()).add(new ConditionalEdge<>(to, condition));
+        return this;
     }
 
     /**
@@ -114,54 +116,69 @@ public class StateGraph<T> {
      * @return El estado final.
      */
     public T run(T input, boolean debug) {
-        Set<String> visited = new HashSet<>();
-        Deque<String> stack = new ArrayDeque<>();
-        stack.push(initialNode);
-        int step = 1;
+        if (initialNode == null) return input;
 
+        String currentNode = initialNode;
+        int step = 1;
+        
         if (debug) {
             System.out.println("Step " + (step++) + " (" + name + ") - input: " + input);
         }
 
-        /** Recorrido DFS del grafo */
-        while (!stack.isEmpty()) {
-            String current = stack.pop();
-            if (visited.contains(current))
-                continue;
-            visited.add(current);
-
-            Consumer<T> action = nodes.get(current);
-            if (action != null) {
-                action.accept(input);
-                if (debug) {
-                    System.out.println("Step " + (step++) + " (" + name + ") - " + current
-                            + " executed : " + input);
+        while (currentNode != null) {
+            // Ejecutar nodo de workflow anidado primero
+            if (workflowNodes.containsKey(currentNode)) {
+                WorkflowNode<T, ?> node = workflowNodes.get(currentNode);
+                try {
+                    node.execute(input, debug);
+                    if (debug) {
+                        System.out.println("Step " + (step++) + " (" + name + ") - " + currentNode 
+                                         + " executed : " + input);
+                    }
+                } catch (IllegalStateException e) {
+                    System.err.println("Error executing nested workflow: " + e.getMessage());
+                }
+            }
+            // Luego nodos normales
+            else if (nodes.containsKey(currentNode)) {
+                Consumer<T> action = nodes.get(currentNode);
+                if (action != null) {
+                    action.accept(input);
+                    if (debug) {
+                        System.out.println("Step " + (step++) + " (" + name + ") - " + currentNode 
+                                         + " executed : " + input);
+                    }
                 }
             }
 
-            WorkflowNode<T, ?> wfNode = workflowNodes.get(current);
-            if (wfNode != null) {
-            	wfNode.execute(input);
-            	if (debug) {
-                    System.out.println("Step " + (step++) + " (" + name + ") - " + current
-                            + " executed : " + input);
-                }
+            // Verificar si es nodo final
+            if (finalNodes.contains(currentNode)) {
+                break;
             }
 
-            List<String> next = edges.getOrDefault(current, new ArrayList<>());
-            for (int i = next.size() - 1; i >= 0; i--) {
-                stack.push(next.get(i));
-            }
+            // Obtener siguiente nodo
+            currentNode = getNextNode(currentNode, input);
+        }
 
-            List<ConditionalEdge<T>> conditionals = conditionalEdges.getOrDefault(current, new ArrayList<>());
-            for (int i = conditionals.size() - 1; i >= 0; i--) {
-                ConditionalEdge<T> edge = conditionals.get(i);
-                if (edge.condition.test(input)) {
-                    stack.push(edge.toNode);
-                }
+        return input;
+    }
+    
+    private String getNextNode(String currentNode, T state) {
+        // Primero verificar conexiones condicionales
+        List<ConditionalEdge<T>> conditionals = conditionalEdges.getOrDefault(currentNode, new ArrayList<>());
+        for (ConditionalEdge<T> edge : conditionals) {
+            if (edge.condition.test(state)) {
+                return edge.toNode;
             }
         }
-        return input;
+
+        // Si no hay condiciones, verificar conexiones normales
+        List<String> normalEdges = edges.getOrDefault(currentNode, new ArrayList<>());
+        if (!normalEdges.isEmpty()) {
+            return normalEdges.get(0); // Tomar el primer nodo de la lista
+        }
+
+        return null; // No hay más nodos
     }
 
     /**
@@ -171,20 +188,38 @@ public class StateGraph<T> {
      */
     @Override
     public String toString() {
-        String string = "Workflow '" + name + "' (" + description + "):\n- Nodes: {";
+        String result = "Workflow '" + name + "' (" + description + "):\n";
+        result += "- Nodes: {";
+        
         boolean first = true;
-        for (String nodeName : nodes.keySet()) {
-            if (!first)
-                string += ", ";
-
-            int normalEdges = edges.getOrDefault(nodeName, new ArrayList<>()).size();
-            int conditionalEdgesCount = conditionalEdges.getOrDefault(nodeName, new ArrayList<>()).size();
-            int totalOutputs = normalEdges + conditionalEdgesCount;
-            string += nodeName + "=Node " + nodeName + " (" + totalOutputs + " output nodes)";
+        
+        // Mostrar primero los workflowNodes
+        for (String nodeName : workflowNodes.keySet()) {
+            if (!first) {
+                result += ", ";
+            }
+            int outputs = edges.getOrDefault(nodeName, new ArrayList<>()).size() + 
+                         conditionalEdges.getOrDefault(nodeName, new ArrayList<>()).size();
+            result += nodeName + "=Node " + nodeName + " (" + outputs + " output nodes)";
             first = false;
         }
-        string += "}\n- Initial: " + initialNode + "\n- Final: " + String.join(", ", finalNodes);
-        return string;
+        
+        // Luego los nodos normales
+        for (String nodeName : nodes.keySet()) {
+            if (!first) {
+                result += ", ";
+            }
+            int outputs = edges.getOrDefault(nodeName, new ArrayList<>()).size() + 
+                         conditionalEdges.getOrDefault(nodeName, new ArrayList<>()).size();
+            result += nodeName + "=Node " + nodeName + " (" + outputs + " output nodes)";
+            first = false;
+        }
+        
+        result += "}\n";
+        result += "- Initial: " + initialNode + "\n";
+        result += "- Final: " + (finalNodes.isEmpty() ? "None" : String.join(", ", finalNodes));
+        
+        return result;
     }
 
     /**
@@ -226,14 +261,18 @@ public class StateGraph<T> {
     		return this;
     	}
     	
-    	public void execute(T parentState) throws IllegalStateException {
-    		if (injector == null || extractor == null) {
-    			throw new IllegalStateException("El flujo de trabajo debe tener inyector y extractor especificado.");
-    		}
-    		
-    		S state = injector.apply(parentState);
-    		workflow.run(state, false);
-    		extractor.accept(state,  parentState);
-    	}	
+    	public void execute(T parentState, boolean debug) throws IllegalStateException {
+            if (injector == null || extractor == null) {
+                throw new IllegalStateException("El flujo de trabajo debe tener inyector y extractor especificado.");
+            }
+            
+            S state = injector.apply(parentState);
+            if (debug) {
+                System.out.println("Step 1 (" + workflow.name + ") - input: " + state);
+            }
+            
+            S output = workflow.run(state, debug);
+            extractor.accept(output, parentState);
+        }    
     }
 }

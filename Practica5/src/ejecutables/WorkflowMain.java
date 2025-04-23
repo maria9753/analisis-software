@@ -56,8 +56,8 @@ public class WorkflowMain {
                 .withExtractor((NumericData nd, StringData sd) -> sd.setTimes(nd.get("result")));
 
         sg.addNode("replicate", sd -> sd.replicate());
-        sg.addEdge("calculate", "replicate");
-        sg.addConditionalEdge("replicate", "replicate", sd -> sd.getTimes() > 0);
+        sg.addEdge("calculate", "replicate")
+        	.addConditionalEdge("replicate", "replicate", sd -> sd.times() > 0);
 
         sg.setInitial("calculate");
 
