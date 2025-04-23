@@ -8,7 +8,8 @@ import java.util.LinkedHashMap;
  * @author María Pozo, Carmen Gómez.
  */
 public class StringDataTimes extends LinkedHashMap<String, String> {
-    /** Cadena */
+    private static final long serialVersionUID = 1L;
+	/** Cadena */
     private String word;
     /** Número de veces */
     private int times;
@@ -79,6 +80,6 @@ public class StringDataTimes extends LinkedHashMap<String, String> {
     }
 
     public String getResult() {
-        return result;
+        return result!= null ? result : "";
     }
 }

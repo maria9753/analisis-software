@@ -61,4 +61,8 @@ public class StreamingStateGraph<T> extends StateGraph<T> {
     public List<T> history() {
         return history;
     }
+
+	public Function<List<T>, T> getProcessor() {
+		return processor;
+	}
 }
