@@ -16,21 +16,21 @@ import src.tiposDatos.DoubleData;
  */
 public class StateGraph<T> {
     /** Nombre del grafo de flujo de trabajo */
-    private final String name;
+    protected final String name;
     /** Descripción del grafo de flujo de trabajo */
-    private final String description;
+    protected final String description;
     /** Mapa de nodos que contiene sus nombres y las acciones asociadas */
-    private final Map<String, Consumer<T>> nodes = new LinkedHashMap<>();
+    protected final Map<String, Consumer<T>> nodes = new LinkedHashMap<>();
     /** Mapa que representa las conexiones entre nodos */
-    private final Map<String, List<String>> edges = new HashMap<>();
+    protected final Map<String, List<String>> edges = new HashMap<>();
     /** Mapa que representa las conexiones entre nodos con condiciones */
-    private final Map<String, List<ConditionalEdge<T>>> conditionalEdges = new HashMap<>();
+    protected final Map<String, List<ConditionalEdge<T>>> conditionalEdges = new HashMap<>();
     /** Mapa que representa los flujos de trabajo en forma de nodos */
-    private final Map<String, WorkflowNode<T, ?>> workflowNodes = new HashMap<>();
+    protected final Map<String, WorkflowNode<T, ?>> workflowNodes = new HashMap<>();
     /** Nodos finales del grafo */
-    private final Set<String> finalNodes = new HashSet<>();
+    protected final Set<String> finalNodes = new HashSet<>();
     /** Nodo inicialdel grafo */
-    private String initialNode;
+    protected String initialNode;
 
     /**
      * Constructor de la clase StateGraph.
