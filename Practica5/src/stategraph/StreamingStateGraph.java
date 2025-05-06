@@ -37,16 +37,13 @@ public class StreamingStateGraph<T> extends StateGraph<T> {
      */
     @Override
     public T run(T input, boolean debug) {
-        // Guardamos el input recibido
+
         history.add(input);
 
-        // Se calcula el nuevo estado a partir del histórico
         if (processor != null) {
             T processed = processor.apply(new ArrayList<>(history));
-            // Reemplazamos el último elemento con el procesado
             history.set(history.size() - 1, processed);
 
-            // Ejecutamos el flujo normal sobre el dato procesado
             super.run(processed, debug);
 
             return processed;
@@ -62,7 +59,7 @@ public class StreamingStateGraph<T> extends StateGraph<T> {
         return history;
     }
 
-	public Function<List<T>, T> getProcessor() {
-		return processor;
-	}
+    public Function<List<T>, T> getProcessor() {
+        return processor;
+    }
 }
