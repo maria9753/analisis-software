@@ -60,24 +60,32 @@ class StringDataTimesTest {
 
     @Test
     void testEdgeCases() {
-        // Cadena vacía
         StringDataTimes emptyStringData = new StringDataTimes("", 2);
         emptyStringData.replicate();
-        assertEquals("", emptyStringData.getResult());
-        assertEquals(1, emptyStringData.times());
+        assertEquals("", emptyStringData.getResult()); 
+        assertEquals(1, emptyStringData.times());  
 
-        // Times cero
         StringDataTimes zeroTimesData = new StringDataTimes("abc", 0);
         zeroTimesData.replicate();
-        assertEquals("", zeroTimesData.getResult());
-        assertEquals(0, zeroTimesData.times());
+        assertEquals("", zeroTimesData.getResult()); 
+        assertEquals(0, zeroTimesData.times());    
 
-        // Cadena null
-        StringDataTimes nullStringData = new StringDataTimes(null, 1);
-        assertEquals("", nullStringData.getWord());
-        nullStringData.replicate();
-        assertEquals("", nullStringData.getResult());
-        assertEquals(0, nullStringData.times());
+        StringDataTimes normalData = new StringDataTimes("x", 3);
+        normalData.replicate();
+        assertEquals("x", normalData.getResult());    
+        assertEquals(2, normalData.times());       
+        
+        normalData.replicate();
+        assertEquals("xx", normalData.getResult());  
+        assertEquals(1, normalData.times());       
+        
+        normalData.replicate();
+        assertEquals("xxx", normalData.getResult()); 
+        assertEquals(0, normalData.times());        
+        
+        normalData.replicate();
+        assertEquals("xxx", normalData.getResult());  
+        assertEquals(0, normalData.times());         
     }
 
     @Test

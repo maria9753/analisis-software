@@ -42,6 +42,34 @@ public class StateGraph<T> {
         this.name = name;
         this.description = description;
     }
+    
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+    
+    public String getInitialNode() {
+        return initialNode;
+    }
+
+    public Set<String> getFinalNodes() {
+        return Collections.unmodifiableSet(finalNodes);
+    }
+
+    public Map<String, Consumer<T>> getNodes() {
+        return Collections.unmodifiableMap(nodes);
+    }
+
+    public Map<String, List<String>> getEdges() {
+        return Collections.unmodifiableMap(edges);
+    }
+
+    public Map<String, List<ConditionalEdge<T>>> getConditionalEdges() {
+        return Collections.unmodifiableMap(conditionalEdges);
+    }
 
     /**
      * Método para añadir un nodo con su acción asociada al grafo.
@@ -248,8 +276,8 @@ public class StateGraph<T> {
     /**
      * Clase interna para representar las condiciones.
      */
-    private static class ConditionalEdge<T> {
-        String toNode;
+    public static class ConditionalEdge<T> {
+        public String toNode;
         Predicate<T> condition;
 
         ConditionalEdge(String toNode, Predicate<T> condition) {

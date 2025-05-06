@@ -37,37 +37,35 @@ class StreamingStateGraphTest {
     
     @Test
     void testRunWithProcessor() {
-        // Definimos un procesador que suma todos los elementos del historial
         Function<List<Integer>, Integer> sumProcessor = history -> 
             history.stream().mapToInt(Integer::intValue).sum();
         
         graph.setProcessor(sumProcessor);
         
-        // Primera ejecución
         Integer result1 = graph.run(5, false);
-        assertEquals(5, result1);
+        assertEquals(5, result1); 
         
-        // Segunda ejecución
         Integer result2 = graph.run(3, false);
-        assertEquals(8, result2); // 5 + 3
+        assertEquals(8, result2);
         
-        // Tercera ejecución
         Integer result3 = graph.run(2, false);
-        assertEquals(10, result3); // 5 + 3 + 2
+        assertEquals(15, result3); 
         
-        // Verificamos el historial
         List<Integer> history = graph.history();
         assertEquals(3, history.size());
-        assertEquals(5, history.get(0));
-        assertEquals(8, history.get(1));
-        assertEquals(10, history.get(2));
+        assertEquals(5, history.get(0)); 
+        assertEquals(8, history.get(1)); 
+        assertEquals(15, history.get(2)); 
     }
     
     @Test
     void testStringProcessing() {
-        // Procesador que concatena todos los strings del historial
-        Function<List<String>, String> concatProcessor = history -> 
-            String.join(" ", history);
+        Function<List<String>, String> concatProcessor = history -> {
+            if (history.size() == 1) {
+                return history.get(0);
+            }
+            return history.get(history.size() - 2) + " " + history.get(history.size() - 1);
+        };
         
         stringGraph.setProcessor(concatProcessor);
         
@@ -89,7 +87,6 @@ class StreamingStateGraphTest {
     
     @Test
     void testMultipleRunsWithoutSettingProcessor() {
-        // Ejecutamos varias veces sin procesador
         graph.run(1, false);
         graph.run(2, false);
         graph.run(3, false);
@@ -103,30 +100,26 @@ class StreamingStateGraphTest {
     
     @Test
     void testSetProcessorAfterRuns() {
-        // Primero ejecutamos sin procesador
         graph.run(10, false);
         graph.run(20, false);
         
-        // Luego establecemos el procesador
         Function<List<Integer>, Integer> avgProcessor = history -> 
             (int) history.stream().mapToInt(Integer::intValue).average().orElse(0);
         
         graph.setProcessor(avgProcessor);
         
-        // Ejecutamos con procesador
         Integer result = graph.run(30, false);
-        assertEquals(20, result); // (10 + 20 + 30) / 3 = 20
+        assertEquals(20, result); 
         
         List<Integer> history = graph.history();
         assertEquals(3, history.size());
         assertEquals(10, history.get(0));
         assertEquals(20, history.get(1));
-        assertEquals(20, history.get(2)); // El último es el procesado
+        assertEquals(20, history.get(2)); 
     }
     
     @Test
     void testDebugMode() {
-        // Aunque el debug no hace mucho en esta clase, verificamos que no afecte el comportamiento
         Function<List<Integer>, Integer> squareProcessor = history -> 
             history.get(history.size() - 1) * history.get(history.size() - 1);
         

@@ -90,29 +90,37 @@ class StateGraphTest {
     
     @Test
     void testWorkflowNode() {
-        StateGraph<Integer> nestedGraph = new StateGraph<>("Nested", "Nested workflow");
-        nestedGraph.addNode("inc", i -> i + 1);
+        // Creamos un wrapper mutable para el entero
+        class IntWrapper {
+            int value;
+            IntWrapper(int value) { this.value = value; }
+        }
+
+        StateGraph<IntWrapper> nestedGraph = new StateGraph<>("Nested", "Nested workflow");
+        
+        // Usamos Consumer que modifica el wrapper
+        nestedGraph.addNode("inc", wrapper -> wrapper.value += 1);
         nestedGraph.setInitial("inc");
         nestedGraph.setFinal("inc");
         
         StringBuilder result = new StringBuilder();
         
         graph.addWfNode("nested", nestedGraph)
-             .withInjector(s -> s.length())
-             .withExtractor((i, s) -> result.append("l:").append(i));
+             .withInjector(s -> new IntWrapper(s.length())) // Convertimos length a wrapper
+             .withExtractor((wrapper, s) -> result.append("l:").append(wrapper.value));
         
         graph.setInitial("nested");
         
         graph.run("test", false);
-        assertEquals("l:4", result.toString());
+        assertEquals("l:5", result.toString());
     }
     
     @Test
     void testDebugOutput() {
         Consumer<String> action = s -> s += " processed";
-        graph.addNode("process", action)
-             .setInitial("process")
-             .setFinal("process");
+        graph.addNode("process", action);
+        graph.setInitial("process");
+        graph.setFinal("process");
         
         // Just verify no exceptions are thrown
         assertDoesNotThrow(() -> graph.run("input", true));
@@ -120,11 +128,11 @@ class StateGraphTest {
     
     @Test
     void testToString() {
-        graph.addNode("start", s -> {})
-             .addNode("end", s -> {})
-             .addEdge("start", "end")
-             .setInitial("start")
-             .setFinal("end");
+        graph.addNode("start", s -> {});
+        graph.addNode("end", s -> {});
+        graph.addEdge("start", "end");
+        graph.setInitial("start");
+        graph.setFinal("end");
         
         String str = graph.toString();
         assertTrue(str.contains("Workflow 'TestGraph'"));
@@ -137,13 +145,13 @@ class StateGraphTest {
     void testFinalNodeStopsExecution() {
         StringBuilder result = new StringBuilder();
         
-        graph.addNode("a", s -> result.append("a"))
-             .addNode("b", s -> result.append("b"))
-             .addNode("c", s -> result.append("c"))
-             .addEdge("a", "b")
-             .addEdge("b", "c")
-             .setInitial("a")
-             .setFinal("b");
+        graph.addNode("a", s -> result.append("a"));
+        graph.addNode("b", s -> result.append("b"));
+        graph.addNode("c", s -> result.append("c"));
+        graph.addEdge("a", "b");
+        graph.addEdge("b", "c");
+        graph.setInitial("a");
+        graph.setFinal("b");
         
         graph.run("", false);
         assertEquals("ab", result.toString()); // Should stop after b
@@ -153,14 +161,14 @@ class StateGraphTest {
     void testMultipleFinalNodes() {
         StringBuilder result = new StringBuilder();
         
-        graph.addNode("a", s -> result.append("a"))
-             .addNode("b", s -> result.append("b"))
-             .addNode("c", s -> result.append("c"))
-             .addEdge("a", "b")
-             .addEdge("a", "c")
-             .setInitial("a")
-             .setFinal("b")
-             .setFinal("c");
+        graph.addNode("a", s -> result.append("a"));
+        graph.addNode("b", s -> result.append("b"));
+        graph.addNode("c", s -> result.append("c"));
+        graph.addEdge("a", "b");
+        graph.addEdge("a", "c");
+        graph.setInitial("a");
+        graph.setFinal("b");
+        graph.setFinal("c");
         
         graph.run("", false);
         assertTrue(result.toString().equals("ab") || result.toString().equals("ac"));
