@@ -51,6 +51,10 @@ public class DoubleData {
         return String.format("%.1f (avg.= %.3f)", value, average);
     }
 
+    /**
+     * Establece la media.
+     * @param avg Media de los valores.
+     */
     public void setAverage(double avg) {
         average = avg;
     }

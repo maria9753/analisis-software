@@ -8,10 +8,19 @@ import src.tiposDatos.*;
  * ejecutar el flujo de trabajo
  */
 public class StringDataMain {
+	
+	/**
+	 * Constructor.
+	 */
+	public StringDataMain() {
+		/** Constructor vacío*/
+	}
 
     /**
      * Programa principal para probar el flujo de trabajo. Lo crea, ejecuta y
      * muestra los resultados.
+     * 
+     * @param args Argumentos.
      */
     public static void main(String[] args) {
         StateGraph<StringData> sg = buildWorkflow();

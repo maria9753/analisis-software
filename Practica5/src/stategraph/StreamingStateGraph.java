@@ -11,9 +11,16 @@ import java.util.function.Function;
  * @author Carmen Gómez, María Pozo.
  */
 public class StreamingStateGraph<T> extends StateGraph<T> {
+	/** Historial del grafo*/
     private final List<T> history = new ArrayList<>();
+    /** Processor del grafo*/
     private Function<List<T>, T> processor;
 
+    /**
+     * Constructor de la clase StreamingStateGraph
+     * @param name 			Nombre del grafo.
+     * @param description	Descripción del grafo.
+     */
     public StreamingStateGraph(String name, String description) {
         super(name, description);
     }
@@ -54,11 +61,18 @@ public class StreamingStateGraph<T> extends StateGraph<T> {
 
     /**
      * Método que devuelve el historial del flujo de trabajo.
+     * 
+     * @return El historial.
      */
     public List<T> history() {
         return history;
     }
 
+    /**
+     * Método que el processor.
+     * 
+     * @return La función que representa el procesor.
+     */
     public Function<List<T>, T> getProcessor() {
         return processor;
     }

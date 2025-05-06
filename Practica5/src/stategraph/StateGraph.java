@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import src.tiposDatos.DoubleData;
 
 /**
  * La clase StateGraph representa la clase genérica de flujo de trabajo.
@@ -43,30 +42,58 @@ public class StateGraph<T> {
         this.description = description;
     }
     
+    /**
+     * Obtiene el nombre identificativo del grafo de estados.
+     * @return Nombre asignado al grafo durante su creación
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Proporciona la descripción del propósito del grafo.
+     * @return Texto descriptivo sobre la función del grafo
+     */
     public String getDescription() {
         return description;
     }
-    
+
+    /**
+     * Indica el punto de entrada del flujo de trabajo.
+     * @return Nombre del nodo donde comienza la ejecución
+     */
     public String getInitialNode() {
         return initialNode;
     }
 
+    /**
+     * Muestra los nodos que marcan el final del proceso.
+     * @return Conjunto de nodos considerados como finales (solo lectura)
+     */
     public Set<String> getFinalNodes() {
         return Collections.unmodifiableSet(finalNodes);
     }
 
+    /**
+     * Devuelve todos los nodos básicos del grafo.
+     * @return Mapa con los nodos y sus acciones asociadas (no modificable)
+     */
     public Map<String, Consumer<T>> getNodes() {
         return Collections.unmodifiableMap(nodes);
     }
 
+    /**
+     * Presenta las conexiones directas entre nodos.
+     * @return Relación de nodos origen con sus destinos directos
+     */
     public Map<String, List<String>> getEdges() {
         return Collections.unmodifiableMap(edges);
     }
 
+    /**
+     * Muestra las conexiones que requieren cumplir una condición.
+     * @return Relación de nodos con sus conexiones condicionales
+     */
     public Map<String, List<ConditionalEdge<T>>> getConditionalEdges() {
         return Collections.unmodifiableMap(conditionalEdges);
     }
@@ -88,6 +115,8 @@ public class StateGraph<T> {
      * 
      * @param from Nodo de origen.
      * @param to   Nodo de destino.
+     * 
+     * @return El grafo con el edge añadido.
      */
     public StateGraph<T> addEdge(String from, String to) {
         edges.computeIfAbsent(from, k -> new ArrayList<>()).add(to);
@@ -100,6 +129,8 @@ public class StateGraph<T> {
      * @param from      Nodo de origen.
      * @param to        Nodo de destino.
      * @param condition Condición.
+     * 
+     * @return El grafo con el edge añadido.
      */
     public StateGraph<T> addConditionalEdge(String from, String to, Predicate<T> condition) {
         conditionalEdges.computeIfAbsent(from, k -> new ArrayList<>()).add(new ConditionalEdge<>(to, condition));
@@ -275,44 +306,84 @@ public class StateGraph<T> {
 
     /**
      * Clase interna para representar las condiciones.
+     * 
+     * @param <T> Tipo de dato que maneja el grafo de estados.
      */
     public static class ConditionalEdge<T> {
+    	/** Nodo del nodo condicional*/
         public String toNode;
+        /** Condición del nodo*/
         Predicate<T> condition;
-
+        
+        /**
+         * Constructor de ConditionalEdge.
+         * @param toNode	Nodo.
+         * @param condition Condición.
+         */
         ConditionalEdge(String toNode, Predicate<T> condition) {
             this.toNode = toNode;
             this.condition = condition;
         }
     }
-
     /**
-     * Clase interna para representar los flujos de trabajo en forma de nodo.
-     * 
-     * @param <T>
-     * @param <S> Tipo del estado de flujo.
+     * Clase interna que representa un nodo especializado que contiene un flujo de trabajo completo.
+     *
+     * @param <T> Tipo de dato del estado del grafo padre
+     * @param <S> Tipo de dato del estado del flujo de trabajo anidado
      */
     public static class WorkflowNode<T, S> {
+        /** Nombre identificativo del nodo de flujo de trabajo */
         private final String name;
+        
+        /** Grafo de estados que representa el flujo de trabajo anidado */
         private final StateGraph<S> workflow;
+        
+        /** Función que transforma el estado padre al estado del subflujo */
         private Function<T, S> injector;
+        
+        /** Función que transfiere resultados del subflujo al estado padre */
         private BiConsumer<S, T> extractor;
 
+        /**
+         * Crea un nuevo nodo de flujo de trabajo.
+         * 
+         * @param name 			Nombre identificativo del nodo.
+         * @param workflow 		Grafo de estados que representa el flujo.
+         */
         public WorkflowNode(String name, StateGraph<S> workflow) {
             this.name = name;
             this.workflow = workflow;
         }
 
+        /**
+         * Establece la función de inyección para transformar el estado padre.
+         * 
+         * @param injector Función que convierte T a S.
+         * @return La misma instancia para permitir encadenamiento.
+         */
         public WorkflowNode<T, S> withInjector(Function<T, S> injector) {
             this.injector = injector;
             return this;
         }
 
+        /**
+         * Establece la función de extracción para transmitir los resultados.
+         * 
+         * @param extractor Función que aplica los resultados del subflujo al estado padre.
+         * @return La misma instancia para permitir encadenamiento.
+         */
         public WorkflowNode<T, S> withExtractor(BiConsumer<S, T> extractor) {
             this.extractor = extractor;
             return this;
         }
 
+        /**
+         * Ejecuta el flujo de trabajo anidado.
+         * 
+         * @param parentState Estado actual del grafo padre.
+         * @param debug Modo de depuración para mostrar pasos de ejecución.
+         * @throws IllegalStateException Si no se han configurado inyector o extractor.
+         */
         public void execute(T parentState, boolean debug) throws IllegalStateException {
             if (injector == null || extractor == null) {
                 throw new IllegalStateException("El flujo de trabajo debe tener inyector y extractor especificado.");

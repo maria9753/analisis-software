@@ -11,9 +11,18 @@ import src.tiposDatos.*;
  */
 public class NumericDataMain {
 
+	/**
+	 * Constructor
+	 */
+	public NumericDataMain() {
+		/** Constructor vacío*/
+	}
+	
     /**
      * Programa principal para probar el flujo de trabajo. Lo crea, ejecuta y
      * muestra los resultados.
+     * 
+     * @param args Argumentos.
      */
     public static void main(String[] args) {
         StateGraph<NumericData> sg = buildWorkflow();

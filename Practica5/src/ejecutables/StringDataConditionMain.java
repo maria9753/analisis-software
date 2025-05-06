@@ -7,9 +7,18 @@ import src.tiposDatos.*;
  * Clase para probar el flujo con datos de texto y condiciones.
  */
 public class StringDataConditionMain {
+	
+	/**
+	 * Constructor.
+	 */
+	public StringDataConditionMain() {
+		/** Constructor vacío*/
+	}
     /**
      * Programa principal para probar el flujo de trabajo. Lo crea, ejecuta y
      * muestra los resultados.
+     * 
+     * @param args Argumentos.
      */
     public static void main(String[] args) {
         StateGraph<StringData> sg = buildWorkflow();

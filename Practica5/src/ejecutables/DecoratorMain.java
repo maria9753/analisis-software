@@ -21,6 +21,8 @@ public class DecoratorMain {
     /**
      * Programa principal para probar el flujo de trabajo. Lo crea, ejecuta y
      * muestra los resultados.
+     * 
+     * @param args Argumentos.
      */
     public static void main(String[] args) {
         StateGraph<NumericData> g = new StateGraph<>("loop-down", "Get a number, and decrease if positive");

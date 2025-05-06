@@ -20,6 +20,8 @@ public class WorkflowMain {
     /**
      * Programa principal para probar el flujo de trabajo. Lo crea, ejecuta y
      * muestra los resultados.
+     * 
+     * @param args Argumentos.
      */
     public static void main(String[] args) {
         StateGraph<NumericData> wfNumeric = new StateGraph<>("math1", "Add two numbers, and then square if even");

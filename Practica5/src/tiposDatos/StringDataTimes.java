@@ -75,10 +75,20 @@ public class StringDataTimes extends LinkedHashMap<String, String> {
         return "word: " + word + ", times: " + times + ", result: " + result;
     }
 
+    /**
+     * Método que devuelve la palabra.
+     * 
+     * @return Cadena que representa una palabra.
+     */
     public String getWord() {
         return word != null ? word : "";
     }
 
+    /**
+     * Método que devuelve el resultado.
+     * 
+     * @return Cadena que representa el resultado.
+     */
     public String getResult() {
         return result!= null ? result : "";
     }

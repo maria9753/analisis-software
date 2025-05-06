@@ -11,9 +11,19 @@ import src.tiposDatos.*;
  * @author Carmen Gómez, María Pozo.
  */
 public class NumericDataConditionMain {
+	
+	/**
+	 * Constructor
+	 */
+	public NumericDataConditionMain() {
+		/** Constructor vacío*/
+	}
+	
     /**
      * Programa principal para probar el flujo de trabajo. Lo crea, ejecuta y
      * muestra los resultados.
+     * 
+     * @param args Argumentos.
      */
     public static void main(String[] args) {
         StateGraph<NumericData> sg1 = buildMathWorkflow();
