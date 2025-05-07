@@ -1,5 +1,16 @@
 package src.stategraph;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
+import src.stategraph.StateGraph.WorkflowNode;
+
 /**
  * Clase que añade funcionalidad de registro a un grafo de estados.
  * Guarda información sobre la ejecución en un archivo de texto.
@@ -7,74 +18,98 @@ package src.stategraph;
  * @param <T> Tipo de dato que maneja el grafo de estados
  */
 public class StateGraphLogger<T> extends StateGraph<T> {
-    /** Grafo original que estamos decorando con funcionalidad de logging */
+	/** Grafo que se decora */
     private StateGraph<T> stategraph;
-    
-    /** Nombre del archivo donde se guardarán los registros */
+    /** Nombre del archivo */
     private String fileName;
 
     /**
-     * Crea un nuevo logger para un grafo de estados existente.
+     * Constructor de la clase StateGraphLogger.
      * 
-     * @param stategraph Grafo que queremos monitorizar
-     * @param fileName   Ruta del archivo donde guardar los registros
+     * @param stategraph Grafo que se decora.
+     * @param fileName	 Nombre del fichero.
      */
     public StateGraphLogger(StateGraph<T> stategraph, String fileName) {
         super(stategraph.name, stategraph.description);
+
         this.stategraph = stategraph;
         this.fileName = fileName;
-        this.nodes.putAll(stategraph.nodes);
-        this.edges.putAll(stategraph.edges);
-        this.conditionalEdges.putAll(stategraph.conditionalEdges);
-        this.workflowNodes.putAll(stategraph.workflowNodes);
-        this.finalNodes.addAll(stategraph.finalNodes);
-        this.initialNode = stategraph.initialNode;
-    }
-
-    /**
-     * Ejecuta el grafo registrando información importante en el archivo.
-     * 
-     * @param input  Estado inicial para la ejecución
-     * @param debug  Si mostrar información de depuración por consola
-     * @return       Resultado de la ejecución del grafo
-     */
-    @Override
-    public T run(T input, boolean debug) {
-        log("Starting workflow: " + name);
-        log("Initial state: " + input);
         
-        T result = super.run(input, debug);
-        
-        log("Workflow completed");
-        log("Final state: " + result);
-        
-        return result;
-    }
-
-    /**
-     * Escribe un mensaje en el archivo de registro con marca de tiempo.
-     * 
-     * @param message Mensaje a registrar
-     */
-    private void log(String message) {
-        String timestamp = java.time.LocalDateTime.now().format(
-            java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss"));
-        
-        try (java.io.PrintWriter out = new java.io.PrintWriter(
-             new java.io.FileWriter(fileName, true))) {
-            out.println("[" + timestamp + "] " + message);
-        } catch (java.io.IOException e) {
+        try (BufferedWriter file = new BufferedWriter(new FileWriter(fileName))) {
+            file.write("");
+        } catch (IOException e) {
             System.err.println("Error writing to log file: " + e.getMessage());
         }
+
+        this.tag = " [logged]";
+    }
+
+    @Override
+    public T run(T input, boolean debug) {
+        return stategraph.run(input, debug);  
     }
 
     /**
-     * Descripción del grafo indicando que tiene logging activado.
+     * Método que junta la acción del nodo y la de decoración.
      * 
-     * @return Representación textual del grafo con indicador de logging
+     * @param nodeName Nombre del nodo.
+     * @param action   Acción original del nodo.
+     * 
+     * @return La acción fusionada.
      */
+    protected Consumer<T> loggerAction(String nodeName, Consumer<T> action) {
+        return state -> {
+            action.accept(state);
+            String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss"));
+            String entry = "[" + time + "] node " + nodeName + " executed, with output: " + state + "\n";
+
+            try (BufferedWriter file = new BufferedWriter(new FileWriter(fileName, true))) {
+                file.write(entry);
+            } catch (IOException e) {
+                System.err.println("Error writing to log file: " + e.getMessage());
+            }
+        };
+    }
+
+    @Override
+    public StateGraph<T> addNode(String name, Consumer<T> action) {
+        Consumer<T> logger = loggerAction(name, action);
+        stategraph.addNode(name, logger);  
+        return this;
+    }
+    
+    @Override
+    public StateGraph<T> setInitial(String nodeName) {
+        return stategraph.setInitial(nodeName);
+    }
+    
+    @Override
+    public StateGraph<T> setFinal(String nodeName) {
+        return stategraph.setFinal(nodeName);
+    }
+    
+    @Override
+    public StateGraph<T> addEdge(String from, String to) {
+    	stategraph.addEdge(from, to);
+    	return this;
+    }
+    
+    @Override
+    public StateGraph<T> addConditionalEdge(String from, String to, Predicate<T> condition) {
+        stategraph.addConditionalEdge(from, to, condition);
+    	return this;
+    }
+    
+    @Override
+    public <S> WorkflowNode<T, S> addWfNode(String nodeName, StateGraph<S> workflow) {
+        WorkflowNode<T, S> node = new WorkflowNode<>(nodeName, workflow);
+        stategraph.addWfNode(nodeName, workflow);
+        return node;
+    }
+
     @Override
     public String toString() {
-        return super.toString() + " [logged]";
+    	stategraph.setTag(tag);
+        return stategraph.toString();
     }
 }

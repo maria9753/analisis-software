@@ -2,70 +2,109 @@ package src.stategraph;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
+import src.stategraph.StateGraph.ConditionalEdge;
+import src.stategraph.StateGraph.WorkflowNode;
 
 /**
  * Clase que ayuda a medir el tiempo de ejecución de un grafo de estados.
  * Guarda información sobre cuánto tarda en ejecutarse cada vez que se usa.
- * 
+ *
  * @param <T> Tipo de dato para la clase.
  */
 public class StateGraphProfiler<T> extends StateGraph<T> {
-	/** Stategraph */
+	/** Grafo que se decora */
     private StateGraph<T> stategraph;
-    /** Trazas de ejecución */
-    private List<String> executionTraces = new ArrayList<>();
+    /** Historial de decoración */
+    private List<String> history = new ArrayList<>();
 
     /**
-     * Crea un nuevo medidor para un grafo de estados.
-     * @param stategraph El grafo que queremos medir
+     * Constructor de la clase StateGraphProfiler.
+     * 
+     * @param stategraph Grafo que se decora.
      */
     public StateGraphProfiler(StateGraph<T> stategraph) {
         super(stategraph.name, stategraph.description);
 
         this.stategraph = stategraph;
 
-        this.nodes.putAll(stategraph.nodes); 
-        this.edges.putAll(stategraph.edges); 
-        this.conditionalEdges.putAll(stategraph.conditionalEdges); 
-        this.workflowNodes.putAll(stategraph.workflowNodes); 
-        this.finalNodes.addAll(stategraph.finalNodes); 
-        this.initialNode = stategraph.initialNode; 
+        this.tag = " [profiled]";
     }
 
-    /**
-     * Ejecuta el grafo y mide cuánto tiempo tarda.
-     * 
-     * @param input Los datos de entrada
-     * @param debug Si mostrar información de depuración
-     * @return El resultado después de ejecutar el grafo
-     */
     @Override
     public T run(T input, boolean debug) {
-        long startTime = System.nanoTime();
-      
-        T result = super.run(input, debug);
-        
-        long duration = (System.nanoTime() - startTime) / 1_000_000;
-        
-        executionTraces.add("Total execution time: " + duration + " ms");
-        
-        return result;
+        return stategraph.run(input, debug);  
     }
 
     /**
-     * Nos da el historial de tiempos de ejecución guardados.
-     * @return Lista con todos los tiempos medidos
+     * Método que junta la acción del nodo y la de decoración.
+     * 
+     * @param nodeName Nombre del nodo.
+     * @param action   Acción original del nodo.
+     * 
+     * @return La acción fusionada.
+     */
+    protected Consumer<T> profilerAction(String nodeName, Consumer<T> action) {
+        return state -> {
+            long startTime = System.nanoTime();
+            long duration = System.nanoTime() - startTime;
+            String entry = String.format("%s with: %s %.4f ms",
+                    nodeName, state, duration / 1_000_000.0);
+            action.accept(state);
+            history.add(entry);
+        };
+    }
+
+    /**
+     * Getter del atributo historial de decoración.
+     * 
+     * @return El historial de decoración.
      */
     public List<String> history() {
-        return new ArrayList<>(executionTraces);
+        return new ArrayList<>(history);
     }
 
-    /**
-     * Descripción del grafo con información de que está siendo medido.
-     * @return Texto que identifica este grafo como "perfilado"
-     */
+    @Override
+    public StateGraph<T> addNode(String name, Consumer<T> action) {
+        Consumer<T> profiler = profilerAction(name, action);
+        stategraph.addNode(name, profiler); 
+        return this;
+    }
+    
+    @Override
+    public StateGraph<T> setInitial(String nodeName) {
+        return stategraph.setInitial(nodeName);
+    }
+    
+    @Override
+    public StateGraph<T> setFinal(String nodeName) {
+        return stategraph.setFinal(nodeName);
+    }
+    
+    @Override
+    public <S> WorkflowNode<T, S> addWfNode(String nodeName, StateGraph<S> workflow) {
+        WorkflowNode<T, S> node = new WorkflowNode<>(nodeName, workflow);
+        stategraph.addWfNode(nodeName, workflow);
+        return node;
+    }
+    
+    @Override
+    public StateGraph<T> addConditionalEdge(String from, String to, Predicate<T> condition) {
+        stategraph.addConditionalEdge(from, to, condition);
+    	return this;
+    }
+    
+    @Override
+    public StateGraph<T> addEdge(String from, String to) {
+    	stategraph.addEdge(from, to);
+    	return this;
+    }
+
     @Override
     public String toString() {
-        return super.toString() + " [profiled]";
+    	stategraph.setTag(tag);
+        return stategraph.toString();
     }
 }

@@ -34,7 +34,7 @@ public class DecoratorMain {
           .setInitial("decrease");
         
           NumericData input = new NumericData(3, 0);
-          System.out.println(sg+"\\input = " + input);
+          System.out.println(sg+"\ninput = " + input);
           NumericData output = sg.run(input, true);
           System.out.println("result = " + output);
           System.out.println("history = "+ sg.history());

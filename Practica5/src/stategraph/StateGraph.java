@@ -30,6 +30,8 @@ public class StateGraph<T> {
     protected final Set<String> finalNodes = new HashSet<>();
     /** Nodo inicialdel grafo */
     protected String initialNode;
+    /** Tag del grafo */
+    protected String tag;
 
     /**
      * Constructor de la clase StateGraph.
@@ -40,10 +42,21 @@ public class StateGraph<T> {
     public StateGraph(String name, String description) {
         this.name = name;
         this.description = description;
+        this.tag = "";
+    }
+    
+    /**
+     * Modifica el atributo tag del grafo.
+     * 
+     * @param tag Tag del grafo.
+     */
+    public void setTag(String tag) {
+    	this.tag += tag;
     }
     
     /**
      * Obtiene el nombre identificativo del grafo de estados.
+     * 
      * @return Nombre asignado al grafo durante su creación
      */
     public String getName() {
@@ -52,6 +65,7 @@ public class StateGraph<T> {
 
     /**
      * Proporciona la descripción del propósito del grafo.
+     * 
      * @return Texto descriptivo sobre la función del grafo
      */
     public String getDescription() {
@@ -60,6 +74,7 @@ public class StateGraph<T> {
 
     /**
      * Indica el punto de entrada del flujo de trabajo.
+     * 
      * @return Nombre del nodo donde comienza la ejecución
      */
     public String getInitialNode() {
@@ -68,6 +83,7 @@ public class StateGraph<T> {
 
     /**
      * Muestra los nodos que marcan el final del proceso.
+     * 
      * @return Conjunto de nodos considerados como finales (solo lectura)
      */
     public Set<String> getFinalNodes() {
@@ -76,6 +92,7 @@ public class StateGraph<T> {
 
     /**
      * Devuelve todos los nodos básicos del grafo.
+     * 
      * @return Mapa con los nodos y sus acciones asociadas (no modificable)
      */
     public Map<String, Consumer<T>> getNodes() {
@@ -84,6 +101,7 @@ public class StateGraph<T> {
 
     /**
      * Presenta las conexiones directas entre nodos.
+     * 
      * @return Relación de nodos origen con sus destinos directos
      */
     public Map<String, List<String>> getEdges() {
@@ -92,6 +110,7 @@ public class StateGraph<T> {
 
     /**
      * Muestra las conexiones que requieren cumplir una condición.
+     * 
      * @return Relación de nodos con sus conexiones condicionales
      */
     public Map<String, List<ConditionalEdge<T>>> getConditionalEdges() {
@@ -103,6 +122,7 @@ public class StateGraph<T> {
      * 
      * @param nodeName El nombre del nodo.
      * @param action   La acción que se ejecutará en el nodo.
+     * 
      * @return StateGraph actual.
      */
     public StateGraph<T> addNode(String nodeName, Consumer<T> action) {
@@ -143,6 +163,7 @@ public class StateGraph<T> {
      * @param <S>      Tipo del estado de flujo.
      * @param nodeName Nombre del nodo.
      * @param workflow Flujo de trabajo.
+     * 
      * @return El nodo creado.
      */
     public <S> WorkflowNode<T, S> addWfNode(String nodeName, StateGraph<S> workflow) {
@@ -155,18 +176,24 @@ public class StateGraph<T> {
      * Método que establece el nodo inicial del grafo.
      * 
      * @param nodeName El nodo inicial.
+     * 
+     * @return EL grafo.
      */
-    public void setInitial(String nodeName) {
+    public StateGraph<T> setInitial(String nodeName) {
         this.initialNode = nodeName;
+        return this;
     }
 
     /**
      * Método que establece un nodo final del grafo.
      * 
      * @param nodeName El nodo final.
+     * 
+     * @return El grafo.
      */
-    public void setFinal(String nodeName) {
+    public StateGraph<T> setFinal(String nodeName) {
         finalNodes.add(nodeName);
+        return this;
     }
 
     /**
@@ -296,8 +323,8 @@ public class StateGraph<T> {
             result += nodeName + "=Node " + nodeName + " (" + outputs + " output nodes)";
             first = false;
         }
-
-        result += "}\n";
+        
+        result += tag + "}\n";
         result += "- Initial: " + initialNode + "\n";
         result += "- Final: " + (finalNodes.isEmpty() ? "None" : String.join(", ", finalNodes));
 
@@ -359,6 +386,7 @@ public class StateGraph<T> {
          * Establece la función de inyección para transformar el estado padre.
          * 
          * @param injector Función que convierte T a S.
+         * 
          * @return La misma instancia para permitir encadenamiento.
          */
         public WorkflowNode<T, S> withInjector(Function<T, S> injector) {
@@ -370,6 +398,7 @@ public class StateGraph<T> {
          * Establece la función de extracción para transmitir los resultados.
          * 
          * @param extractor Función que aplica los resultados del subflujo al estado padre.
+         * 
          * @return La misma instancia para permitir encadenamiento.
          */
         public WorkflowNode<T, S> withExtractor(BiConsumer<S, T> extractor) {
@@ -382,6 +411,7 @@ public class StateGraph<T> {
          * 
          * @param parentState Estado actual del grafo padre.
          * @param debug Modo de depuración para mostrar pasos de ejecución.
+         * 
          * @throws IllegalStateException Si no se han configurado inyector o extractor.
          */
         public void execute(T parentState, boolean debug) throws IllegalStateException {
